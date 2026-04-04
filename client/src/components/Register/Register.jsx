@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Register.css';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, showMsg] = useState('');
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // placeholder for logic that will be shared later
-    console.log('register', { name, email, password });
+    try {
+      await register(name, email, password);
+      showMsg('Registration successful! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 1000);
+    } catch (err) {
+      console.error(err);
+      showMsg(err.message || 'Registration failed');
+    }
   };
 
   return (
@@ -61,7 +71,9 @@ const Register = () => {
         <p className="toggle-text">
           Already have an account? <Link to="/login">Log in</Link>
         </p>
+        <p>{msg}</p>
       </div>
+      
     </div>
   );
 };

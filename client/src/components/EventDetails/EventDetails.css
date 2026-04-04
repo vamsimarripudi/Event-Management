@@ -1,0 +1,32 @@
+.events-content {
+  margin-left: 250px;
+  padding: 2rem;
+}
+
+.description {
+  margin: 1rem 0;
+}
+
+.primary-btn,
+.secondary-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: linear-gradient(90deg, #34c759 0%, #0a84ff 100%);
+  color: #fff;
+}
+
+.secondary-btn {
+  background: #ccc;
+  color: #333;
+}
+
+.sold-out {
+  color: #e74c3c;
+  font-weight: bold;
+}
