@@ -1,7 +1,24 @@
 # Getting Started with Create React App
 
-> **Customizations:** React Router has been added to support login/register navigation. After cloning, run `npm install` to pull in the new dependency (`react-router-dom`). The `src/components/Login` and `src/components/Register` directories contain modern "new‑age" CSS designs; you can preview them by navigating to `http://localhost:3000/login` and `/register` once the dev server is running.
-
+> **Customizations:** React Router has been added to support login/register navigation and protected pages. Authentication is managed via a simple context + JWT stored in `localStorage`; the app will automatically redirect unauthenticated users to `/login`. After cloning, run `npm install` to pull in the new dependencies (`react-router-dom` and `jwt-decode`).
+>
+> Pages included:
+> - `/login` & `/register` – styled auth forms
+> - `/events` – searchable list of events pulled from backend
+> - `/event/:id` – detail page with registration/cancellation
+> - `/dashboard` – user dashboard showing upcoming/past registrations
+>
+> The event cards and sidebar are fully functional. Use the app with a running backend at `http://localhost:5000` (or adjust `services/api.js` base URL).
+>
+> To spin up the client run:
+> ```bash
+> cd client
+> npm install
+> npm start
+> ```
+>
+> Then visit `http://localhost:3000`.
+>
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

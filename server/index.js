@@ -3,6 +3,8 @@ const connectDB = require("./db");
 const authRoutes = require("./routes/authRoute");
 const cors = require("cors");
 const eventRoutes = require("./routes/eventRoutes");
+const registrationRoutes = require("./routes/registrationRoute");
+
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
@@ -15,6 +17,8 @@ app.get("/", (req,res) => {
 }); 
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
+app.use("/api/registration", registrationRoutes);
+
 
 connectDB();
 
