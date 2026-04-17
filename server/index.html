@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management API</title>
+</head>
+<body>
+    <h1 class="text-3xl font-bold">Welcome to Event Management API Portal.</h1>
+        <p>Use the following endpoints to interact with the API:</p>
+        <ul>
+            <li><strong>POST /api/auth/register</strong> - Register a new user. Body: {email, password}</li>
+            <li><strong>POST /api/auth/login</strong> - Log in a user. Body: {email, password}</li>
+            <li><strong>POST /api/event</strong> - Create a new event. Body: {title, description, date, category, capacity}</li>
+            <li><strong>GET /api/event</strong> - Get all events.</li>
+            <li><strong>GET /api/event/:id</strong> - Get event details by ID.</li>
+            <li><strong>POST /api/registration</strong> - Register for an event. Body: {eventId}</li>
+            <li><strong>DELETE /api/registration/:eventId</strong> - Cancel registration for an event.</li>
+        </ul>
+
+        <p>All endpoints (except /api/auth) require an Authorization header with a valid JWT token.</p>
+        <p>Example: Authorization: Bearer &lt;token&gt;</p>
+        <p>For more details, refer to the API documentation.</p>
+        <p>Note: Make sure to replace &lt;token&gt; with your actual JWT token.</p>
+        
+
+        <footer>
+            <p style="text-align: center; color: #666;">Developed by Vamsi Marripudi</p>
+        </footer>
+
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f9f9f9;
+            }
+            h1 {
+                color: #333;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            li {
+                background: #fff;
+                margin: 10px 0;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            strong {
+                color: #007BFF;
+            }
+        </style>
+</body>
+
+</html>
