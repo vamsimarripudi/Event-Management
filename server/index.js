@@ -4,6 +4,7 @@ const authRoutes = require("./routes/authRoute");
 const cors = require("cors");
 const eventRoutes = require("./routes/eventRoutes");
 const registrationRoutes = require("./routes/registrationRoute");
+const verifyToken = require("./middleware/token");
 
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
@@ -18,6 +19,26 @@ app.get("/", (req,res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
+
+app.get("/api/test", (req,res) => {
+    res.json({message:"API is working"})
+});
+
+app.get("/api/secret", (req,res) => {
+    res.json({message:"This is a secret message"})
+}
+);
+
+app.get("/api/secret", verifyToken, (req,res) => {
+    try{
+        res.json({message:"This is a secret message for authenticated users only"})
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+
+});
+
 
 
 connectDB();
