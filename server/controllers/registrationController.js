@@ -10,7 +10,7 @@ const registerForEvent = async (req,res) => {
         if(!event){
             return res.status(404).json({message:"Event not found"})
         }
-        if(event.date < new Date()){
+        if(event.dateTime < new Date()){
             return res.status(400).json({message:"Cannot register for past events"})
         }
         if(event.capacity <= 0){
