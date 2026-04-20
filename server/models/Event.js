@@ -9,10 +9,21 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
     },
-    location: {
-    type: String,
-    required: true,
+  location: {
+    venue:{
+        type:String,
     },
+    city:{
+        type:String
+    },
+    state:{
+        type:String
+    },
+    country:{
+        type:String
+    },
+  },
+    
     
     dateTime:{
     type: Date,
