@@ -3,7 +3,7 @@ const {Event} = require("../models/Event");
 
 const getAllEvents = async (req,res) => {
     try{
-        const events = await Event.find();
+        const events = await Event.find({}, "name organizer location dateTime description tags capacity category");
         res.json(events);
     }
     catch(error){
