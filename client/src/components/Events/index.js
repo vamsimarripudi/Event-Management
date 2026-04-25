@@ -12,6 +12,8 @@ import {
 const Events = () => {
     const [events, setEvents] = useState([]);
 
+    
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -23,7 +25,10 @@ const Events = () => {
                     }
                 });
                 const data = await response.json();
+                console.log(data)
+                
                 setEvents(data)
+
             }
 
 
@@ -40,10 +45,12 @@ const Events = () => {
             <Navbar />
             <Sidebar />
             {events.map(event => (
-                <EventItem key={event.id}>
+                <EventItem key={event._id}>
                     <h1>{event.name}</h1>
                     <EventDate>{new Date(event.date).toLocaleDateString()}</EventDate>
                     <p>{event.organizer}</p>
+                    <p>{event.location.state}</p>
+                    <p>{event.dateTime.start}</p>
                 </EventItem>
             ))}
         </EventsContainer>
