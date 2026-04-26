@@ -1,37 +1,50 @@
-import styled from "styled-components"
-
+import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
-  width: 250px; 
-    background-color: #f0f0f0;
-    padding: 20px;
+    width: 220px;
+    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    padding: 32px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: fixed;
-    height: 100vh;
-    top: 0;
+    top: 64px;
     left: 0;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-`
-
-export const DashboardLink = styled.a`
-    margin: 10px 0;
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-    &:hover {
-        color: #007BFF;
+    height: calc(100vh - 64px);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+    z-index: 100;
+    @media (max-width: 768px) {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        box-shadow: none;
+        padding: 10px 0;
+        top: 0;
     }
-`
+`;
 
-export const EventsLink = styled.a`
-    margin: 10px 0;
+export const SidebarLink = styled.a`
+    margin: 18px 0;
     text-decoration: none;
-    color: #333;
-    font-size: 18px;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
     &:hover {
-        color: #007BFF;
+        background: #007bff;
+        color: #fff;
     }
-`
+    @media (max-width: 768px) {
+        margin: 0 10px;
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+`;
 

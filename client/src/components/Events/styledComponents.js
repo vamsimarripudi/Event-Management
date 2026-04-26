@@ -2,11 +2,27 @@ import styled from "styled-components";
 
 export const EventsContainer = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    background-color: #f0f2f5;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 100vh;
+    background: #f4f6fa;
+    padding-left: 220px; /* Space for sidebar */
+    padding-top: 64px; /* Space for navbar */
+    @media (max-width: 768px) {
+        flex-direction: column;
+        padding-left: 0;
+        padding-top: 80px;
+    }
+`;
+
+export const EventUnOrderedList = styled.ul`
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    
 `;
 
 export const EventList = styled.ul`
@@ -19,28 +35,36 @@ export const EventList = styled.ul`
 `;
 
 export const EventItem = styled.li`
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    background: #fff;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    width: 340px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.2s;
+    &:hover {
+        box-shadow: 0 8px 32px rgba(0,123,255,0.12);
+    }
     @media (max-width: 400px) {
         width: 100%;
     }
 `;
 
 export const EventTitle = styled.h2`
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #232526;
 `;
 
 export const EventDate = styled.p`
-    color: #666;
+    color: #007bff;
     margin-bottom: 1rem;
+    font-weight: 500;
 `;
 
 export const RegisterButton = styled.button`
@@ -91,3 +115,60 @@ export const FiltersContainer = styled.div`
     }
 `;
 
+
+export const NoEventsMessage = styled.p`
+    color: #777;
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    text-align: center;
+`;
+
+export const SearchInput = styled.input`
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 400px;
+    margin-left: 1.5rem;
+    border-radius: 4px;
+    margin-top:1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    &:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    @media (max-width: 600px) {
+        max-width: 100%;
+    }
+`;
+
+export const Category = styled.select`
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: auto;
+    margin-left: 1.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    &:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    @media (max-width: 600px) {
+        width: 100%;
+        margin-left: 0;
+    }
+`;
+
+export const Option = styled.option`
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    &:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+    @media (max-width: 600px) {
+        width: 100%;
+        margin-left: 0;
+    }
+`;

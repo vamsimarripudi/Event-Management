@@ -51,4 +51,30 @@ const login = async(req,res) => {
 
 }
 
-module.exports = {register,login};
+const getUserById = async (req, res) => {
+  const { id } = req.params; // use "id" not "_id" for route clarity
+
+  // 1. Validate ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+    // 2. Query user
+    const user = await User.findById(id).select("-password"); // exclude password
+
+    // 3. Handle not found
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // 4. Success
+    return res.status(200).json(user);
+
+  } catch (error) {
+    console.error("getUserById error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {register,login,getUserById};

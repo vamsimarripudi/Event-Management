@@ -51,11 +51,12 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
     },
-    attendees: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    }],
-
+    attendees: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      registeredAt: { type: Date, default: Date.now }
+    }
+  ],
     tags:{
     type: [String],
     required: true, 

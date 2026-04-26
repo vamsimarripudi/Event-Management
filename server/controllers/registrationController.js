@@ -2,7 +2,6 @@ const Registration = require("../models/RegistrationModel");
 const {Event} = require("../models/Event");
 
 
-
 const registerForEvent = async (req,res) => {
     const {eventId} = req.body;
     try{

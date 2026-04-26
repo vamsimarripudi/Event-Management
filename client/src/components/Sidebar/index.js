@@ -1,20 +1,18 @@
+
 import {
     SidebarContainer,
-    DashboardLink,
-    EventsLink
+    SidebarLink
+} from "./styledComponents"
 
-}  from "./styledComponents"
 
 
 const Sidebar = () => {
     return (
         <SidebarContainer>
-            <DashboardLink href="/dashboard">Dashboard</DashboardLink>
-            <EventsLink href="/events">Events</EventsLink>
+            <SidebarLink href="/dashboard">Dashboard</SidebarLink>
+            <SidebarLink href="/events">Events</SidebarLink>
         </SidebarContainer>
     )
-
-
 }
 
 export default Sidebar;

@@ -3,11 +3,14 @@ const {
   registerForEvent,
   getUserRegistrations,
   cancelRegistration,
+  upcomingRegistrations,
+  pastRegistrations
 } = require("../controllers/registrationController");
 const verifyToken = require("../middleware/token");
 
 Router.post("/register", verifyToken, registerForEvent);
 Router.post("/cancel", verifyToken, cancelRegistration);
 Router.get("/my-events", verifyToken, getUserRegistrations);
+
 
 module.exports = Router;

@@ -1,135 +1,260 @@
-import {useState,useEffect} from "react"
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { format } from "date-fns";
 
-import { useParams, useNavigate } from 'react-router-dom';
-import {} from "./styledComponents"
+import Navbar from "../Navbar";
+import Sidebar from "../Sidebar";
 
+import {
+  EventDetailsContainer,
+  ContentWrapper,
+  EventCard,
+  Title,
+  Organizer,
+  Category,
+  Description,
+  LocationContainer,
+  Location,
+  DateContainer,
+  StartDate,
+  EndDate,
+  Capacity,
+  TagsContainer,
+  Tag,
+  RegisterButton,
+  DangerButton,
+  LoadingMessage,
+  StatusBadge,
+  Skeleton,
+} from "./styledComponents";
 
 const EventDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-    const [event, setEvent] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [registered, setRegistered] = useState(false);
-    const [processing, setProcessing] = useState(false);
-    const [error, setError] = useState('');
 
-    useEffect(() => {
-        const load = async () => {
-            try {
-                const res = await getEventById(id);
-                const data = await res.json();
-                setEvent(data);
-                const regsRes = await getMyRegistrations();
-                const regs = await regsRes.json();
-                setRegistered(regs.some(r => r.eventId._id === id));
-            } catch (err) {
-                console.error(err);
-                setError('Failed to load event');
-            } finally {
-                setLoading(false);
-            }
-        };
-        load();
+  const [event, setEvent] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [registered, setRegistered] = useState(false);
+  const [error, setError] = useState("");
+
+  // FETCH EVENT
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          `https://backend.vamsimarripudi.tech/api/event/events/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        setEvent(data);
+
+        // optional: backend flag
+        if (data.isRegistered) {
+          setRegistered(true);
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load event");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [id]);
+
+  // REGISTER
+  const handleRegister = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        "https://backend.vamsimarripudi.tech/api/registration/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ eventId: event._id }),
+        }
+      );
+
+      if (response.ok) {
+        setRegistered(true);
+      } else {
+        const data = await response.json();
+        setError(data.message || "Registration failed");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong");
     }
-    , [id]);
-    
-    const handleRegister = async () => {
-        if (processing) return;
-        setProcessing(true);
-        try {
-            const res = await registerForEvent(id);
-            if (!res.ok) {
-                const d = await res.json();
-                throw new Error(d.message || 'Registration failed');
-            }
-            setRegistered(true);
-            // refresh event info to update capacity
-            const newRes = await getEventById(id);
-            setEvent(await newRes.json());
-            alert('Registered successfully');
-        }
-        catch (err) {
-            alert(err.message);
-        }
-        finally {
-            setProcessing(false);
-        }
-    };
+  };
 
-    const handleCancel = async () => {
-        if (!registered || processing) return;
-        setProcessing(true);
-        try {
-            const res = await cancelRegistration(id);
-            if (!res.ok) {
-                const d = await res.json();
-                throw new Error(d.message || 'Cancel failed');
-            }
-            setRegistered(false);
-            // refresh event info to update capacity
-            const newRes = await getEventById(id);
-            setEvent(await newRes.json());
-            alert('Cancelled successfully');
-        }
-        catch (err) {
-            alert(err.message);
-        }
-        finally {
-            setProcessing(false);
-        }
-    };
+  // CANCEL
+  const handleCancel = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+      const response = await fetch(
+        "https://backend.vamsimarripudi.tech/api/registration/cancel",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ eventId: event._id }),
+        }
+      );
+
+      if (response.ok) {
+        setRegistered(false);
+      } else {
+        const data = await response.json();
+        setError(data.message || "Cancel failed");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong");
+    }
+  };
+
+  // DATE FORMAT
+  const formatDateTime = (value) => {
+    if (!value) return "N/A";
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return "Invalid Date";
+    return format(d, "dd MMM yyyy, hh:mm a");
+  };
+
+  // STATUS
+  const getStatus = (start, end) => {
+    if (!start || !end) return "UNKNOWN";
+
+    const now = new Date();
+    const s = new Date(start);
+    const e = new Date(end);
+
+    if (now < s) return "UPCOMING";
+    if (now >= s && now <= e) return "ONGOING";
+    return "ENDED";
+  };
+
+  if (loading) {
     return (
-        <div>
-            <h1>{event.title}</h1>
-            <p>{event.description}</p>
-            <p>Date: {new Date(event.date).toLocaleString()}</p>
-            <p>Category: {event.category}</p>
-            <p>Available Seats: {event.capacity}</p>
-            {registered ? (
-                <button onClick={handleCancel} disabled={processing}>Cancel Registration</button>
-            ) : (
-                <button onClick={handleRegister} disabled={processing || event.capacity <= 0}>Register</button>
-            )}
-        </div>
+      <>
+        <Navbar />
+        <EventDetailsContainer>
+          <Sidebar />
+          <ContentWrapper>
+            <EventCard>
+              <Skeleton height="28px" width="60%" />
+              <Skeleton width="40%" />
+              <Skeleton width="30%" />
+              <Skeleton height="80px" />
+              <Skeleton width="50%" />
+              <Skeleton width="50%" />
+              <Skeleton width="30%" />
+              <Skeleton width="20%" />
+              <Skeleton width="80px" height="36px" />
+            </EventCard>
+          </ContentWrapper>
+        </EventDetailsContainer>
+      </>
     );
-}
+  }
 
-const registerForEvent = async (eventId) => {
-    try{
-        const event = await
-        Event.findById(eventId);
-        if (!event) {
-            return res.status(404).json({message:"Event not found"})
-        }
-        if (event.capacity <= 0) {
-            return res.status(400).json({message:"Event is full"})
-        }
-        const registration = new Registration({
-            userId:req.user.id,
-            eventId
-        });
-        await registration.save();
-        await
+  if (error) return <LoadingMessage>{error}</LoadingMessage>;
 
-        Event
-        .findByIdAndUpdate(eventId, {$inc:{capacity:-1}}, {new:true})
-        res.status(201).json({message:"Registered successfully"})
-    }
+  const {
+    name,
+    organizer,
+    description,
+    location = {},
+    dateTime = {},
+    tags = [],
+    category,
+    capacity,
+  } = event;
 
-    catch(error){
-        res.status(500).json({message:error.message})
-    }
-}
+  const { venue, city, state, country } = location;
+  const { start, end } = dateTime;
 
-const cancelRegistration = async (eventId) => {
-    try{
-        const registration = await Registration.findOne({userId:req.user.id, eventId});
-        if (!registration) {
-            return res.status(404).json({message:"Registration not found"})
-        }
-        await registration.remove();
-        await Event.findByIdAndUpdate(eventId, {$inc:{capacity:1}}, {new:true})
-    
+  const status = getStatus(start, end);
+
+  const isFull = capacity === 0;
+  const isEnded = status === "ENDED";
+
+  return (
+    <>
+      <Navbar />
+      <EventDetailsContainer>
+        <Sidebar />
+
+        <ContentWrapper>
+          <EventCard>
+            <Title>
+              {name} <StatusBadge status={status}>{status}</StatusBadge>
+            </Title>
+
+            <Organizer>
+              Organizer: <strong>{organizer}</strong>
+            </Organizer>
+
+            <Category>{category}</Category>
+
+            <Description>{description}</Description>
+
+            <LocationContainer>
+              <Location>{venue}</Location>
+              <Location>{city}</Location>
+              <Location>{state}</Location>
+              <Location>{country}</Location>
+            </LocationContainer>
+
+            <DateContainer>
+              <StartDate>From: {formatDateTime(start)}</StartDate>
+              <EndDate>Ends: {formatDateTime(end)}</EndDate>
+            </DateContainer>
+
+            <Capacity>Total seats: {capacity}</Capacity>
+
+            <TagsContainer>
+              {tags.map((tag, index) => (
+                <Tag key={index}>{tag}</Tag>
+              ))}
+            </TagsContainer>
+
+            {registered ? (
+              <DangerButton onClick={handleCancel} disabled={isEnded}>
+                {isEnded ? "Cannot Cancel" : "Cancel Registration"}
+              </DangerButton>
+            ) : (
+              <RegisterButton
+                onClick={handleRegister}
+                disabled={isFull || isEnded}
+              >
+                {isFull ? "Event Full" : isEnded ? "Closed" : "Register"}
+              </RegisterButton>
+            )}
+
+            <Link to="/events">
+              <RegisterButton>Back</RegisterButton>
+            </Link>
+          </EventCard>
+        </ContentWrapper>
+      </EventDetailsContainer>
+    </>
+  );
+};
+
+export default EventDetails;
