@@ -10,6 +10,7 @@ import {
     const handleLogout = () => {
         localStorage.removeItem('token');
         window.location.href = '/login';
+        localStorage.removeItem("userId");
     }
 
     return (
