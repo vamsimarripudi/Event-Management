@@ -1,91 +1,178 @@
-# Getting Started with Create React App
+# Event Management System (MERN)
 
-> **Customizations:** React Router has been added to support login/register navigation and protected pages. Authentication is managed via a simple context + JWT stored in `localStorage`; the app will automatically redirect unauthenticated users to `/login`. After cloning, run `npm install` to pull in the new dependencies (`react-router-dom` and `jwt-decode`).
->
-> Pages included:
-> - `/login` & `/register` – styled auth forms
-> - `/events` – searchable list of events pulled from backend
-> - `/event/:id` – detail page with registration/cancellation
-> - `/dashboard` – user dashboard showing upcoming/past registrations
->
-> The event cards and sidebar are fully functional. Use the app with a running backend at `http://localhost:5000` (or adjust `services/api.js` base URL).
->
-> To spin up the client run:
-> ```bash
-> cd client
-> npm install
-> npm start
-> ```
->
-> Then visit `http://localhost:3000`.
->
-# Getting Started with Create React App
+A production-oriented Event Management platform enabling users to discover events, manage registrations, and track participation status in real time. Built with a focus on clean architecture, scalable APIs, and consistent UI/UX.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## 🚀 Live Demo
 
-In the project directory, you can run:
+* Frontend: https://event.vamsimarripudi.tech
+* Backend API: https://backend.vamsimarripudi.tech
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🎯 Key Highlights
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* Designed and implemented a full-stack MERN application with authentication and event lifecycle management
+* Built RESTful APIs with proper route structuring and middleware-based authorization
+* Implemented dynamic event status (Upcoming / Ongoing / Ended) using date-time logic
+* Ensured persistent registration state via backend-driven `isRegistered` flag
+* Developed responsive UI with reusable components and clean layout hierarchy
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ✨ Features
 
-### `npm run build`
+* 🔐 Secure Authentication (JWT-based)
+* 📅 Event CRUD operations (Create, Update, Delete)
+* 🔍 Event listing and detailed view
+* ✅ Register / ❌ Cancel participation
+* 📊 Real-time event status handling
+* 📱 Fully responsive design (mobile + desktop)
+* ⚡ Optimized API integration with error handling
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🏗️ Architecture Overview
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```text id="arch1"
+Client (React)
+   ↓
+API Layer (Fetch/Axios)
+   ↓
+Node.js + Express Server
+   ↓
+MongoDB (Mongoose Models)
+```
 
-### `npm run eject`
+* Separation of concerns between UI, API, and data layer
+* Stateless authentication using JWT
+* Backend-driven UI state (registration status)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🛠️ Tech Stack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Frontend**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* React.js
+* Styled Components
+* React Router
 
-## Learn More
+**Backend**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* Node.js
+* Express.js
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Database**
 
-### Code Splitting
+* MongoDB (Mongoose)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Other**
 
-### Analyzing the Bundle Size
+* JWT Authentication
+* REST API Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 📂 Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash id="struct1"
+client/
+  ├── components/
+  ├── pages/
+  ├── utils/
+  └── App.jsx
 
-### Advanced Configuration
+server/
+  ├── controllers/
+  ├── models/
+  ├── routes/
+  └── server.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## ⚙️ Setup Instructions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Clone Repository
 
-### `npm run build` fails to minify
+```bash id="clone1"
+git clone https://github.com/your-username/event-management.git
+cd event-management
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Install Dependencies
+
+**Frontend**
+
+```bash id="front1"
+cd client
+npm install
+npm start
+```
+
+**Backend**
+
+```bash id="back1"
+cd server
+npm install
+npm run dev
+```
+
+---
+
+## 🔐 Environment Variables
+
+Create `.env` in `/server`:
+
+```env id="env1"
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+```
+
+---
+
+## 📡 Core API Endpoints
+
+| Method | Endpoint                   | Description         |
+| ------ | -------------------------- | ------------------- |
+| POST   | /api/auth/register         | Register user       |
+| POST   | /api/auth/login            | Login user          |
+| GET    | /api/event/events          | Fetch all events    |
+| GET    | /api/event/events/:id      | Fetch event details |
+| POST   | /api/registration/register | Register for event  |
+| POST   | /api/registration/cancel   | Cancel registration |
+
+---
+
+## 🧠 Engineering Insights
+
+* Handled UI consistency by syncing frontend state with backend responses
+* Avoided stale UI states by deriving registration status from server
+* Implemented defensive coding (error states, loading skeletons)
+* Structured components for reusability and scalability
+
+---
+
+## 📈 Future Enhancements
+
+* Advanced filtering and category
+* Role-based access control (Admin/User)
+* Notification system (email / in-app)
+* Media uploads for events
+* Analytics dashboard
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 👨‍💻 Author
+
+Vamsi Marripudi
+GitHub: https://github.com/vamsimarripudi
