@@ -21,7 +21,12 @@ export const EventUnOrderedList = styled.ul`
     padding: 0;
     display: flex;
     flex-wrap: wrap;
+    
     gap: 0.5rem;
+    @media screen and (max-width:768px){
+       align-items:center;
+       justify-content:center;
+    }
     
 `;
 
