@@ -1,11 +1,10 @@
-import {Link,useNavigate} from 'react-router-dom';
+import {Link,useNavigate,useParams} from 'react-router-dom';
 
 import {
     EventCardContainer,
     EventCardTitle,
     EventCardDate,
     EventCardRegisterButton,
-    
     EventCategory,
     EventDescription,
     EventVenue,
@@ -17,8 +16,9 @@ import {
 
 
 const EventCard = ({event}) => {
+    const {_id} = useParams();
     const {start} = event.dateTime
-
+    const navigate = useNavigate()
     const formatDate = (dateTime) => {
         const date = new Date(dateTime);
         return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
@@ -36,7 +36,9 @@ const EventCard = ({event}) => {
                     <EventState>{event.location.state},</EventState>
                     <EventCountry>{event.location.country}</EventCountry>
                 </div>
-                <EventCardRegisterButton onClick={`${useNavigate(`/events/${event._id}`)}`}>More Info</EventCardRegisterButton>
+                 <EventCardRegisterButton onClick={() => navigate(`/events/${_id}`)}>
+                    View Details
+                </EventCardRegisterButton>
             </EventCardContainer>
         </Link>
     );

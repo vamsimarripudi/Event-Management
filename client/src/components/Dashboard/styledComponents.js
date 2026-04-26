@@ -16,74 +16,62 @@ export const DashboardContainer = styled.div`
     }
 `;
 
+
+
 export const ContentWrapper = styled.div`
   flex: 1;
   padding: 24px;
 `;
 
-export const Section = styled.div`
-  margin-bottom: 32px;
+/* Header */
+
+export const Header = styled.h2`
+  margin-bottom: 20px;
 `;
 
-export const SectionTitle = styled.h2`
-  font-size: 20px;
-  margin-bottom: 16px;
-  color: #1e293b;
+export const UserName = styled.span`
+  color: #2563eb;
+  font-weight: 600;
 `;
+
+/* Grid */
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
 `;
+
+/* Card */
 
 export const Card = styled.div`
   background: white;
   padding: 16px;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.06);
-  transition: 0.2s;
-
-  &:hover {
-    transform: translateY(-3px);
-  }
 `;
 
-export const CardTitle = styled.h3`
-  font-size: 16px;
+export const Title = styled.h3`
   margin-bottom: 6px;
 `;
 
 export const Meta = styled.p`
   font-size: 13px;
   color: #64748b;
+  margin-bottom: 4px;
 `;
 
 export const Badge = styled.span`
   display: inline-block;
   font-size: 11px;
+  background: #e0f2fe;
+  color: #0369a1;
   padding: 3px 8px;
   border-radius: 6px;
   margin-bottom: 6px;
-
-  background: ${({ status }) =>
-    status === "UPCOMING"
-      ? "#e0f2fe"
-      : status === "ONGOING"
-      ? "#dcfce7"
-      : "#fee2e2"};
-
-  color: ${({ status }) =>
-    status === "UPCOMING"
-      ? "#0369a1"
-      : status === "ONGOING"
-      ? "#166534"
-      : "#991b1b"};
 `;
 
-export const EmptyState = styled.p`
-  color: #64748b;
-`;
+/* Skeleton */
 
 const shimmer = keyframes`
   0% { background-position: -400px 0; }
@@ -93,7 +81,6 @@ const shimmer = keyframes`
 export const Skeleton = styled.div`
   height: ${(p) => p.height || "14px"};
   width: ${(p) => p.width || "100%"};
-  border-radius: 6px;
   margin-bottom: 8px;
 
   background: #e2e8f0;
@@ -107,3 +94,7 @@ export const Skeleton = styled.div`
   background-size: 800px 100%;
   animation: ${shimmer} 1.2s infinite;
 `;
+
+export const NoEventsContainer = styled.div`
+   
+`

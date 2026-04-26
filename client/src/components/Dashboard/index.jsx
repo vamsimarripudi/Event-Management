@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { format, formatDistanceToNow } from "date-fns";
+
 
 import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
@@ -7,86 +8,117 @@ import Sidebar from "../Sidebar";
 import {
   DashboardContainer,
   ContentWrapper,
-  Section,
-  SectionTitle,
+  Header,
+  UserName,
   Grid,
   Card,
-  CardTitle,
+  Title,
   Meta,
   Badge,
-  EmptyState,
   Skeleton,
+  NoEventsContainer
 } from "./styledComponents";
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
+  const[user,setUser] = useState(null)
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
-  // Fetch registered events for the user
+  
+
   useEffect(() => {
-    const fetchRegistered = async () => {
+    const fetchDashboard = async () => {
       try {
         const token = localStorage.getItem("token");
-
-        const res = await fetch(
+        // FETCH USER
+        const userId = localStorage.getItem("userId")
+        // FETCH EVENTS
+        const eventRes = await fetch(
           "https://backend.vamsimarripudi.tech/api/registration/my-events",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+        const eventData = await eventRes.json();
 
-        const data = await res.json();
-        setEvents(data || []);
-        console.log(data)
-      } catch (e) {
-        console.error(e);
-        setError("Failed to load dashboard");
+        // 3. normalize shape
+        let eventsArray = [];
+
+        if (Array.isArray(eventData)) {
+        eventsArray = eventData;
+        } else if (Array.isArray(eventData?.events)) {
+        eventsArray = eventData.events;
+        } else if (Array.isArray(eventData?.data)) {
+        eventsArray = eventData.data;
+        }
+
+        
+        setEvents(eventsArray || []);
+    
+
+        const userRes = await fetch(
+          `https://backend.vamsimarripudi.tech/api/auth/users/${userId}`,
+          {
+            method:"GET"
+          }
+        );
+        const userData = await userRes.json();
+        setUser(userData);
+        
+
+      } catch (error) {
+        console.error("Dashboard error:", error);
       } finally {
         setLoading(false);
       }
+
+      
     };
 
-    fetchRegistered();
+    fetchDashboard();
   }, []);
 
-  // Status classifier
-  const getStatus = (start, end) => {
-    if (!start || !end) return "UNKNOWN";
-    const now = new Date();
-    const s = new Date(start);
-    const e = new Date(end);
-
-    if (now < s) return "UPCOMING";
-    if (now >= s && now <= e) return "ONGOING";
-    return "ENDED";
-  };
-
-  // Split data
-  const { upcoming, past } = useMemo(() => {
-    const upcoming = [];
-    const past = [];
-
-    events.forEach((ev) => {
-      const { dateTime = {} } = ev;
-      const status = getStatus(dateTime.start, dateTime.end);
-
-      if (status === "UPCOMING" || status === "ONGOING") {
-        upcoming.push({ ...ev, status });
-      } else {
-        past.push({ ...ev, status });
-      }
-    });
-
-    return { upcoming, past };
-  }, [events]);
-
+  // FORMAT DATE
   const formatDate = (value) => {
-    if (!value) return "";
+    if (!value) return "N/A";
     const d = new Date(value);
-    if (isNaN(d.getTime())) return "";
+    if (isNaN(d.getTime())) return "Invalid Date";
     return format(d, "dd MMM yyyy, hh:mm a");
   };
+
+  // COUNTDOWN
+  const getCountdown = (start) => {
+    if (!start) return "";
+
+    const now = new Date();
+    const eventDate = new Date(start);
+
+    if (isNaN(eventDate.getTime())) return "";
+
+    if (eventDate < now) return "Event Completed";
+
+    return `Starts in ${formatDistanceToNow(eventDate)}`;
+  };
+
+  if (loading) {
+    return (
+        <>
+        <Navbar/>
+      <DashboardContainer>
+        <Sidebar />
+        <ContentWrapper>
+          {[...Array(4)].map((_, i) => (
+            <Card key={i}>
+              <Skeleton height="20px" width="60%" />
+              <Skeleton width="40%" />
+              <Skeleton width="80%" />
+            </Card>
+          ))}
+        </ContentWrapper>
+      </DashboardContainer>
+      </>
+    );
+  }
 
   return (
     <>
@@ -95,82 +127,54 @@ const Dashboard = () => {
         <Sidebar />
 
         <ContentWrapper>
-          {/* UPCOMING */}
-          <Section>
-            <SectionTitle>Upcoming / Ongoing Events</SectionTitle>
+          <Header>
+            Welcome, <UserName>{user?.name || "User"}</UserName>
+          </Header>
 
-            {loading ? (
-              <Grid>
-                {[...Array(4)].map((_, i) => (
-                  <Card key={i}>
-                    <Skeleton height="20px" width="60%" />
-                    <Skeleton width="40%" />
-                    <Skeleton width="70%" />
-                  </Card>
-                ))}
-              </Grid>
-            ) : upcoming.length === 0 ? (
-              <EmptyState>No upcoming events</EmptyState>
-            ) : (
-              <Grid>
-                {upcoming.map((ev) => {
-                  const { name, dateTime = {}, location = {}, status } = ev;
+          <Grid>
+           {events.length === 0 ? 
+           (
+            <NoEventsContainer>
+                <p>No Events Registered</p>
+            </NoEventsContainer>
+           )
+           : 
+            (<>
+                 {events.map((ev) => {
+              const {
+               eventId,
+                registrationDate
+              } = ev;
+              const{ _id,
+                name,
+                category,
+                description,dateTime} = eventId
+            
 
-                  return (
-                    <Card key={ev._id}>
-                      <CardTitle>{name}</CardTitle>
+              return (
+                <Card key={_id}>
+                  <Title>{name}</Title>
 
-                      <Badge status={status}>{status}</Badge>
+                  <Badge>{category}</Badge>
 
-                      <Meta>
-                        {location.city}, {location.state}
-                      </Meta>
+                  <Meta>{description}</Meta>
 
-                      <Meta>{formatDate(dateTime.start)}</Meta>
-                    </Card>
-                  );
-                })}
-              </Grid>
-            )}
-          </Section>
+                  <Meta>📅 Event: {formatDate(dateTime.start)}</Meta>
 
-          {/* PAST */}
-          <Section>
-            <SectionTitle>Past Events</SectionTitle>
+                  <Meta>
+                    📝 Registered: {formatDate(registrationDate
+)}
+                  </Meta>
 
-            {loading ? (
-              <Grid>
-                {[...Array(3)].map((_, i) => (
-                  <Card key={i}>
-                    <Skeleton height="20px" width="60%" />
-                    <Skeleton width="40%" />
-                  </Card>
-                ))}
-              </Grid>
-            ) : past.length === 0 ? (
-              <EmptyState>No past events</EmptyState>
-            ) : (
-              <Grid>
-                {past.map((ev) => {
-                  const { name, dateTime = {}, location = {} } = ev;
-
-                  return (
-                    <Card key={ev._id}>
-                      <CardTitle>{name}</CardTitle>
-
-                      <Badge status="ENDED">ENDED</Badge>
-
-                      <Meta>
-                        {location.city}, {location.state}
-                      </Meta>
-
-                      <Meta>{formatDate(dateTime.end)}</Meta>
-                    </Card>
-                  );
-                })}
-              </Grid>
-            )}
-          </Section>
+                  <Meta style={{ fontWeight: "bold" }}>
+                    ⏳ {getCountdown(dateTime.start)}
+                  </Meta>
+                </Card>
+              );
+            })}
+            </>)
+           }
+          </Grid>
         </ContentWrapper>
       </DashboardContainer>
     </>

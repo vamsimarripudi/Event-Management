@@ -8,6 +8,7 @@ import {
     Message,
     Label
 } from "./styledComponents";
+import { persistUserFromToken } from "../../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -35,8 +36,10 @@ const Login = () => {
                 body: JSON.stringify({ email, password }),
             });
             const data = await response.json();
+            console.log(data)
             if (response.ok) {
                 localStorage.setItem('token', data.jwtToken);
+                persistUserFromToken()
                 setApiStatus(apiStatusConstants.success);
                 navigate('/events');
             } else {
