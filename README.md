@@ -23,11 +23,11 @@ A production-oriented Event Management platform enabling users to discover event
 ## 📸 Screenshots
 
 ### 🔹 Home Page
-<img src="./public/screenshots/home.png" alt="Home Page" width="100%" />
+<img src="./client/public/screenshots/home.png" alt="Home Page" width="100%" />
 ### 🔹 Events Dashboard
-<img src="./public/screenshots/events.png" alt="Events Dashboard" width="100%" />
+<img src="./client/public/screenshots/events.png" alt="Events Dashboard" width="100%" />
 ### 🔹 Event Details
-<img src="./public/screenshots/details.png" alt="Event Details" width="100%" />
+<img src="./client/public/screenshots/details.png" alt="Event Details" width="100%" />
 ---
 
 ## ✨ Features
