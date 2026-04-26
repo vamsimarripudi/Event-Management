@@ -177,3 +177,31 @@ export const Option = styled.option`
         margin-left: 0;
     }
 `;
+
+
+export const PaginationCenter = styled.div`
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-end;
+    margin-right:20px;
+    
+    @media screen and (max-width:768px){
+        align-items:center;
+    }
+`
+
+export const Button = styled.button`
+    background-color: transparent;
+    border:0px;
+    font-weight:bold;
+    cursor:pointer;
+
+`
+
+export const PaginationCard = styled.div`
+    display:flex;
+    justify-content:center;
+    
+    
+`
