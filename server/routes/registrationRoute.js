@@ -4,12 +4,14 @@ const {
   getUserRegistrations,
   cancelRegistration,
   upcomingRegistrations,
-  pastRegistrations
+  pastRegistrations,
+  getRegistrationStatus
 } = require("../controllers/registrationController");
 const verifyToken = require("../middleware/token");
 
 Router.post("/register", verifyToken, registerForEvent);
 Router.post("/cancel", verifyToken, cancelRegistration);
+Router.get("/status",verifyToken,getRegistrationStatus)
 Router.get("/my-events", verifyToken, getUserRegistrations);
 
 

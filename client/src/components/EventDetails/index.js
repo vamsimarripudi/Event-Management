@@ -22,7 +22,6 @@ import {
   TagsContainer,
   Tag,
   RegisterButton,
-  DangerButton,
   LoadingMessage,
   StatusBadge,
   Skeleton,
@@ -31,12 +30,13 @@ import {
 
 const EventDetails = () => {
   const { id } = useParams();
-
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
-  const [isSuccess,setSuccess] = useState('')
+  const [isSuccess, setSuccess] = useState("");
+  const[isRegistered,setIsRegistered] = useState(false);
   const [error, setError] = useState("");
-  const [isError,setErr] = useState(false);
+  const [isError, setErr] = useState(false);
+
   // FETCH EVENT
   useEffect(() => {
     const fetchEvent = async () => {
@@ -53,11 +53,7 @@ const EventDetails = () => {
         );
 
         const data = await response.json();
-
         setEvent(data);
-
-        // optional: backend flag
-        
       } catch (err) {
         console.error(err);
         setError("Failed to load event");
@@ -69,81 +65,63 @@ const EventDetails = () => {
     fetchEvent();
   }, [id]);
 
+  useEffect(() => {
+      const fetchStatus = async () => {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch(
+          `https://backend.vamsimarripudi.tech/api/registration/status?eventId=${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+
+        setIsRegistered(data.isRegistered);
+        
+  };
+
+  fetchStatus();
+}, [id]);
+
   // REGISTER
   const handleRegister = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    const response = await fetch(
-      "https://backend.vamsimarripudi.tech/api/registration/register",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ eventId: event._id }),
-      }
-    );
-
-    const data = await response.json(); // FIX
-
-    if (response.ok) {
-      localStorage.setItem(`registered_${event._id}`, "true");
-      localStorage.setItem(`registerationId_${event._id}`, data.registration._id);
-      
-      setError(null);
-      setSuccess(data.message);
-      window.location.reload();
-      
-    } else {
-      setError(data.message || "Registration failed");
-    }
-
-  } catch (err) {
-    console.error(err);
-    setError("Something went wrong");
-  }
-};
-
-  
-
-  // CANCEL
-  const handleCancel = async () => {
-    const registrationId = localStorage.getItem(`registerationId_${event._id}`)
-    console.log(registrationId)
     try {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "https://backend.vamsimarripudi.tech/api/registration/cancel",
+        "https://backend.vamsimarripudi.tech/api/registration/register",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ registrationId }),
+          body: JSON.stringify({ eventId: event._id }),
         }
       );
+
+      const data = await response.json();
+
       if (response.ok) {
-         localStorage.removeItem(`registered_${event._id}`);
-          localStorage.removeItem(`registerationId_${event._id}`);
-          setErr(false);
-          window.location.reload()
         
+
+        setErr(false);
+        setSuccess(data.message);
       } else {
-        const data = await response.json();
-        setError(data.message || "Cancel failed");
-        setErr(true)
+        setError(data.message || "Registration failed");
+        setErr(true);
       }
     } catch (err) {
       console.error(err);
       setError("Something went wrong");
+      setErr(true);
     }
   };
 
-  
   // DATE FORMAT
   const formatDateTime = (value) => {
     if (!value) return "N/A";
@@ -189,8 +167,6 @@ const EventDetails = () => {
     );
   }
 
-  
-
   const {
     name,
     organizer,
@@ -209,7 +185,7 @@ const EventDetails = () => {
 
   const isFull = capacity === 0;
   const isEnded = status === "ENDED";
-  const isRegistered = localStorage.getItem(`registered_${event._id}`);
+
   
 
   return (
@@ -252,25 +228,33 @@ const EventDetails = () => {
               ))}
             </TagsContainer>
 
-            {isRegistered ? (
-              <DangerButton onClick={handleCancel} disabled={isEnded}>
-                {isEnded ? "Cannot Cancel" : "Cancel Registration"}
-                
-              </DangerButton>
-            ) : (
-              <RegisterButton
-                onClick={handleRegister}
-                disabled={isFull || isEnded}
-              >
-                {isFull ? "Event Full" : isEnded ? "Closed" : "Register"}
-                
-              </RegisterButton>
-            )}
+            <RegisterButton
+              type="button"
+              onClick={!isRegistered ? handleRegister : undefined}
+              disabled={isFull || isEnded || isRegistered}
+              style={{
+                background: isRegistered ? "#22c55e" : undefined,
+                cursor: isRegistered ? "not-allowed" : "pointer",
+              }}
+            >
+              {isFull
+                ? "Event Full"
+                : isEnded
+                ? "Closed"
+                : isRegistered
+                ? "Registered"
+                : "Register"}
+            </RegisterButton>
 
             <Link to="/events">
-              <RegisterButton>Back</RegisterButton>
+              <RegisterButton type="button">Back</RegisterButton>
             </Link>
-            {isError ? <LoadingMessage>{error}</LoadingMessage> : <SuccessMessage>{isSuccess}</SuccessMessage>}
+
+            {isError ? (
+              <LoadingMessage>{error}</LoadingMessage>
+            ) : (
+              <SuccessMessage>{isSuccess}</SuccessMessage>
+            )}
           </EventCard>
         </ContentWrapper>
       </EventDetailsContainer>
