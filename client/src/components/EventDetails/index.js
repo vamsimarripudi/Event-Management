@@ -35,6 +35,7 @@ const EventDetails = () => {
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
   const [registered, setRegistered] = useState(false);
+  const [registration,setRegistration] = useState("");
   const [isSuccess,setSuccess] = useState('')
   const [error, setError] = useState("");
   const [isError,setErr] = useState(false);
@@ -96,6 +97,7 @@ const EventDetails = () => {
         
       } else {
         const data = await response.json();
+        setRegistration(data.registration._id);
         setError(data.message || "Registration failed");
         setErr(true)
       }
@@ -120,7 +122,7 @@ const EventDetails = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ eventId: event._id }),
+          body: JSON.stringify({ registrationId: registration._id }),
         }
       );
 

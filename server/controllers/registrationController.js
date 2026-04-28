@@ -33,7 +33,7 @@ const registerForEvent = async (req,res) => {
     catch(error){
         res.status(500).json({message:error.message})
     }
-}s
+}
 
 const myRegistrations = async (req,res) => {
     try{
