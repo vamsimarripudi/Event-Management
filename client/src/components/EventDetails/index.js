@@ -108,9 +108,9 @@ const EventDetails = () => {
 
       if (response.ok) {
         
-
         setErr(false);
         setSuccess(data.message);
+        window.location.reload()
       } else {
         setError(data.message || "Registration failed");
         setErr(true);

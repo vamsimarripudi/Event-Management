@@ -32,14 +32,6 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-
-  const onRenderCancel = (registrationId) => {
-    const removeTheLocalStorae = events.map((e) => e._id === registrationId 
-    ? 
-    localStorage.removeItem(`registered_${e._id}`):"");
-    return removeTheLocalStorae
-  }
-
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
@@ -128,7 +120,7 @@ const Dashboard = () => {
         setEvents((prev) =>
           prev.filter((e) => e._id !== registrationId)
         );
-        onRenderCancel(registrationId)
+        
 
   }
 
