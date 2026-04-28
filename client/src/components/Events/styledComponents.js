@@ -144,6 +144,9 @@ export const SearchInput = styled.input`
     }
     @media (max-width: 600px) {
         max-width: 100%;
+        margin-left:0.7rem;
+        padding:10px;
+
     }
 `;
 

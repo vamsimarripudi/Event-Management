@@ -15,13 +15,13 @@ export const SidebarContainer = styled.div`
     z-index: 100;
     @media (max-width: 768px) {
         position: static;
-        width: 100%;
+        width: 100vw;
         height: auto;
         flex-direction: row;
         justify-content: space-around;
         box-shadow: none;
         padding: 10px 0;
-        top: 0;
+        top:0;
     }
 `;
 

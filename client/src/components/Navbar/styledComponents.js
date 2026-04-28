@@ -14,6 +14,9 @@ export const NavbarContainer = styled.nav`
   top: 0;
   left: 0;
   z-index: 200;
+  @media screen and (max-width:768px){
+  padding:10px;
+  }
 `;
 
 export const Header = styled.h1`
