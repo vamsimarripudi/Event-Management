@@ -26,6 +26,7 @@ import {
   LoadingMessage,
   StatusBadge,
   Skeleton,
+  SuccessMessage
 } from "./styledComponents";
 
 const EventDetails = () => {
@@ -34,7 +35,9 @@ const EventDetails = () => {
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
   const [registered, setRegistered] = useState(false);
+  const [isSuccess,setSuccess] = useState('')
   const [error, setError] = useState("");
+  const [isError,setErr] = useState(false);
 
   // FETCH EVENT
   useEffect(() => {
@@ -56,9 +59,7 @@ const EventDetails = () => {
         setEvent(data);
 
         // optional: backend flag
-        if (data.isRegistered) {
-          setRegistered(true);
-        }
+        
       } catch (err) {
         console.error(err);
         setError("Failed to load event");
@@ -89,15 +90,22 @@ const EventDetails = () => {
 
       if (response.ok) {
         setRegistered(true);
+        console.log(registered)
+        setError(false)
+        setSuccess(response.json().message);
+        
       } else {
         const data = await response.json();
         setError(data.message || "Registration failed");
+        setErr(true)
       }
     } catch (err) {
       console.error(err);
-      setError("Something went wrong");
+      setErr("Something went wrong");
     }
   };
+
+  localStorage.setItem("isRegisterd",registered)
 
   // CANCEL
   const handleCancel = async () => {
@@ -118,9 +126,12 @@ const EventDetails = () => {
 
       if (response.ok) {
         setRegistered(false);
+        setErr(false)
+        
       } else {
         const data = await response.json();
         setError(data.message || "Cancel failed");
+        setErr(true)
       }
     } catch (err) {
       console.error(err);
@@ -173,7 +184,7 @@ const EventDetails = () => {
     );
   }
 
-  if (error) return <LoadingMessage>{error}</LoadingMessage>;
+  
 
   const {
     name,
@@ -193,6 +204,7 @@ const EventDetails = () => {
 
   const isFull = capacity === 0;
   const isEnded = status === "ENDED";
+  const isRegistered = localStorage.getItem("isRegisterd")
 
   return (
     <>
@@ -234,9 +246,10 @@ const EventDetails = () => {
               ))}
             </TagsContainer>
 
-            {registered ? (
+            {isRegistered ? (
               <DangerButton onClick={handleCancel} disabled={isEnded}>
                 {isEnded ? "Cannot Cancel" : "Cancel Registration"}
+                
               </DangerButton>
             ) : (
               <RegisterButton
@@ -244,12 +257,14 @@ const EventDetails = () => {
                 disabled={isFull || isEnded}
               >
                 {isFull ? "Event Full" : isEnded ? "Closed" : "Register"}
+                
               </RegisterButton>
             )}
 
             <Link to="/events">
               <RegisterButton>Back</RegisterButton>
             </Link>
+            {isError ? <LoadingMessage>{error}</LoadingMessage> : <SuccessMessage>{isSuccess}</SuccessMessage>}
           </EventCard>
         </ContentWrapper>
       </EventDetailsContainer>

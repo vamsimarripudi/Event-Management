@@ -121,6 +121,9 @@ export const DangerButton = styled(RegisterButton)`
   }
 `;
 
+
+
+
 /* Status Badge */
 
 export const StatusBadge = styled.span`
@@ -172,6 +175,11 @@ export const Skeleton = styled.div`
 /* Loading */
 
 export const LoadingMessage = styled.p`
-  text-align: center;
-  margin-top: 40px;
+  color:red;
+  margin-top: 10px;
 `;
+
+export const SuccessMessage = styled.p`
+color:green;
+margin-top:10px;
+`
