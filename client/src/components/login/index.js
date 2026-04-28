@@ -1,33 +1,40 @@
 import {useState,useEffect} from "react";
+import {Eye,EyeOff} from "lucide-react";
 import {
     LoginContainer,
+    LoginButton,
+    LoginCard,
+    LoginFooter,
     LoginForm,
-    Input,
-    Button,
-    ToggleText,
-    Message,
-    Label
+    LoginHeader,
+    LoginSubtitle,
+    LoginTitle,
+    LoginWrapper,
+    PasswordWrapper,
+    ForgotPassword,
+    PasswordToggle,
+    FormInput,
+    FormGroup,
+    FormLabel,
+    BackgroundDecorationBottom,
+    BackgroundDecorationTop,
 } from "./styledComponents";
 import { persistUserFromToken } from "../../utils/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 
-const apiStatusConstants = {
-    initial: 'INITIAL',
-    inProgress: 'IN_PROGRESS',
-    success: 'SUCCESS',
-    failure: 'FAILURE'
-}
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [apiStatus, setApiStatus] = useState(apiStatusConstants.initial);
+    const [showPassword,setShowPassword] = useState(false);
+    
     const navigate = useNavigate();
     
     const handleSubmit = async e => {
         e.preventDefault();
-        setApiStatus(apiStatusConstants.inProgress);
+        
         try {
             const url = 'https://backend.vamsimarripudi.tech/api/auth/login';
             const response = await fetch(url, {
@@ -40,7 +47,7 @@ const Login = () => {
             if (response.ok) {
                 localStorage.setItem('token', data.jwtToken);
                 persistUserFromToken()
-                setApiStatus(apiStatusConstants.success);
+               
                 navigate('/events');
             } else {
                 throw new Error(data.message || 'Login failed');
@@ -48,7 +55,7 @@ const Login = () => {
 
         }
         catch (err) {
-            setApiStatus(apiStatusConstants.failure);
+           console.log(err.message)
         }
 
     }
@@ -61,52 +68,76 @@ const Login = () => {
 
     const renderUsernameInput = () => (
         
-        <Input
+        <FormInput
             type="email"
             id="email"
             value={email}
+            
             onChange={e => setEmail(e.target.value)}
-            placeholder=" "
+            placeholder="Enter your email"
             required
         />
     );
-    const renderPasswordInput = () => (
-        
-        <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder=" "
-            required
-        />
-    );
-
-
+    
     return (
-        <LoginContainer>
-            <LoginForm onSubmit={handleSubmit}>
-                <h2>Welcome back</h2>
-                <div className="input-group">
-                    <Label htmlFor="email">Email</Label>
-                    {renderUsernameInput()}
-                    
-                </div>  
-                <div className="input-group">
-                    <Label htmlFor="password">Password</Label>
-                    {renderPasswordInput()}
-                    
-                </div>
-                <Button type="submit" className="primary-btn">
-                    Login
-                </Button>
-            </LoginForm>
-            <ToggleText>
-                Don't have an account? <Link to="/register">Register</Link>
-            </ToggleText>
-            {apiStatus === apiStatusConstants.failure && <Message className="error">Login failed. Please try again.</Message>}
-            {apiStatus === apiStatusConstants.success && <Message className="success">Login successful! Redirecting...</Message>}
-        </LoginContainer>
+       <LoginContainer>
+      <BackgroundDecorationTop />
+      <BackgroundDecorationBottom />
+
+      <LoginWrapper>
+        <LoginCard>
+          <LoginHeader>
+            <LoginTitle>Welcome back</LoginTitle>
+            <LoginSubtitle>Please enter your credentials to sign in</LoginSubtitle>
+          </LoginHeader>
+
+          <LoginForm onSubmit={handleSubmit}>
+
+            <FormGroup>
+              <FormLabel>Email</FormLabel>
+              {renderUsernameInput()}
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>Password</FormLabel>
+              <PasswordWrapper>
+                <FormInput
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  style={{ paddingRight: '3rem' }}
+                  onChange={e  => setPassword(e.target.value)}
+                />
+                <PasswordToggle
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </PasswordToggle>
+              </PasswordWrapper>
+            </FormGroup>
+
+            <ForgotPassword>
+              <Link to="/login" style={{textDecoration:"none"}}>
+              Forgot Passoword
+              </Link>
+            </ForgotPassword>
+
+            <LoginButton type="submit">
+              Login
+            </LoginButton>
+          </LoginForm>
+
+          <LoginFooter>
+           
+            <p>
+              Don't have an account? <Link to="/register" style={{textDecoration:"none"}}>Register</Link>
+            </p>
+            
+          </LoginFooter>
+            
+        </LoginCard>
+      </LoginWrapper>
+    </LoginContainer>
     );
 
 
