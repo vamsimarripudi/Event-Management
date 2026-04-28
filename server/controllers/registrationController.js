@@ -28,7 +28,7 @@ const registerForEvent = async (req,res) => {
         await reduceAvailability.save();
 
         await registration.save();
-        res.status(201).json({message:"Registered successfully",registration})
+        res.status(201).json({message:"Registered successfully"}, registration)
     }
     catch(error){
         res.status(500).json({message:error.message})

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { format, formatDistanceToNow } from "date-fns";
-
+import {useNavigate,Link} from "react-router-dom";
 
 import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
@@ -16,15 +16,18 @@ import {
   Meta,
   Badge,
   Skeleton,
-  NoEventsContainer
+  NoEventsContainer,
+  NoEventsFoundImage,
+  NoEventsText,
+  NoEventsTitle,
+  EventsButton,
 } from "./styledComponents";
 
 const Dashboard = () => {
   const [events, setEvents] = useState([]);
   const[user,setUser] = useState(null)
   const [loading, setLoading] = useState(true);
-
-  
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -135,43 +138,40 @@ const Dashboard = () => {
            {events.length === 0 ? 
            (
             <NoEventsContainer>
-                <p>No Events Registered</p>
+                <NoEventsFoundImage src="https://images.openai.com/static-rsc-4/SDr7T59kVUR9E4SncFLWrsh9qJ-N5gSThHs9sbvV2a9TJt_BkD1MrGX-FjMnXp0D7VOoN0JdOCY0K8GdPi4VuYiDkDsOTaRVmZQT_92uIA0yLhZyMhCBo-ruwTrusROc8iQpneVMHrVB47OSdBB4cCxTEPisvTVRyYd2NJppoKqOyqg29gHV-esUREy761b9?purpose=fullsize" />
+                <NoEventsTitle>No Events Found</NoEventsTitle>
+                <NoEventsText></NoEventsText>
+                <EventsButton onClick={() => navigate("/events")}>Back</EventsButton>
             </NoEventsContainer>
            )
            : 
             (<>
-                 {events.map((ev) => {
-              const {
-               eventId,
-                registrationDate
-              } = ev;
-              const{ _id,
-                name,
-                category,
-                description,dateTime} = eventId
-            
+              {events.map((ev) => {
+                  const {eventId,registrationDate} = ev;
+                  const{ _id,name,category,description,dateTime} = eventId
+                  return (
+                    <Link to={`/events/${_id}`} style={{textDecoration:"none"}}>
+                        <Card key={_id}>
+                          <Title>{name}</Title>
 
-              return (
-                <Card key={_id}>
-                  <Title>{name}</Title>
+                          <Badge>{category}</Badge>
 
-                  <Badge>{category}</Badge>
+                          <Meta>{description}</Meta>
 
-                  <Meta>{description}</Meta>
+                          <Meta>📅 Event: {formatDate(dateTime.start)}</Meta>
 
-                  <Meta>📅 Event: {formatDate(dateTime.start)}</Meta>
+                          <Meta>
+                            📝 Registered: {formatDate(registrationDate )}
+                          </Meta>
 
-                  <Meta>
-                    📝 Registered: {formatDate(registrationDate
-)}
-                  </Meta>
-
-                  <Meta style={{ fontWeight: "bold" }}>
-                    ⏳ {getCountdown(dateTime.start)}
-                  </Meta>
-                </Card>
-              );
-            })}
+                          <Meta style={{ fontWeight: "bold" }}>
+                            ⏳ {getCountdown(dateTime.start)}
+                          </Meta>
+                        </Card>
+                    </Link>
+                  );
+                
+                })}
             </>)
            }
           </Grid>

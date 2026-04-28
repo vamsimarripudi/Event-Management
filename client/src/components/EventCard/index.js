@@ -10,8 +10,6 @@ import {
     EventVenue,
     EventCountry,
     EventState,
-    
-
 } from "./styledComponents";
 
 

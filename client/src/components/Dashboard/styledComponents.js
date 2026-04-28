@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 export const DashboardContainer = styled.div`
- display: flex;
+    display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: flex-start;
@@ -95,6 +95,91 @@ export const Skeleton = styled.div`
   animation: ${shimmer} 1.2s infinite;
 `;
 
+/* Container */
+
 export const NoEventsContainer = styled.div`
-   
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  padding: 24px;
+
+  text-align: center;
+`;
+
+/* Image */
+
+export const NoEventsFoundImage = styled.img`
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    max-width: 260px;
+  }
+
+  @media (max-width: 480px) {
+    max-width: 200px;
+  }
+`;
+
+/* Title */
+
+export const NoEventsTitle = styled.h3`
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+`;
+
+/* Subtitle */
+
+export const NoEventsText = styled.p`
+  font-size: 14px;
+  color: #64748b;
+  max-width: 400px;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+`;
+
+export const EventsButton = styled.button`
+  margin-top: 20px;
+  padding: 10px 18px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 260px;
+    font-size: 13px;
+    padding: 10px;
+  }
+`;

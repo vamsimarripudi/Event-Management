@@ -34,12 +34,9 @@ const EventDetails = () => {
 
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
-  const [registered, setRegistered] = useState(false);
-  const [registration,setRegistration] = useState("");
   const [isSuccess,setSuccess] = useState('')
   const [error, setError] = useState("");
   const [isError,setErr] = useState(false);
-
   // FETCH EVENT
   useEffect(() => {
     const fetchEvent = async () => {
@@ -74,43 +71,47 @@ const EventDetails = () => {
 
   // REGISTER
   const handleRegister = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        "https://backend.vamsimarripudi.tech/api/registration/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ eventId: event._id }),
-        }
-      );
-
-      if (response.ok) {
-        setRegistered(true);
-        console.log(registered)
-        setError(false)
-        setSuccess(response.json().message);
-        
-      } else {
-        const data = await response.json();
-        setRegistration(data.registration._id);
-        setError(data.message || "Registration failed");
-        setErr(true)
+    const response = await fetch(
+      "https://backend.vamsimarripudi.tech/api/registration/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ eventId: event._id }),
       }
-    } catch (err) {
-      console.error(err);
-      setErr("Something went wrong");
-    }
-  };
+    );
 
-  localStorage.setItem("isRegisterd",registered)
+    const data = await response.json(); // FIX
+
+    if (response.ok) {
+      localStorage.setItem(`registered_${event._id}`, "true");
+      localStorage.setItem(`registerationId_${event._id}`, data.registration._id);
+      
+      setError(null);
+      setSuccess(data.message);
+      window.location.reload();
+      
+    } else {
+      setError(data.message || "Registration failed");
+    }
+
+  } catch (err) {
+    console.error(err);
+    setError("Something went wrong");
+  }
+};
+
+  
 
   // CANCEL
   const handleCancel = async () => {
+    const registrationId = localStorage.getItem(`registerationId_${event._id}`)
+    console.log(registrationId)
     try {
       const token = localStorage.getItem("token");
 
@@ -122,13 +123,14 @@ const EventDetails = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ registrationId: registration._id }),
+          body: JSON.stringify({ registrationId }),
         }
       );
-
       if (response.ok) {
-        setRegistered(false);
-        setErr(false)
+         localStorage.removeItem(`registered_${event._id}`);
+          localStorage.removeItem(`registerationId_${event._id}`);
+          setErr(false);
+          window.location.reload()
         
       } else {
         const data = await response.json();
@@ -141,6 +143,7 @@ const EventDetails = () => {
     }
   };
 
+  
   // DATE FORMAT
   const formatDateTime = (value) => {
     if (!value) return "N/A";
@@ -206,7 +209,8 @@ const EventDetails = () => {
 
   const isFull = capacity === 0;
   const isEnded = status === "ENDED";
-  const isRegistered = localStorage.getItem("isRegisterd")
+  const isRegistered = localStorage.getItem(`registered_${event._id}`);
+  
 
   return (
     <>
