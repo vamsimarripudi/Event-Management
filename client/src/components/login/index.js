@@ -36,7 +36,7 @@ const Login = () => {
         e.preventDefault();
         
         try {
-            const url = 'https://backend.vamsimarripudi.tech/api/auth/login';
+            const url = 'https://event.backendportfolio.xyz/api/auth/login';
             const response = await fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -130,7 +130,10 @@ const Login = () => {
           <LoginFooter>
            
             <p>
-              Don't have an account? <Link to="/register" style={{textDecoration:"none"}}>Register</Link>
+              Don't have an account? 
+              <Link to="/register" style={{textDecoration:"none"}}>
+              Register
+              </Link>
             </p>
             
           </LoginFooter>

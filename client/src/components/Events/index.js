@@ -36,7 +36,7 @@ const Events = () => {
 
       const token = localStorage.getItem("token");
 
-      const url = `https://backend.vamsimarripudi.tech/api/event/events?page=${currentPage}&search=${query}`;
+      const url = `https://event.backendportfolio.xyz/api/event/events?page=${currentPage}&search=${query}`;
 
       const response = await fetch(url, {
         headers: {

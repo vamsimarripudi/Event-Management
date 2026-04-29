@@ -7,7 +7,7 @@ A production-oriented Event Management platform enabling users to discover event
 ## 🚀 Live Demo
 
 * Frontend: https://event.vamsimarripudi.tech
-* Backend API: https://backend.vamsimarripudi.tech
+* Backend API: https://event.backendportfolio.xyz
 
 ---
 

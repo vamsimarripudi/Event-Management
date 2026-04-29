@@ -44,7 +44,7 @@ const EventDetails = () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `https://backend.vamsimarripudi.tech/api/event/events/${id}`,
+          `https://event.backendportfolio.xyz/api/event/events/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -70,7 +70,7 @@ const EventDetails = () => {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
-          `https://backend.vamsimarripudi.tech/api/registration/status?eventId=${id}`,
+          `https://event.backendportfolio.xyz/api/registration/status?eventId=${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ const EventDetails = () => {
       const token = localStorage.getItem("token");
 
       const response = await fetch(
-        "https://backend.vamsimarripudi.tech/api/registration/register",
+        "https://event.backendportfolio.xyz/api/registration/register",
         {
           method: "POST",
           headers: {

@@ -40,7 +40,7 @@ const Dashboard = () => {
 
         // fetch events
         const eventRes = await fetch(
-          "https://backend.vamsimarripudi.tech/api/registration/my-events",
+          "https://event.backendportfolio.xyz/api/registration/my-events",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -58,7 +58,7 @@ const Dashboard = () => {
 
         // fetch user
         const userRes = await fetch(
-          `https://backend.vamsimarripudi.tech/api/auth/users/${userId}`
+          `https://event.backendportfolio.xyz/api/auth/users/${userId}`
         );
         const userData = await userRes.json();
         setUser(userData);
@@ -99,7 +99,7 @@ const Dashboard = () => {
         const token = localStorage.getItem("token");
 
         const res = await fetch(
-          "https://backend.vamsimarripudi.tech/api/registration/cancel",
+          "https://event.backendportfolio.xyz/api/registration/cancel",
           {
             method: "POST",
             headers: {

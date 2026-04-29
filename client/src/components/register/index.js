@@ -37,7 +37,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const url = 'https://backend.vamsimarripudi.tech/api/auth/register';
+      const url = 'https://event.backendportfolio.xyz/api/auth/register';
 
       const response = await fetch(url, {
         method: 'POST',
