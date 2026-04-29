@@ -1,5 +1,6 @@
 const Registration = require("../models/RegistrationModel");
 const {Event} = require("../models/Event");
+const sendEmail = require("../mailer");
 
 
 const registerForEvent = async (req, res) => {
@@ -41,6 +42,19 @@ const registerForEvent = async (req, res) => {
 
     await Event.findByIdAndUpdate(eventId, {
       $inc: { capacity: -1 },
+    });
+
+    await sendEmail({
+      to:user.email,
+      subject: "Event Registration Confirmed",
+      html: `
+        <h2>Registration Successfull</h2>
+        <p><b>Event: </b>${event.title}</p>
+        <p><b>Date: </b>${event.date}</p>
+        <a href="https://event.backendportfolio.xyz/dashboard>
+        Go to Dashboard
+        </a>
+      `
     });
 
     return res.status(201).json({
