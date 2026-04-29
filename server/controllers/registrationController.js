@@ -66,7 +66,7 @@ const registerForEvent = async (req, res) => {
               </p>
 
               <div style="background:#f9f9f9; padding:15px; border-radius:6px; margin:20px 0;">
-                <p style="margin:5px 0;"><b>Event:</b> ${event.title}</p>
+                <p style="margin:5px 0;"><b>Event:</b> ${event.name}</p>
                 <p style="margin:5px 0;"><b>Date:</b> ${new Date(event.dateTime.start).toLocaleString()}</p>
                 <p style="margin:5px 0;"><b>Organizer:</b> ${event.organizer || "Event Team"}</p>
               </div>
@@ -91,7 +91,7 @@ const registerForEvent = async (req, res) => {
                 Regards,<br/>
                 <b>Event Management Team</b>
               </p>
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${event.title}">
+              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${event.name}">
                 Add to Calendar
               </a>
             </div>
@@ -203,7 +203,7 @@ const cancelRegistration = async (req, res) => {
               </p>
 
               <div style="background:#f9f9f9; padding:15px; border-radius:6px; margin:20px 0;">
-                <p style="margin:5px 0;"><b>Event:</b> ${event.title}</p>
+                <p style="margin:5px 0;"><b>Event:</b> ${event.name}</p>
                 <p style="margin:5px 0;"><b>Date:</b> ${new Date(event.dateTime.start).toLocaleString()}</p>
                 <p style="margin:5px 0;"><b>Organizer:</b> ${event.organizer || "Event Team"}</p>
               </div>
