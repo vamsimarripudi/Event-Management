@@ -4,6 +4,7 @@ const authRoutes = require("./routes/authRoute");
 const cors = require("cors");
 const eventRoutes = require("./routes/eventRoutes");
 const registrationRoutes = require("./routes/registrationRoute");
+const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 
 require("dotenv").config();
@@ -19,7 +20,7 @@ app.get("/", (req,res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
-
+app.use("/api/user/", feedbackRoute);
 app.get("/api/test", (req,res) => {
     res.json({message:"API is working"})
 });
