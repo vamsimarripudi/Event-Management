@@ -8,6 +8,7 @@ const registrationRoutes = require("./routes/registrationRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 
+require("dotenv").config({path:"./.env"});
 
 const PORT = process.env.PORT || 5000;
 
