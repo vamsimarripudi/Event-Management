@@ -1,7 +1,7 @@
-const WebsiteFeedback = require("../models/WebsiteFeedback");
+const WebsiteFeedback = require("../models/websiteFeedbackForm");
 
 
-const sendEmail = require("../utils/sendEmail");
+const sendEmail = require("../mailer");
 
 const ALLOWED_CATEGORIES = ["bug", "suggestion", "general"];
 

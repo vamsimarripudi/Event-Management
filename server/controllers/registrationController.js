@@ -178,7 +178,7 @@ const cancelRegistration = async (req, res) => {
       $inc: { capacity: 1 },
     });
 
-    const event = await Event.findById(eventId);
+    
     const user = await User.findById(req.user.id);
 
     // async email (don’t block response)
