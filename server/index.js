@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const connectDB = require("./db");
 const authRoutes = require("./routes/authRoute");
@@ -8,8 +9,6 @@ const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 
 
-
-require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
 const app = express();
