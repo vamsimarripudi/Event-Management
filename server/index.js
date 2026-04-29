@@ -7,13 +7,8 @@ const registrationRoutes = require("./routes/registrationRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 
-
-<<<<<<< HEAD
-
-require("dotenv").config();
-=======
 require("dotenv").config({path:"./.env"});
->>>>>>> 17a5bc7 (COmmit all.)
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
