@@ -19,6 +19,8 @@ const initMailer = async () => {
         }
     });
 
+    return transporter;
+
 };
 
 
