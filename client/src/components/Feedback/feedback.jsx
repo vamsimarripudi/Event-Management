@@ -68,6 +68,13 @@ const  FeedbackPopup = ()=> {
     }
   };
 
+  const hiddenRoutes = ["/login", "/register"];
+
+  // ❌ Hide on auth pages
+  if (hiddenRoutes.includes(location.pathname)) {
+    return null;
+  }
+
   return (
     <Popup
       trigger={<FloatingButton>Feedback</FloatingButton>}
