@@ -1,7 +1,7 @@
 const Registration = require("../models/RegistrationModel");
 const User = require("../models/User")
 const {Event} = require("../models/Event");
-const sendEmail = require("../mailer");
+const {sendEmail} = require("../mailer");
 
 
 const registerForEvent = async (req, res) => {

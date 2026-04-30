@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose')
 const crypto = require("crypto");
-const sendEmail = require("../mailer");
+const {sendEmail} = require("../mailer");
 /*Register Api Controller*/
 const register = async(req,res)=> {
     try{
