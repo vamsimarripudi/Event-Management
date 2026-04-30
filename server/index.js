@@ -46,13 +46,17 @@ app.get("/api/secret", verifyToken, (req,res) => {
 
 
 
-connectDB();
+
 
 const startServer = async () => {
   try {
+    console.log("Connecting DB...");
+    await connectDB();
+
+    console.log("Initializing mailer...");
     const transporter = await initMailer();
 
-    setTransporter(transporter)
+    console.log("Starting server...");
 
     app.listen(PORT, () => {
       console.log("Server running on port 5000");
