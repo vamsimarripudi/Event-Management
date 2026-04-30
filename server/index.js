@@ -9,6 +9,8 @@ const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 const {initMailer} = require("./mailer");
 const {setTransporter} = require("./services/emailTransporter");
+const {initAI} = require("./services/aiService");
+const {getAI} = require("./services/aiService");
 
 
 const PORT = process.env.PORT || 5000;
@@ -29,10 +31,23 @@ app.get("/api/test", (req,res) => {
     res.json({message:"API is working"})
 });
 
-app.get("/api/secret", (req,res) => {
-    res.json({message:"This is a secret message"})
-}
-);
+app.get("/api/test-ai", async (req, res) => {
+  try {
+    const client = getAI();
+
+    const response = await client.chat.completions.create({
+      model: "gpt-4.1-mini",
+      messages: [{ role: "user", content: "Say hello" }],
+    });
+
+    res.json({
+      message: response.choices[0].message.content,
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get("/api/secret", verifyToken, (req,res) => {
     try{
@@ -50,17 +65,37 @@ app.get("/api/secret", verifyToken, (req,res) => {
 
 const startServer = async () => {
   try {
+{/*----------------------------------------------*/}
+
     console.log("Connecting DB...");
     await connectDB();
+    console.log("Database is Live..")
+
+{/*----------------------------------------------*/}
 
     console.log("Initializing mailer...");
     const transporter = await initMailer();
     console.log("Transporter Connected")
-    console.log("Starting server...");
+
+{/*----------------------------------------------*/}
+
     setTransporter(transporter);
+    console.log("Transporter Sent to getTransportor");
+
+{/*----------------------------------------------*/}
+
+    console.log("AI is Getting Ready");
+    await initAI()
+    console.log("AI is Here..");
+
+{/*----------------------------------------------*/}
+
+    console.log("Starting server...");
     app.listen(PORT, () => {
       console.log("Server running on port 5000");
     });
+
+{/*----------------------------------------------*/}
 
   } catch (err) {
     console.error("Startup failed:", err);

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const {getSecret} = require("./services/ec2Services");
 const nodemailer = require("nodemailer");
 const {getTransporter} = require("./services/emailTransporter");
