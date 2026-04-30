@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Popup from "reactjs-popup";
-
+import {useLocation} from "react-router-dom";
 import "reactjs-popup/dist/index.css";
 import StarRating from "./ratingFile";
 import {
@@ -23,7 +23,7 @@ const  FeedbackPopup = ()=> {
   const [category, setCategory] = useState("general");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const location = useLocation()
   const handleSubmit = async (close) => {
     if (!message.trim()) {
       alert("Please enter feedback");
