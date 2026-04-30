@@ -113,7 +113,7 @@ const ResetPassword = () => {
   const renderFailureView = () => (
     <FailureContainer>
         <iframe 
-         src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie" style={{border:"0px"}}>
+         src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie" title="Failure" style={{border:"0px"}}>
       </iframe>
       <Heading>Invalid or Expired Link</Heading>
       <Message>Please request a new password reset.</Message>
