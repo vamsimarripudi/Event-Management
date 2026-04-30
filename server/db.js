@@ -6,7 +6,7 @@ const {getSecret} = require("./services/ec2Services");
 const connectDB = async() => {
     try{
         const MONGO_URI = await getSecret("/event-api/MONGO_URL")
-        await mongoose.connect(process.env.MONGO_URI);
+        await mongoose.connect(MONGO_URI);
         
         console.log("Database Connected")
 
