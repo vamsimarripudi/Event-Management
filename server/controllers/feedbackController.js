@@ -11,7 +11,7 @@ const sanitize = (str = "") =>
 // POST /api/feedback
 const submitFeedback = async (req, res) => {
   try {
-    let { rating, category = "general", message, page } = req.body;
+    let { rating, category = "general", message, page,userId } = req.body;
 
     rating = Number(rating);
 
@@ -30,10 +30,10 @@ const submitFeedback = async (req, res) => {
     message = sanitize(message).slice(0, 1000);
     page = sanitize(page || "").slice(0, 200);
 
-    const userId = req.user?._id || null;
+    const id = userId || null;
 
     const feedback = await WebsiteFeedback.create({
-      userId,
+      userId: id,
       rating,
       category,
       message,
@@ -41,35 +41,154 @@ const submitFeedback = async (req, res) => {
     });
 
     let user = null;
-    if (userId) {
-      user = await User.findById(userId);
+    if (id) {
+      user = await User.findById(id);
     }
 
     if (user && user.email) {
       sendEmail({
         to: user.email,
-        subject: "New Website Feedback",
+        subject: "Website Feedback",
         html: `
-          <h3>New Feedback</h3>
-          <p><b>Rating:</b> ${rating}</p>
-          <p><b>Category:</b> ${category}</p>
-          <p><b>Page:</b> ${page || "-"}</p>
-          <p><b>Message:</b></p>
-          <p>${message}</p>
-        `,
-      }).catch(err => console.error("Feedback email error:", err.message));
+              <div style="font-family: Arial, sans-serif; background: #f5f7fa; padding: 20px;">
+                
+                <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; overflow: hidden;">
+                  
+                  <!-- Header -->
+                  <div style="background: #111; color: #fff; padding: 16px 20px;">
+                    <h2 style="margin: 0;">Thank You for Your Feedback</h2>
+                  </div>
+
+                  <!-- Body -->
+                  <div style="padding: 20px;">
+                    
+                    <p style="margin-bottom: 12px;">
+                      Hi ${user?.name || name || "there"},
+                    </p>
+
+                    <p style="margin-bottom: 16px;">
+                      Thank you for taking the time to share your feedback. We truly appreciate your visit and your input.
+                    </p>
+
+                    <p style="margin-bottom: 16px; color:#555;">
+                      Your feedback helps us understand user experience better and continuously improve the platform.
+                    </p>
+
+                    <!-- Feedback Summary -->
+                    <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                      <p><b>Your Rating:</b> ${"⭐".repeat(rating)} (${rating}/5)</p>
+                      <p><b>Category:</b> ${category}</p>
+                      <p><b>Page:</b> ${page || "-"}</p>
+                    </div>
+
+                    <!-- Message -->
+                    <div>
+                      <p><b>Your Message:</b></p>
+                      <p style="background: #f1f5f9; padding: 12px; border-radius: 6px;">
+                        ${message}
+                      </p>
+                    </div>
+
+                    <!-- Closing -->
+                    <p style="margin-top: 20px;">
+                      We’re glad to have you on our platform.
+                    </p>
+
+                    <p style="margin-top: 10px;">
+                      Regards,<br/>
+                      <b>Event Management Team</b>
+                    </p>
+
+                  </div>
+
+                  <!-- Footer -->
+                  <div style="background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #555;">
+                    © ${new Date().getFullYear()} Event Management Platform
+                  </div>
+
+                </div>
+
+              </div>
+             `
+
+          
+      }
+    )
+
+    
+    .catch(err => console.error("Feedback email error:", err.message));
     }
+
+    const esc = (s = "") =>
+      String(s).replace(/[&<>"']/g, c =>
+        ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])
+      );
+
+    sendEmail({
+      to: "enquiry.portfolio@vamsimarripudi.tech",
+      subject: `New Feedback • ${rating}/5 • ${category}`,
+      replyTo: user?.email || undefined,
+      html: `
+        <div style="font-family: Arial, sans-serif; background: #f5f7fa; padding: 20px;">
+          
+          <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; overflow: hidden;">
+            
+            <div style="background: #111; color: #fff; padding: 16px 20px;">
+              <h2 style="margin: 0;">New Feedback Submitted</h2>
+            </div>
+
+            <div style="padding: 20px;">
+              
+              <p style="margin-bottom: 16px;">
+                A new feedback entry has been submitted on your platform.
+              </p>
+
+              <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <p><b>Name:</b> ${esc(user?.name || name || "Guest")}</p>
+                <p><b>Email:</b> ${esc(user?.email || "Not provided")}</p>
+              </div>
+
+              <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <p><b>Rating:</b> ${"⭐".repeat(rating)} (${rating}/5)</p>
+                <p><b>Category:</b> ${esc(category)}</p>
+                <p><b>Page:</b> ${esc(page || "-")}</p>
+              </div>
+
+              <div style="margin-bottom: 20px;">
+                <p><b>Message:</b></p>
+                <p style="background: #f1f5f9; padding: 12px; border-radius: 6px;">
+                  ${esc(message)}
+                </p>
+              </div>
+
+              <p style="font-size: 13px; color: #666;">
+                You can reply directly to this email to respond to the user.
+              </p>
+
+            </div>
+
+            <div style="background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #555;">
+              Event Management Platform • ${new Date().toLocaleString()}
+            </div>
+
+          </div>
+
+        </div>
+      `
+    });
 
     return res.status(201).json({
       message: "Feedback submitted successfully",
       id: feedback._id,
     });
+    console.log(req.user)
 
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: err.message });
   }
 };
+
 
 module.exports = {
   submitFeedback,

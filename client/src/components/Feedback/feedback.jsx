@@ -32,7 +32,7 @@ const  FeedbackPopup = ()=> {
 
     try {
       setLoading(true);
-
+      const userId = localStorage.getItem("userId")
       const res = await fetch(
         "https://event.backendportfolio.xyz/api/user/feedback",
         {
@@ -45,6 +45,7 @@ const  FeedbackPopup = ()=> {
             category,
             message,
             page: window.location.pathname,
+            userId,
           }),
         }
       );
