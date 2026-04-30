@@ -104,15 +104,49 @@ const forgotPassword = async (req,res) => {
     to: user.email,
     subject: "Reset Your Password",
     html: `
-      <p>Hi ${user.name || "there"},</p>
-      <p>You requested a password reset.</p>
-      <p>
-        <a href="${resetUrl}" style="padding:10px 15px;background:#111;color:#fff;text-decoration:none;">
-          Reset Password
-        </a>
-      </p>
-      <p>This link expires in 15 minutes.</p>
-    `,
+        <div style="font-family: Arial, sans-serif; background:#f5f7fa; padding:20px;">
+          
+          <div style="max-width:600px; margin:auto; background:#fff; border-radius:10px; overflow:hidden;">
+            
+            <!-- Header -->
+            <div style="background:#111; color:#fff; padding:16px 20px;">
+              <h2 style="margin:0;">Reset Your Password</h2>
+            </div>
+
+            <!-- Body -->
+            <div style="padding:20px;">
+              
+              <p>Hi ${user.name || "there"},</p>
+
+              <p>
+                We received a request to reset your password.  
+                Click the button below to set a new password.
+              </p>
+
+              <!-- CTA -->
+              <div style="text-align:center; margin:25px 0;">
+                <a href="${resetUrl}" 
+                  style="background:#111; color:#fff; padding:12px 18px; text-decoration:none; border-radius:6px; display:inline-block;">
+                  Reset Password
+                </a>
+              </div>
+
+              <p style="color:#555;">
+                This link will expire in <b>15 minutes</b>.  
+                If you did not request this, you can safely ignore this email.
+              </p>
+
+            </div>
+
+            <!-- Footer -->
+            <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#555;">
+              Event Management Platform
+            </div>
+
+          </div>
+
+        </div>
+        `
   });
 
   res.json({ message: "Reset link sent" });
@@ -131,11 +165,63 @@ const resetPassword = async (req, res) => {
     return res.status(400).json({ message: "Invalid or expired token" });
   }
   const hashedUpdatedPassword= await bcrypt.hash(password,10)
+  
   user.password = hashedUpdatedPassword; // make sure hashing middleware exists
   user.resetPasswordToken = undefined;
   user.resetPasswordExpires = undefined;
 
   await user.save();
+
+  sendEmail({
+    to: user.email,
+    subject:"Reset Password",
+    html: `
+      <div style="font-family: Arial, sans-serif; background:#f5f7fa; padding:20px;">
+        
+        <div style="max-width:600px; margin:auto; background:#fff; border-radius:10px; overflow:hidden;">
+          
+          <!-- Header -->
+          <div style="background:#111; color:#fff; padding:16px 20px;">
+            <h2 style="margin:0;">Password Updated Successfully</h2>
+          </div>
+
+          <!-- Body -->
+          <div style="padding:20px;">
+            
+            <p>Hi ${user.name || "there"},</p>
+
+            <p>
+              Your password has been successfully updated.
+            </p>
+
+            <p style="color:#555;">
+              If you made this change, no further action is required.
+            </p>
+
+            <p style="color:#d9534f;">
+              If you did NOT perform this action, please reset your password immediately or contact support.
+            </p>
+
+            <!-- CTA -->
+            <div style="text-align:center; margin:25px 0;">
+              <a href="https://event.vamsimarripudi.tech/login"
+                style="background:#111; color:#fff; padding:12px 18px; text-decoration:none; border-radius:6px;">
+                Go to Login
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Footer -->
+          <div style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#555;">
+            Event Management Platform
+          </div>
+
+        </div>
+
+      </div>
+      `
+  })
 
   res.json({ message: "Password reset successful" });
 };
