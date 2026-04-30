@@ -8,6 +8,7 @@ const registrationRoutes = require("./routes/registrationRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
 const {initMailer} = require("./mailer");
+const {setTransporter} = require("./services/emailTransporter");
 
 
 const PORT = process.env.PORT || 5000;
@@ -51,7 +52,7 @@ const startServer = async () => {
   try {
     const transporter = await initMailer();
 
-    app.locals.transporter = transporter;
+    setTransporter(transporter)
 
     app.listen(PORT, () => {
       console.log("Server running on port 5000");

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const {getSecret} = require("./services/ec2Services");
 const nodemailer = require("nodemailer");
+const {getTransporter} = require("./services/emailTransporter");
 
 const initMailer = async () => {
     const EMAIL_HOST = await getSecret("/event-api/EMAIL_HOST");
@@ -21,15 +22,9 @@ const initMailer = async () => {
 };
 
 
-const sendEmail = async (req, res) => {
-  const transporter = req.app.locals.transporter;
-  const { to, subject, html } = req.body;
-
-  if (!to || !subject || !html) {
-    return res.status(400).json({
-      message: "Missing required fields",
-    });
-  }
+const sendEmail = async ({to,subject,html}) => {
+  
+  const transporter = getTransporter();
 
   try {
     await transporter.sendMail({
