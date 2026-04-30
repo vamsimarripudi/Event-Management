@@ -32,12 +32,13 @@ app.get("/api/test", (req,res) => {
 });
 
 app.get("/api/test-ai", async (req, res) => {
+  const message = req.body;
   try {
     const client = getAI();
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
-      messages: [{ role: "user", content: "Say hello" }],
+      messages: [{ role: "user", content: message }],
     });
 
     res.json({
