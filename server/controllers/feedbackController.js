@@ -1,6 +1,5 @@
 const WebsiteFeedback = require("../models/websiteFeedbackForm");
-
-
+const User = require("../models/User");
 const sendEmail = require("../mailer");
 
 const ALLOWED_CATEGORIES = ["bug", "suggestion", "general"];
@@ -14,7 +13,6 @@ const submitFeedback = async (req, res) => {
   try {
     let { rating, category = "general", message, page } = req.body;
 
-    // --- validation ---
     rating = Number(rating);
 
     if (!rating || rating < 1 || rating > 5) {
@@ -29,23 +27,27 @@ const submitFeedback = async (req, res) => {
       category = "general";
     }
 
-    // optional: cap message length
     message = sanitize(message).slice(0, 1000);
     page = sanitize(page || "").slice(0, 200);
 
-    // --- create ---
+    const userId = req.user?._id || null;
+
     const feedback = await WebsiteFeedback.create({
-      userId: req.user?.id || null, // works with or without auth
+      userId,
       rating,
       category,
       message,
       page,
     });
 
-    // --- async notify (don’t block response) ---
-    if (process.env.FEEDBACK_NOTIFY_EMAIL) {
+    let user = null;
+    if (userId) {
+      user = await User.findById(userId);
+    }
+
+    if (user && user.email) {
       sendEmail({
-        to: process.env.FEEDBACK_NOTIFY_EMAIL,
+        to: user.email,
         subject: "New Website Feedback",
         html: `
           <h3>New Feedback</h3>

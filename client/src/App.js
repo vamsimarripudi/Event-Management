@@ -8,6 +8,7 @@ import EventDetails from './components/EventDetails';
 import Dashboard from './components/Dashboard';
 import NotFound from './components/NotFound';
 import ProtectedRoute from "./components/protectedRoute";
+import FeedbackPopup from './components/Feedback/feedback';
 
 
 
@@ -23,7 +24,7 @@ const App = () => {
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path="/not-found" element={<NotFound />} />
       </Routes>
-    
+    <FeedbackPopup/>
     </Router>
   );
 }
