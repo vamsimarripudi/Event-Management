@@ -70,7 +70,7 @@ const ForgotPassword = () => {
   const renderFailureView = () => (
     <FailureContainer>
       <iframe 
-         src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie" style={{border:"0px"}}>
+         src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie" title="failure" style={{border:"0px",fontStyle:"Roboto"}}>
       </iframe>
       <Heading>Something went wrong</Heading>
       <Message>Please try again.</Message>
