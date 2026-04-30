@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({path:"./.env"});
 const express = require("express");
 const connectDB = require("./db");
 const authRoutes = require("./routes/authRoute");
@@ -7,8 +7,8 @@ const eventRoutes = require("./routes/eventRoutes");
 const registrationRoutes = require("./routes/registrationRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
 const verifyToken = require("./middleware/token");
+const {initMailer} = require("./mailer");
 
-require("dotenv").config({path:"./.env"});
 
 const PORT = process.env.PORT || 5000;
 
@@ -47,7 +47,20 @@ app.get("/api/secret", verifyToken, (req,res) => {
 
 connectDB();
 
-app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`);
-    
-});
+const startServer = async () => {
+  try {
+    const transporter = await initMailer();
+
+    app.locals.transporter = transporter;
+
+    app.listen(PORT, () => {
+      console.log("Server running on port 5000");
+    });
+
+  } catch (err) {
+    console.error("Startup failed:", err);
+    process.exit(1);
+  }
+};
+
+startServer();
