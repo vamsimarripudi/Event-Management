@@ -38,7 +38,7 @@ app.get("/api/test-ai", async (req, res) => {
 
     const response = await client.chat.completions.create({
       model: "gpt-4.1-mini",
-      messages: [{ role: "user", content: {message} }],
+      messages: [{ role: "user", content: message }],
     });
 
     res.json({
