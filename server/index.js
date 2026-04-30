@@ -57,7 +57,7 @@ const startServer = async () => {
     const transporter = await initMailer();
     console.log("Transporter Connected")
     console.log("Starting server...");
-
+    setTransporter(transporter);
     app.listen(PORT, () => {
       console.log("Server running on port 5000");
     });
