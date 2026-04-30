@@ -1,12 +1,12 @@
-// services/mailerStore.js
-
 let transporterInstance;
 
-const setTransporter = (transporter) => {
-  transporterInstance = transporter;
+const setTransporter = (t) => {
+  console.log("SET TRANSPORTER:", t ? "OK" : "NULL");
+  transporterInstance = t;
 };
 
 const getTransporter = () => {
+  console.log("GET TRANSPORTER:", transporterInstance ? "OK" : "NULL");
   if (!transporterInstance) {
     throw new Error("Transporter not initialized");
   }

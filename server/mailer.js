@@ -18,7 +18,7 @@ const initMailer = async () => {
             pass: EMAIL_PASS,
         }
     });
-
+    console.log("INIT transporter Done", transporter ? "OK" : "NULL");;
     return transporter;
 
 };
