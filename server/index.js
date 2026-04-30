@@ -55,7 +55,7 @@ const startServer = async () => {
 
     console.log("Initializing mailer...");
     const transporter = await initMailer();
-
+    console.log("Transporter Connected")
     console.log("Starting server...");
 
     app.listen(PORT, () => {
