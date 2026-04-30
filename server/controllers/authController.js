@@ -2,7 +2,9 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose')
-
+const crypto = require("crypto");
+const sendEmail = require("../mailer");
+/*Register Api Controller*/
 const register = async(req,res)=> {
     try{
         const {name,email,password} = req.body;
@@ -27,7 +29,7 @@ const register = async(req,res)=> {
 
     }
 }
-
+/*Login Api Controller*/
 const login = async(req,res) => {
         const {email,password} = req.body
 
@@ -54,7 +56,7 @@ const login = async(req,res) => {
         res.json({jwtToken})
 
 }
-
+/*Get users by id  Api Controller*/
 const getUserById = async (req, res) => {
   const { id } = req.params; // use "id" not "_id" for route clarity
 
@@ -80,5 +82,62 @@ const getUserById = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+/*ForgotPasword Api Controller*/
+const forgotPassword = async (req,res) => {
+  const {email} = req.body;
 
-module.exports = {register,login,getUserById};
+  const user = await User.findOne({email});
+
+  if(!user){
+    return res.status(404).json({message: "If Account exists, Email Sent."})
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = token;
+  user.resetPasswordExpires = Date.now() + 1000*60*15;
+  await user.save()
+
+  const resetUrl = `https://event.vamsimarripudi.tech/reset-password/${token}`
+
+  await sendEmail({
+    to: user.email,
+    subject: "Reset Your Password",
+    html: `
+      <p>Hi ${user.name || "there"},</p>
+      <p>You requested a password reset.</p>
+      <p>
+        <a href="${resetUrl}" style="padding:10px 15px;background:#111;color:#fff;text-decoration:none;">
+          Reset Password
+        </a>
+      </p>
+      <p>This link expires in 15 minutes.</p>
+    `,
+  });
+
+  res.json({ message: "Reset link sent" });
+}
+/*Reset Password Api Controller*/
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return res.status(400).json({ message: "Invalid or expired token" });
+  }
+  const hashedUpdatedPassword= await bcrypt.hash(password,10)
+  user.password = hashedUpdatedPassword; // make sure hashing middleware exists
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+
+  await user.save();
+
+  res.json({ message: "Password reset successful" });
+};
+
+module.exports = {register,login,getUserById,forgotPassword,resetPassword};

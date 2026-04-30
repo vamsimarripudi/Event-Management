@@ -68,12 +68,14 @@ const  FeedbackPopup = ()=> {
     }
   };
 
-  const hiddenRoutes = ["/login", "/register"];
+  const hiddenRoutes = ["/login", "/register", "/forgot-password", "/reset-password/", "/not-found"];
 
   // ❌ Hide on auth pages
-  if (hiddenRoutes.includes(location.pathname)) {
-    return null;
-  }
+  const shouldHide = hiddenRoutes.some(route =>
+    location.pathname.startsWith(route)
+  );
+
+  if (shouldHide) return null;
 
   return (
     <Popup

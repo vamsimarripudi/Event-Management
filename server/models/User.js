@@ -12,15 +12,14 @@ email: {
     },
 password: {
     type: String,
-    required: true,
-        
-        
+    required: true,      
 },
 registeredEvents: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Event',   
 }],
-
+resetPasswordToken:String,
+resetPasswordExpires:Date,
 
 });
 const User = mongoose.model("User", userSchema);
