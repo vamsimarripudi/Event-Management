@@ -117,7 +117,7 @@ const Login = () => {
             </FormGroup>
 
             <ForgotPassword>
-              <Link to="/login" style={{textDecoration:"none"}}>
+              <Link to="/forgot-password" style={{textDecoration:"none"}}>
               Forgot Passoword
               </Link>
             </ForgotPassword>
