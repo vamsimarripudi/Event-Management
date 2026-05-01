@@ -149,4 +149,10 @@ const submitFeedback = async (req, res) => {
   }
 };
 
-module.exports = { submitFeedback };
+
+const getAllFeedback = async(req,res)=>{
+  const data = await WebsiteFeedback.find().sort({createdAt: -1})
+  res.json(data)
+}
+
+module.exports = { submitFeedback, getAllFeedback };
