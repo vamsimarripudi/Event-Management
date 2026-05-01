@@ -3,7 +3,7 @@ const WebsiteFeedback = require("../models/websiteFeedbackForm");
 const User = require("../models/User");
 const {sendEmail} = require("../mailer");
 const {analyzeFeedback,buildAdminReport} = require("../services/aiService");
-
+const feedbackQueue = require("../services/queue");
 const ALLOWED_CATEGORIES = ["bug", "suggestion", "general"];
 
 
@@ -42,6 +42,12 @@ const submitFeedback = async (req, res) => {
       message,
       page,
     });
+
+    // push job to queue
+    await feedbackQueue.add("analyze-feedback", {
+      feedbackId: feedback._id
+    });
+
 
     let user = null;
     if (id) {
@@ -142,8 +148,7 @@ const submitFeedback = async (req, res) => {
 
       }
 
-      const saved = await WebsiteFeedback.findByIdAndUpdate(feedback._id, 
-        {
+      const saved = await WebsiteFeedback.findByIdAndUpdate(feedback._id, {
           sentiment: analysis.sentiment,
           summary: analysis.summary,
           issues: analysis.issues,
