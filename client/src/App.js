@@ -28,8 +28,9 @@ const App = () => {
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound/>}/>
+       
       </Routes>
-    <FeedbackPopup/>
+     <FeedbackPopup/>
     </Router>
   );
 }
