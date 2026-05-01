@@ -180,7 +180,7 @@ const buildAdminReport = ({feedback,saved}) => {
         <!-- Raw Feedback -->
         <h3 style="margin-bottom:5px;">📝 User Feedback</h3>
         <div style="background:#f9fafb; padding:12px; border-radius:6px; font-size:14px;">
-          ${feedback}
+          ${feedback.message}
         </div>
 
         <!-- Sentiment -->
