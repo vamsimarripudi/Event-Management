@@ -157,7 +157,7 @@ const submitFeedback = async (req, res) => {
       replyTo: user?.email || undefined,
       html
     });
-
+    console.log("Feedback Mail sent to Admin.Kindly check the mail.")
     return res.status(201).json({
       message: "Feedback submitted successfully",
       id: feedback._id,
