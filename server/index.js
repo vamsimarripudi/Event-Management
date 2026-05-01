@@ -32,7 +32,7 @@ app.get("/api/test", (req,res) => {
 });
 
 app.get("/api/test-ai", async (req, res) => {
-  const message = req.body;
+  const {message} = req.body;
   try {
     const client = getAI();
 
