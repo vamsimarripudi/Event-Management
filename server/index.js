@@ -11,6 +11,7 @@ const {initMailer} = require("./mailer");
 const {setTransporter} = require("./services/emailTransporter");
 const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
+const adminRoutes = require("./routes/adminRoutes");
 
 
 const PORT = process.env.PORT || 5000;
@@ -20,13 +21,15 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
-app.get("/", (req,res) => {
-    res.sendFile(__dirname + "/index.html");
-}); 
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/api/user/", feedbackRoute);
+app.use("/api/admin", adminRoutes);
+
+app.get("/", (req,res) => {
+    res.sendFile(__dirname + "/index.html");
+}); 
 app.get("/api/test", (req,res) => {
     res.json({message:"API is working"})
 });
@@ -59,10 +62,6 @@ app.get("/api/secret", verifyToken, (req,res) => {
     }
 
 });
-
-
-
-
 
 const startServer = async () => {
   try {
