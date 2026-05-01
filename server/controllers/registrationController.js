@@ -1,7 +1,7 @@
 const Registration = require("../models/RegistrationModel");
 const User = require("../models/User")
 const {Event} = require("../models/Event");
-const {generateEmailHTML} = require("../services/aiService");
+const {generateEmailHTML, buildStyledEmail} = require("../services/aiService");
 const {sendEmail} = require("../mailer");
 
 
@@ -111,10 +111,13 @@ const registerForEvent = async (req, res) => {
         </div>
         `
     }
+
+    const styledHTML = buildStyledEmail({event,user});
+
     sendEmail({
       to:user.email,
       subject: "Event Registration Confirmed",
-      html
+      html: styledHTML
     });
 
     return res.status(201).json({
