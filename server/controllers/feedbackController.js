@@ -43,11 +43,6 @@ const submitFeedback = async (req, res) => {
       page,
     });
     console.log("Feedback sent to DB.")
-    // push job to queue
-    await feedbackQueue.add("analyze-feedback", {
-      feedbackId: feedback._id
-    });
-    console.log("Crossed Worker now.")
 
     let user = null;
     if (id) {
@@ -147,6 +142,11 @@ const submitFeedback = async (req, res) => {
         };
 
       }
+
+       await feedbackQueue.add("analyze-feedback", {
+      feedbackId: feedback._id
+      });
+      console.log("Crossed Worker now.")
 
       const saved = await WebsiteFeedback.findByIdAndUpdate(feedback._id, {
           sentiment: analysis.sentiment,
