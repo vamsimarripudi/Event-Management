@@ -134,7 +134,7 @@ const submitFeedback = async (req, res) => {
       }catch{
         analysis={
           sentiment:"unknown",
-          summary:feedback.slice(0,80),
+          summary:"",
           issues:[],
           suggestions:[]
         };
