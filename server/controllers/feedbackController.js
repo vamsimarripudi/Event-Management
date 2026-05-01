@@ -12,6 +12,7 @@ const sanitize = (str = "") =>
 
 // POST /api/feedback
 const submitFeedback = async (req, res) => {
+  console.log(req.body)
   try {
     let { rating, category = "general", message, page,userId } = req.body;
 
