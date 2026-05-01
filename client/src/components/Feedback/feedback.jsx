@@ -78,7 +78,7 @@ const  FeedbackPopup = () => {
   if (shouldHide) return null;
 
   return (
-    <Popup
+    <Popup 
       trigger={<FloatingButton>Feedback</FloatingButton>}
       modal
       nested
@@ -104,6 +104,7 @@ const  FeedbackPopup = () => {
           </Select>
 
           {/* Message */}
+        
           <Label>Message</Label>
           <Textarea
             placeholder="Your feedback..."

@@ -11,17 +11,32 @@ export const FloatingButton = styled.button`
   cursor: pointer;
   z-index: 9999;
 
+
   &:hover {
     background: #333;
   }
 `;
 export const ModalContainer = styled.div`
-  width: 340px;
+  width: 100%;
   padding: 24px;
   background: #fff;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width:768px){
+        position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 400px;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      z-index: 1000;
+      
+  }
 `;
 export const Title = styled.h3`
   margin-bottom: 15px;
