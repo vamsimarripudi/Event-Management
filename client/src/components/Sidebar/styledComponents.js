@@ -13,15 +13,19 @@ export const SidebarContainer = styled.div`
     height: calc(100vh - 64px);
     box-shadow: 2px 0 10px rgba(0,0,0,0.08);
     z-index: 100;
-    @media (max-width: 768px) {
+    @media screen and (max-width: 768px) {
         position: static;
-        width: 100vw;
-        height: auto;
+        width: 100%;
+        height: 50px;
         flex-direction: row;
         justify-content: space-around;
         box-shadow: none;
-        padding: 10px 0;
+        padding: 10px ;
         top:0;
+        margin-right:10px;
+        margin-left:10px;
+        margin-top:0px;
+        border-radius:10px;
     }
 `;
 

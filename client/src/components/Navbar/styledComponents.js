@@ -15,7 +15,7 @@ export const NavbarContainer = styled.nav`
   left: 0;
   z-index: 200;
   @media screen and (max-width:768px){
-  padding:10px;
+     padding:10px;
   }
 `;
 
@@ -25,6 +25,9 @@ export const Header = styled.h1`
   font-size: 1.7rem;
   font-weight: 700;
   letter-spacing: 1px;
+  @media screen and (max-width:768px){
+     font-size:20px;
+  }
 `;
 
 export const LogoutButton = styled.button`
@@ -39,6 +42,11 @@ export const LogoutButton = styled.button`
   transition: background 0.2s;
   &:hover {
     background: #0056b3;
+  }
+
+  @media screen and (max-width:768px){
+      font-size:12px;
+      font-weight:bold;
   }
 `;
 
