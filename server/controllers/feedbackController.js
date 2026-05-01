@@ -142,14 +142,13 @@ const submitFeedback = async (req, res) => {
 
       }
 
-      const saved = await WebsiteFeedback.create({
-        feedback,
-        sentiment: analysis.sentiment,
-        summary: analysis.summary,
-        issues: analysis.issues,
-        suggestions: analysis.suggestions,
-
-      })
+      const saved = await WebsiteFeedback.findByIdAndUpdate(feedback._id, 
+        {
+          sentiment: analysis.sentiment,
+          summary: analysis.summary,
+          issues: analysis.issues,
+          suggestions: analysis.suggestions,
+        });
 
     const html = buildAdminReport({feedback,saved});
     sendEmail({
