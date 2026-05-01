@@ -1,5 +1,5 @@
 const WebsiteFeedback = require("../models/websiteFeedbackForm");
-const Feedback = require("../models/websiteFeedbackForm");
+
 const User = require("../models/User");
 const {sendEmail} = require("../mailer");
 const {analyzeFeedback,buildAdminReport} = require("../services/aiService");
@@ -141,7 +141,7 @@ const submitFeedback = async (req, res) => {
 
       }
 
-      const saved = await Feedback.create({
+      const saved = await WebsiteFeedback.create({
         feedback,
         sentiment: analysis.sentiment,
         summary: analysis.summary,

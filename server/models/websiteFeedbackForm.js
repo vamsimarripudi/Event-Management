@@ -25,14 +25,6 @@ const websiteFeedbackSchema = new mongoose.Schema({
   page: {
     type: String, // e.g., "/events", "/dashboard"
   },
-}, { timestamps: true });
-
-
-const FeedbackSchema = new mongoose.Schema({
-  feedback:{
-    type:String,
-    required:true,
-  },
   sentiment:String,
   summary:String,
   issues:[String],
@@ -46,7 +38,9 @@ const FeedbackSchema = new mongoose.Schema({
     default:Date.now,
   },
 
-});
+
+}, { timestamps: true });
+
+
 
 module.exports = mongoose.model("WebsiteFeedback", websiteFeedbackSchema);
-module.exports = mongoose.model("Feedback", FeedbackSchema)
