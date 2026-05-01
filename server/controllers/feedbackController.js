@@ -137,7 +137,7 @@ const submitFeedback = async (req, res) => {
 
       let analysis;
       try{
-        analysis = await analyzeFeedback(feedback.message)
+        analysis = await analyzeFeedback(message)
       }catch{
         analysis={
           sentiment:"unknown",
