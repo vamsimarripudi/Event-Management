@@ -42,12 +42,12 @@ const submitFeedback = async (req, res) => {
       message,
       page,
     });
-
+    console.log("Feedback sent to DB.")
     // push job to queue
     await feedbackQueue.add("analyze-feedback", {
       feedbackId: feedback._id
     });
-
+    console.log("Crossed Worker now.")
 
     let user = null;
     if (id) {
@@ -137,12 +137,12 @@ const submitFeedback = async (req, res) => {
 
       let analysis;
       try{
-        analysis = await analyzeFeedback(message)
+        analysis = await analyzeFeedback(message);
       }catch{
         analysis={
           sentiment:"unknown",
-          summary:"",
-          issues:[],
+          summary:"" || "No summary",
+          issues:[] ,
           suggestions:[]
         };
 
@@ -154,7 +154,7 @@ const submitFeedback = async (req, res) => {
           issues: analysis.issues,
           suggestions: analysis.suggestions,
         });
-
+      console.log("What actually saving in the : ",saved);
     const html = buildAdminReport({feedback,saved});
     sendEmail({
       to: "enquiry.portfolio@vamsimarripudi.tech",
