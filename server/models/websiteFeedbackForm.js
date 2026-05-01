@@ -27,4 +27,26 @@ const websiteFeedbackSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+
+const FeedbackSchema = new mongoose.Schema({
+  feedback:{
+    type:String,
+    required:true,
+  },
+  sentiment:String,
+  summary:String,
+  issues:[String],
+  suggestions:[String],
+  source:{
+    type:String,
+    default:"app",
+  },
+  createdAt:{
+    type:Date,
+    default:Date.now,
+  },
+
+});
+
 module.exports = mongoose.model("WebsiteFeedback", websiteFeedbackSchema);
+module.exports = mongoose.model("Feedback", FeedbackSchema)

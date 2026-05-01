@@ -1,6 +1,7 @@
 const Registration = require("../models/RegistrationModel");
 const User = require("../models/User")
 const {Event} = require("../models/Event");
+const {generateEmailHTML} = require("../services/aiService");
 const {sendEmail} = require("../mailer");
 
 
@@ -45,9 +46,14 @@ const registerForEvent = async (req, res) => {
       $inc: { capacity: -1 },
     });
 
-    sendEmail({
-      to:user.email,
-      subject: "Event Registration Confirmed",
+    let html;
+
+    try{
+      html = await generateEmailHTML({
+        eventName: event.name,
+        date: event.dateTime.start
+      });
+    }catch(err){
       html: `
         <div style="font-family:Arial, Helvetica, sans-serif; background:#f6f6f6; padding:30px;">
           <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
@@ -104,6 +110,11 @@ const registerForEvent = async (req, res) => {
           </div>
         </div>
         `
+    }
+    sendEmail({
+      to:user.email,
+      subject: "Event Registration Confirmed",
+      html
     });
 
     return res.status(201).json({

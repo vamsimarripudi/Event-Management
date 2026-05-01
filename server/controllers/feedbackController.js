@@ -1,6 +1,8 @@
 const WebsiteFeedback = require("../models/websiteFeedbackForm");
+const Feedback = require("../models/websiteFeedbackForm");
 const User = require("../models/User");
 const {sendEmail} = require("../mailer");
+const {analyzeFeedback,buildAdminReport} = require("../services/aiService");
 
 const ALLOWED_CATEGORIES = ["bug", "suggestion", "general"];
 
@@ -44,6 +46,8 @@ const submitFeedback = async (req, res) => {
     if (id) {
       user = await User.findById(id);
     }
+
+
 
     if (user && user.email) {
       sendEmail({
@@ -124,57 +128,34 @@ const submitFeedback = async (req, res) => {
         ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])
       );
 
+      let analysis;
+      try{
+        analysis = await analyzeFeedback(feedback)
+      }catch{
+        analysis={
+          sentiment:"unknown",
+          summary:feedback.slice(0,80),
+          issues:[],
+          suggestions:[]
+        };
+
+      }
+
+      const saved = await Feedback.create({
+        feedback,
+        sentiment: analysis.sentiment,
+        summary: analysis.summary,
+        issues: analysis.issues,
+        suggestions: analysis.suggestions,
+
+      })
+
+    const html = buildAdminReport({feedback,saved});
     sendEmail({
       to: "enquiry.portfolio@vamsimarripudi.tech",
       subject: `New Feedback • ${rating}/5 • ${category}`,
       replyTo: user?.email || undefined,
-      html: `
-        <div style="font-family: Arial, sans-serif; background: #f5f7fa; padding: 20px;">
-          
-          <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 10px; overflow: hidden;">
-            
-            <div style="background: #111; color: #fff; padding: 16px 20px;">
-              <h2 style="margin: 0;">New Feedback Submitted</h2>
-            </div>
-
-            <div style="padding: 20px;">
-              
-              <p style="margin-bottom: 16px;">
-                A new feedback entry has been submitted on your platform.
-              </p>
-
-              <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p><b>Name:</b> ${esc(user?.name || name || "Guest")}</p>
-                <p><b>Email:</b> ${esc(user?.email || "Not provided")}</p>
-              </div>
-
-              <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p><b>Rating:</b> ${"⭐".repeat(rating)} (${rating}/5)</p>
-                <p><b>Category:</b> ${esc(category)}</p>
-                <p><b>Page:</b> ${esc(page || "-")}</p>
-              </div>
-
-              <div style="margin-bottom: 20px;">
-                <p><b>Message:</b></p>
-                <p style="background: #f1f5f9; padding: 12px; border-radius: 6px;">
-                  ${esc(message)}
-                </p>
-              </div>
-
-              <p style="font-size: 13px; color: #666;">
-                You can reply directly to this email to respond to the user.
-              </p>
-
-            </div>
-
-            <div style="background: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #555;">
-              Event Management Platform • ${new Date().toLocaleString()}
-            </div>
-
-          </div>
-
-        </div>
-      `
+      html
     });
 
     return res.status(201).json({
@@ -190,6 +171,11 @@ const submitFeedback = async (req, res) => {
 };
 
 
+const getAllFeedback = async(req,res)=>{
+  const data = await Feedback.find().sort({createdAt:-1});
+  res.json(data);
+}
+
 module.exports = {
-  submitFeedback,
+  submitFeedback, getAllFeedback
 };
