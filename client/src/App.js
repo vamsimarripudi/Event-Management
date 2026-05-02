@@ -11,6 +11,8 @@ import Dashboard from './components/Dashboard';
 import NotFound from './components/NotFound';
 import ProtectedRoute from "./components/protectedRoute";
 import FeedbackPopup from './components/Feedback/feedback';
+import Profile from "./components/Profile";
+import MyEvents from "./components/MyEvents";
 
 
 
@@ -26,6 +28,8 @@ const App = () => {
         <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
         <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+        <Route path = "/dashboard/my-events" element={<ProtectedRoute><MyEvents/></ProtectedRoute>}/>
+        <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound/>}/>
        

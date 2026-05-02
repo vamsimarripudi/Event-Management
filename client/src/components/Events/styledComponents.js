@@ -143,11 +143,12 @@ export const SearchInput = styled.input`
         outline: none;
     }
     @media (max-width: 600px) {
-        width:100%;
+        max-width:460px;
         margin-left:0.7rem;
         margin-right:0.7rem;
         padding:10px;
         margin:10px;
+        
 
     }
 `;

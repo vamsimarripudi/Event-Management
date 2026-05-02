@@ -22,9 +22,7 @@ export const SidebarContainer = styled.div`
         box-shadow: none;
         padding: 10px ;
         top:0;
-        margin-right:10px;
-        margin-left:10px;
-        margin-top:0px;
+        margin-bottom:10px;
         border-radius:10px;
     }
 `;

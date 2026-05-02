@@ -47,6 +47,22 @@ export const LogoutButton = styled.button`
   @media screen and (max-width:768px){
       font-size:12px;
       font-weight:bold;
+      display:none
   }
 `;
 
+
+
+export const MobileLogout = styled.button`
+  display:none;
+  padding:0px;
+  background-color:transparent;
+  border:0px;
+  width:180px;
+  @media screen and (max-width:768px){
+     display:block;
+     width:160px;
+     color:red;
+    
+  }
+`
