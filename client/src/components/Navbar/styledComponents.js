@@ -54,15 +54,29 @@ export const LogoutButton = styled.button`
 
 
 export const MobileLogout = styled.button`
-  display:none;
-  padding:0px;
-  background-color:transparent;
-  border:0px;
-  width:180px;
-  @media screen and (max-width:768px){
-     display:block;
-     width:160px;
-     color:red;
-    
+  display: none;
+  padding: 0;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    color: #ef4444;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    width:50px;
+
+    &:hover {
+      background: #fee2e2;
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
   }
-`
+`;
