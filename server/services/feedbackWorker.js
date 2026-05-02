@@ -3,7 +3,7 @@ require("dotenv").config();
 const { Worker } = require("bullmq");
 const WebsiteFeedback = require("../models/websiteFeedbackForm");
 const { analyzeFeedback, buildAdminReport, initAI } = require("../services/aiService");
-const { sendEmail, initTransporter } = require("../mailer");
+const { sendEmail, initMailer } = require("../mailer");
 const { getSecret } = require("../services/ec2Services");
 const mongoose = require("mongoose");
 
