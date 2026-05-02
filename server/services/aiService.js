@@ -122,41 +122,31 @@ const buildStyledEmail = ({ event, user}) => `
 const analyzeFeedback = async(message) => {
   const client = getAI() 
 
-  const promt = `
-  Analyze this user feedback and return STRICK JSON (no extra text):
-  Feedback:"${message}"
+  const prompt = `
+    Analyze this feedback:
+    "${message}"
 
-  Return:
-  {
-  "sentiment":"positive | neutral | negative",
-  "summary":"...",
-  "issues":["..."],
-  "suggestions":["..."]
-  }
-  `;
+    Return JSON with:
+    - sentiment
+    - summary
+    - issues (array)
+    - suggestions (array)
+    `;
 
-  const res = await client.chat.completions.create({
-    model:"gpt-4.1-mini",
-    messages:[{
-      role:"user",
-      content:prompt
-    }],
-    max_tokens: 250
-  })
+  // use prompt (NOT Prompt)
+  const response = await model.generateContent(prompt);
 
-  let content = res.choices[0].message.content || "";
-
-  content = content.replace(/```json|```/g, "").trim();
-
-  try{
-    return JSON.parse(content);
-  }catch{
-    return{
-      sentiment:"unknown",
-      summary:text.slice(0,80),
-      issues:[],
-      suggestions:[]
-    }
+  // parse safely
+  try {
+    const text = response.response.text();
+    return JSON.parse(text);
+  } catch {
+    return {
+      sentiment: "unknown",
+      summary: "No summary available",
+      issues: [],
+      suggestions: [],
+    };
   }
 }
 
