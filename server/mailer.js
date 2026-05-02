@@ -17,15 +17,21 @@ const initMailer = async () => {
             pass: EMAIL_PASS,
         }
     });
+    await transporter.verify();
     console.log("INIT transporter Done", transporter ? "OK" : "NULL");;
     return transporter;
 
 };
 
 
+const getTransported = () => transporter
+
+
 const sendEmail = async ({to,subject,html}) => {
   
-  const transporter = getTransporter();
+    if(!transporter){
+        throw new Error("Transporter is not working bro..!")
+    }
     await transporter.sendMail({
       from: "Event Management <enquiry.portfolio@vamsimarripudi.tech>",
       to,
