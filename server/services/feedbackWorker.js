@@ -78,7 +78,7 @@ const startWorker = async () => {
 
             await sendEmail({
               to: "enquiry.portfolio@vamsimarripudi.tech",
-              subject: `New Feedback • ${updated.rating}/5 • ${updated.category}`,
+              subject: `New Feedback • ${updated.rating || Math.random() * 5}/5 • ${updated.category}`,
               html,
             });
 

@@ -119,12 +119,12 @@ const buildStyledEmail = ({ event, user}) => `
         </div>
 `;
 
-const analyzeFeedback = async(text) => {
+const analyzeFeedback = async(message) => {
   const client = getAI() 
 
   const promt = `
   Analyze this user feedback and return STRICK JSON (no extra text):
-  Feedback:"${text}"
+  Feedback:"${message}"
 
   Return:
   {
@@ -160,7 +160,8 @@ const analyzeFeedback = async(text) => {
   }
 }
 
-const buildAdminReport = ({feedback,saved}) => {
+const buildAdminReport = ({feedback}) => {
+  console.log(feedback)
   return `
   <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
     
@@ -186,26 +187,26 @@ const buildAdminReport = ({feedback,saved}) => {
         <!-- Sentiment -->
         <h3 style="margin-top:20px;">📈 Sentiment</h3>
         <p style="font-weight:bold; color:${
-          saved.sentiment === "negative" ? "#dc2626" :
-          saved.sentiment === "positive" ? "#16a34a" : "#ca8a04"
+          feedback.sentiment === "negative" ? "#dc2626" :
+          feedback.sentiment === "positive" ? "#16a34a" : "#ca8a04"
         };">
-          ${saved.sentiment?.toUpperCase()}
+          ${feedback.sentiment?.toUpperCase()}
         </p>
 
         <!-- Summary -->
         <h3 style="margin-top:20px;">📌 Summary</h3>
-        <p>${saved.summary}</p>
+        <p>${feedback.summary}</p>
 
         <!-- Issues -->
         <h3 style="margin-top:20px;">⚠️ Key Issues</h3>
         <ul>
-          ${(saved.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
+          ${(feedback.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
         </ul>
 
         <!-- Suggestions -->
         <h3 style="margin-top:20px;">💡 Suggestions</h3>
         <ul>
-          ${(saved.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
+          ${(feedback.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
         </ul>
 
       </div>
