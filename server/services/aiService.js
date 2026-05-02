@@ -1,5 +1,5 @@
 // services/aiService.js
-const OpenAI = require("openai");
+const OpenAI,model = require("openai");
 const { getSecret } = require("./ec2Services");
 
 let clientInstance;

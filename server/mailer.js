@@ -2,13 +2,15 @@ const {getSecret} = require("./services/ec2Services");
 const nodemailer = require("nodemailer");
 const {getTransporter} = require("./services/emailTransporter");
 
+let transporter= null;
+
 const initMailer = async () => {
     const EMAIL_HOST = await getSecret("/event-api/EMAIL_HOST");
     const EMAIL_PORT = await getSecret("/event-api/EMAIL_PORT");
     const EMAIL_USER = await getSecret("/event-api/EMAIL_USER");
     const EMAIL_PASS = await getSecret("/event-api/SMTP_KEY");
 
-    const transporter = nodemailer.createTransport({
+    transporter = nodemailer.createTransport({
         host: EMAIL_HOST,
         port: Number(EMAIL_PORT),
         secure:false,
