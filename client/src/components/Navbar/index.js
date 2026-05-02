@@ -21,7 +21,7 @@ import {
             <Header>Event Management</Header>
             <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
             <MobileLogout type="button"  onClick={handleLogout}>
-                <GrLogout/>
+                <GrLogout size={20}/>
             </MobileLogout>
         </NavbarContainer>
     )
