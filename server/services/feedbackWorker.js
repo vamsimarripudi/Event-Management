@@ -25,7 +25,7 @@ const startWorker = async () => {
     console.log("✅ AI Initialized");
 
     // 3. Mail
-    await initTransporter();
+    await initMailer();
     console.log("✅ Mail Transporter Ready");
 
     // 4. Start Worker
