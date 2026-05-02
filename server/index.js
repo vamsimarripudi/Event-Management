@@ -12,6 +12,7 @@ const {setTransporter} = require("./services/emailTransporter");
 const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
 const adminRoutes = require("./routes/adminRoutes");
+const userRoutes = require("./routes/userRoute");
 
 
 const PORT = process.env.PORT || 5000;
@@ -26,6 +27,9 @@ app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/api/user/", feedbackRoute);
 app.use("/api/admin", adminRoutes);
+app.use("/api/user", userRoutes);
+
+
 
 app.get("/", (req,res) => {
     res.sendFile(__dirname + "/index.html");
