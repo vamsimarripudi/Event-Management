@@ -6,7 +6,7 @@ const getUserProfile = async(req,res)=>{
         if(!user){
             res.status(404).json({message: "User Not Found"})
         }
-        res.json(user)
+       return res.json(user)
     }
     catch(err){
         res.json(err.message);
