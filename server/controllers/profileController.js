@@ -1,12 +1,12 @@
 const User = require("../models/User");
 
 const getUserProfile = async(req,res)=>{
+    const {id} = req.body
     try{
-        console.log("User details", req,user)
-        const userId = req.user._id || req.user.id
-        const user = await User.findById(userId).select("-password");
+        
+        const user = await User.findById(id).select("-password");
         if(!user){
-            res.status(404).json({message: "User Not Found"})
+          return  res.status(404).json({message: "User Not Found"})
         }
        return res.json(user)
     }
