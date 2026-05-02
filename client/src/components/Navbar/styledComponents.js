@@ -64,7 +64,7 @@ export const MobileLogout = styled.button`
   @media screen and (max-width: 768px) {
     display: block;
     color: #ef4444;
-    font-size: 15px;
+    font-size: 24px;
     font-weight: 600;
     padding: 10px 12px;
     border-radius: 8px;
