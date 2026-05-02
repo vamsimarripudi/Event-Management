@@ -4,12 +4,30 @@ const { Worker } = require("bullmq");
 const WebsiteFeedback = require("../models/websiteFeedbackForm");
 const { analyzeFeedback, buildAdminReport } = require("../services/aiService");
 const { sendEmail } = require("../mailer");
+const {getSecret}  = require("../services/ec2Services");
+const mongoose = require("mongoose");
 
 const connection = {
   host: process.env.REDIS_HOST || "127.0.0.1",
   port: process.env.REDIS_PORT || 6379,
   password: process.env.REDIS_PASSWORD || undefined,
 };
+
+const connectDB = async() => {
+    try{
+        const MONGO_URI = await getSecret("/event-api/MONGO_URL")
+        await mongoose.connect(MONGO_URI);
+        
+        console.log("Database Connected")
+
+    }catch(error){
+        console.error(error.message);
+        process.exit(1)
+    }
+}
+
+connectDB()
+console.log("Worker DB connected")
 
 const worker = new Worker(
   "feedback-queue",
