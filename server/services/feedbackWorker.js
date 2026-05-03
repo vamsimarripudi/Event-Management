@@ -28,7 +28,6 @@ const startWorker = async () => {
     await initMailer();
     console.log("✅ Mail Transporter Ready");
 
-    // 4. Start Worker
     const worker = new Worker(
       "feedback-queue",
       async (job) => {
@@ -55,7 +54,7 @@ const startWorker = async () => {
             console.error("❌ AI ERROR:", err.message);
           }
 
-          // ---- SAFE NORMALIZATION ----
+          // ---- NORMALIZATION ----
           analysis = {
             sentiment: analysis?.sentiment ?? "unknown",
             summary: analysis?.summary ?? "No summary available",
@@ -63,12 +62,21 @@ const startWorker = async () => {
             suggestions: Array.isArray(analysis?.suggestions) ? analysis.suggestions : [],
           };
 
-          // ---- UPDATE ----
+          // ---- UPDATE (FIXED) ----
           const updated = await WebsiteFeedback.findByIdAndUpdate(
             feedbackId,
-            analysis,
-            { new: true }
+            {
+              sentiment: analysis.sentiment,
+              summary: analysis.summary,
+              issues: analysis.issues,
+              suggestions: analysis.suggestions,
+            },
+            { returnDocument: "after" }
           );
+
+          if (!updated) {
+            throw new Error("Update failed");
+          }
 
           console.log("💾 DB updated:", updated._id);
 
@@ -78,7 +86,7 @@ const startWorker = async () => {
 
             await sendEmail({
               to: "enquiry.portfolio@vamsimarripudi.tech",
-              subject: `New Feedback • ${updated.rating || Math.random() * 5}/5 • ${updated.category}`,
+              subject: `New Feedback • ${updated.rating || "N/A"}/5 • ${updated.category || "General"}`,
               html,
             });
 
@@ -104,7 +112,6 @@ const startWorker = async () => {
     });
 
     console.log("🧠 Worker is running...");
-
   } catch (err) {
     console.error("❌ Worker startup failed:", err);
     process.exit(1);
