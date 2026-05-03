@@ -47,16 +47,31 @@ const generateEmailHTML = async({eventName,eventDate})=>{
       Output must be clean HTML.
       `;
 
-  const res = await client.chat.completions.create({
-    model:"gpt-4.1-mini",
-    messages:[{role:"user",content: prompt}],
-    max_tokens: 250
-  })
+  try{
+    const response = await client.chat.completions.create({
+      model:"gpt-4o-mini",
+      messages: [{role:"user", content: prompt}],
+    });
 
-  let html = res.choices[0].message.content|| "";
-  html = html.replace(/"|"$/g,"");
-  html = html.replace(/```html|```/g, "").trim();
-  return html;
+    const html = response.choices[0].message.content;
+    return html;
+  }catch(err){
+    console.error("AI EMAIL Error", err.message);
+
+    return(
+      `
+      <div>
+      <h2>Event Managment</h2>
+      <h3>Welcome, This is a confirmation mail about your event registration.</h3>
+      <p>${eventName}</p>
+      <p>${eventDate}</p>
+
+      <p>Thanks for register the event, Save the date.</p>
+      
+      <h3><b>Event Manangement Platform</b></p>
+      `
+    )
+  }
 }
 
 const buildStyledEmail = ({ event, user}) => `
