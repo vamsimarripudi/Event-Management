@@ -54,6 +54,7 @@ const generateEmailHTML = async({eventName,eventDate})=>{
     });
 
     const html = response.choices[0].message.content;
+    console.log(html)
     return html;
   }catch(err){
     console.error("AI EMAIL Error", err.message);
@@ -67,7 +68,7 @@ const generateEmailHTML = async({eventName,eventDate})=>{
       <p>${eventDate}</p>
 
       <p>Thanks for register the event, Save the date.</p>
-      
+
       <h3><b>Event Manangement Platform</b></p>
       `
     )
