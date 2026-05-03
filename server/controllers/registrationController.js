@@ -48,11 +48,11 @@ const registerForEvent = async (req, res) => {
 
     let html;
 
+    const eventName= event.name
+    const eventDate = event.dateTime.start
+    console.log(`Event Name:${eventName}, Event Date was:${eventDate}` )
     try{
-      html = await generateEmailHTML({
-        eventName: event.name,
-        date: event.dateTime.start
-      });
+      html = await generateEmailHTML({eventName,eventDate});
     }catch(err){
       html: `
         <div style="font-family:Arial, Helvetica, sans-serif; background:#f6f6f6; padding:30px;">
