@@ -117,7 +117,7 @@ const registerForEvent = async (req, res) => {
     sendEmail({
       to:user.email,
       subject: "Event Registration Confirmed",
-      html
+      html: styledHTML
     });
 
     return res.status(201).json({
