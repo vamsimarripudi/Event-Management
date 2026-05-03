@@ -41,7 +41,16 @@ Include:
 - Greeting
 - Confirmation message
 - Event details
-- Friendly closing
+- Friendly closing 
+
+and last add the button called View Dashboard and the html elements are 
+ <div style="text-align:center; margin:25px 0;">
+    <a href="https://event.vamsimarripudi.tech/dashboard"
+      style="background:#111; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
+      View Dashboard
+    </a>
+  </div>
+
 `;
 
   try {
