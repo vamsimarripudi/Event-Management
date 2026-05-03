@@ -22,58 +22,60 @@ const getAI = () => {
 };
 
 
-const generateEmailHTML = async({eventName,eventDate})=>{
-  console.log(eventName,eventDate)
-  const client = getAI()
+const generateEmailHTML = async ({ eventName, eventDate }) => {
+  const client = getAI();
 
   const prompt = `
-      Generate a COMPLETE event registration confirmation email in HTML format.
+Generate a COMPLETE event registration confirmation email in HTML format.
 
-      Rules:
-      - Do NOT leave sentences incomplete
-      - Do NOT include words like "unfortunately"
-      - Return FULL email only (no explanation)
+Rules:
+- Do NOT leave sentences incomplete
+- Do NOT include words like "unfortunately"
+- Return ONLY clean HTML (no explanation, no markdown)
 
-      Details:
-      Event Name: ${eventName}
-      Date: ${date}
+Details:
+Event Name: ${eventName}
+Date: ${eventDate}
 
-      Include:
-      - Greeting
-      - Confirmation message
-      - Event details
-      - Friendly closing
+Include:
+- Greeting
+- Confirmation message
+- Event details
+- Friendly closing
+`;
 
-      Output must be clean HTML.
-      `;
-
-  try{
+  try {
     const response = await client.chat.completions.create({
-      model:"gpt-4o-mini",
-      messages: [{role:"user", content: prompt}],
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: prompt }],
     });
 
-    const html = response.choices[0].message.content;
-    console.log(html)
+    const html = response.choices?.[0]?.message?.content;
+
+    if (!html) throw new Error("Empty AI response");
+
     return html;
-  }catch(err){
-    console.error("AI EMAIL Error", err.message);
 
-    return(
-      `
-      <div>
-      <h2>Event Managment</h2>
-      <h3>Welcome, This is a confirmation mail about your event registration.</h3>
-      <p>${eventName}</p>
-      <p>${eventDate}</p>
+  } catch (err) {
+    console.error("AI EMAIL Error:", err.message);
 
-      <p>Thanks for register the event, Save the date.</p>
+    return `
+    <div style="font-family: Arial; padding:20px;">
+      <h2>Event Management</h2>
+      <h3>Registration Confirmed</h3>
 
-      <h3><b>Event Manangement Platform</b></p>
-      `
-    )
+      <p>You have successfully registered for:</p>
+
+      <p><strong>${eventName}</strong></p>
+      <p><strong>${eventDate}</strong></p>
+
+      <p>Please save the date. We look forward to your participation.</p>
+
+      <p style="margin-top:20px;"><b>Event Management Platform</b></p>
+    </div>
+    `;
   }
-}
+};
 
 const buildStyledEmail = ({ event, user}) => `
   <div style="font-family:Arial, Helvetica, sans-serif; background:#f6f6f6; padding:30px;">
