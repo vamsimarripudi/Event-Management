@@ -136,36 +136,54 @@ const buildStyledEmail = ({ event, user}) => `
         </div>
 `;
 
-const analyzeFeedback = async(message) => {
-  const client = getAI() 
+const analyzeFeedback = async (message) => {
+    const client = getAI();
 
-  const prompt = `
+    const prompt = `
     Analyze this feedback:
     "${message}"
 
-    Return JSON with:
-    - sentiment
-    - summary
-    - issues (array)
-    - suggestions (array)
+    Return STRICT JSON (no explanation, no markdown):
+
+    {
+    "sentiment": "",
+    "summary": "",
+    "issues": [],
+    "suggestions": []
+    }
     `;
 
-  // use prompt (NOT Prompt)
-  const response = await model.generateContent(prompt);
+    try {
+    const response = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: prompt }],
+    });
 
-  // parse safely
-  try {
-    const text = response.response.text();
-    return JSON.parse(text);
-  } catch {
+    const text = response.choices[0].message.content;
+
+    // 🔥 clean possible markdown
+    const cleaned = text.replace(/```json|```/g, "").trim();
+
+    const parsed = JSON.parse(cleaned);
+
     return {
-      sentiment: "unknown",
-      summary: "No summary available",
-      issues: [],
-      suggestions: [],
+    sentiment: parsed?.sentiment ?? "unknown",
+    summary: parsed?.summary ?? "No summary available",
+    issues: Array.isArray(parsed?.issues) ? parsed.issues : [],
+    suggestions: Array.isArray(parsed?.suggestions) ? parsed.suggestions : [],
     };
-  }
-}
+
+    } catch (err) {
+    console.error("AI PARSE ERROR:", err.message);
+
+    return {
+    sentiment: "unknown",
+    summary: "No summary available",
+    issues: [],
+    suggestions: [],
+    };
+    }
+};
 
 const buildAdminReport = ({updated}) => {
   console.log(feedback)
