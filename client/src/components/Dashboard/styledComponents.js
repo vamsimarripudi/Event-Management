@@ -17,13 +17,30 @@ export const Container = styled.div`
 
 /* Tabs (top, keep same behavior) */
 export const Tabs = styled.div`
+  position: fixed;
+  top: 60px; /* adjust to your header height */
+  left: 220px; /* desktop sidebar width */
+  right: 0;
+  z-index: 100;
+  
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
   overflow-x: auto;
+  height: 50px;
 
   @media (max-width: 768px) {
+    left: 0; /* no sidebar on mobile */
     gap: 8px;
+    margin-top:50px;
+    
+    
   }
 `;
 
@@ -49,11 +66,14 @@ export const ContentWrapper = styled.div`
   background: #ffffff;
   border-radius: 14px;
   padding: 20px;
+  
   min-height: 500px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 
   @media (max-width: 768px) {
     padding: 14px;
+    margin-top:60px;
+    
   }
 `;
 

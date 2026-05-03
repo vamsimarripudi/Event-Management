@@ -148,6 +148,7 @@ export const SearchInput = styled.input`
         margin-right:0.7rem;
         padding:10px;
         margin:10px;
+        margin-top:50px;
         
 
     }

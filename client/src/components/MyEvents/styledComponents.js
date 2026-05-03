@@ -3,7 +3,7 @@ import styled from "styled-components";
 /* Layout */
 export const DashboardContainer = styled.div`
   display: flex;
-
+  
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -32,7 +32,9 @@ export const Header = styled.h2`
 `;
 
 export const UserName = styled.span`
-  color: #111;
+ background: linear-gradient(90deg, #4F46E5, #06B6D4);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
   font-weight: 800;
 `;
 

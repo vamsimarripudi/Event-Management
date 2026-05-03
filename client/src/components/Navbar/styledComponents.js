@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.nav`
-  background: #232526;
-  color: #fff;
+ background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color:"#333";
   padding: 0 32px;
   display: flex;
   justify-content: space-between;
@@ -20,7 +23,7 @@ export const NavbarContainer = styled.nav`
 `;
 
 export const Header = styled.h1`
-  color: #fff;
+  color: #333;
   margin: 0;
   font-size: 1.7rem;
   font-weight: 700;

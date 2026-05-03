@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 export const SidebarContainer = styled.div`
     width: 220px;
-    background: linear-gradient(135deg, #232526 0%, #414345 100%);
+    background: rgba(248, 250, 252, 0.85); /* slightly darker than navbar */
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+border-right: 1px solid rgba(0, 0, 0, 0.06);
     padding: 32px 0 0 0;
     display: flex;
     flex-direction: column;
@@ -14,23 +17,25 @@ export const SidebarContainer = styled.div`
     box-shadow: 2px 0 10px rgba(0,0,0,0.08);
     z-index: 100;
     @media screen and (max-width: 768px) {
-        position: static;
+        position: fixed;
         width: 100%;
         height: 50px;
         flex-direction: row;
         justify-content: space-around;
         box-shadow: none;
         padding: 10px ;
-        top:0;
+        
         margin-bottom:10px;
-        border-radius:10px;
+        
+        background:"#ffffff";
+        
     }
 `;
 
 export const SidebarLink = styled.a`
     margin: 18px 0;
     text-decoration: none;
-    color: #fff;
+    color: #333;
     font-size: 1.15rem;
     font-weight: 500;
     display: flex;
