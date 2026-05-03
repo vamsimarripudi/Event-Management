@@ -22,7 +22,8 @@ const getAI = () => {
 };
 
 
-const generateEmailHTML = async({eventName,date})=>{
+const generateEmailHTML = async({eventName,eventDate})=>{
+  console.log(eventName,eventDate)
   const client = getAI()
 
   const prompt = `
