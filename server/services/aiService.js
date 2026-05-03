@@ -185,8 +185,9 @@ const analyzeFeedback = async (message) => {
     }
 };
 
-const buildAdminReport = ({updated}) => {
-  console.log(feedback)
+const buildAdminReport = ({ feedback }) => {
+  console.log(feedback);
+
   return `
   <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
     
@@ -206,32 +207,32 @@ const buildAdminReport = ({updated}) => {
         <!-- Raw Feedback -->
         <h3 style="margin-bottom:5px;">📝 User Feedback</h3>
         <div style="background:#f9fafb; padding:12px; border-radius:6px; font-size:14px;">
-          ${updated.message}
+          ${feedback.message}
         </div>
 
         <!-- Sentiment -->
         <h3 style="margin-top:20px;">📈 Sentiment</h3>
         <p style="font-weight:bold; color:${
-          updated.sentiment === "negative" ? "#dc2626" :
-          updated.sentiment === "positive" ? "#16a34a" : "#ca8a04"
+          feedback.sentiment === "negative" ? "#dc2626" :
+          feedback.sentiment === "positive" ? "#16a34a" : "#ca8a04"
         };">
-          ${updated.sentiment?.toUpperCase()}
+          ${feedback.sentiment?.toUpperCase()}
         </p>
 
         <!-- Summary -->
         <h3 style="margin-top:20px;">📌 Summary</h3>
-        <p>${updated.summary}</p>
+        <p>${feedback.summary}</p>
 
         <!-- Issues -->
         <h3 style="margin-top:20px;">⚠️ Key Issues</h3>
         <ul>
-          ${(updated.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
+          ${(feedback.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
         </ul>
 
         <!-- Suggestions -->
         <h3 style="margin-top:20px;">💡 Suggestions</h3>
         <ul>
-          ${(updated.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
+          ${(feedback.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
         </ul>
 
       </div>
@@ -244,7 +245,7 @@ const buildAdminReport = ({updated}) => {
     </div>
   </div>
   `;
-}
+};
 
 
 module.exports = { 
