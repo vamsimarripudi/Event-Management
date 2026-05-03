@@ -167,7 +167,7 @@ const analyzeFeedback = async(message) => {
   }
 }
 
-const buildAdminReport = ({feedback}) => {
+const buildAdminReport = ({updated}) => {
   console.log(feedback)
   return `
   <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">
@@ -188,32 +188,32 @@ const buildAdminReport = ({feedback}) => {
         <!-- Raw Feedback -->
         <h3 style="margin-bottom:5px;">📝 User Feedback</h3>
         <div style="background:#f9fafb; padding:12px; border-radius:6px; font-size:14px;">
-          ${feedback.message}
+          ${updated.message}
         </div>
 
         <!-- Sentiment -->
         <h3 style="margin-top:20px;">📈 Sentiment</h3>
         <p style="font-weight:bold; color:${
-          feedback.sentiment === "negative" ? "#dc2626" :
-          feedback.sentiment === "positive" ? "#16a34a" : "#ca8a04"
+          updated.sentiment === "negative" ? "#dc2626" :
+          updated.sentiment === "positive" ? "#16a34a" : "#ca8a04"
         };">
-          ${feedback.sentiment?.toUpperCase()}
+          ${updated.sentiment?.toUpperCase()}
         </p>
 
         <!-- Summary -->
         <h3 style="margin-top:20px;">📌 Summary</h3>
-        <p>${feedback.summary}</p>
+        <p>${updated.summary}</p>
 
         <!-- Issues -->
         <h3 style="margin-top:20px;">⚠️ Key Issues</h3>
         <ul>
-          ${(feedback.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
+          ${(updated.issues || []).map(i => `<li>${i}</li>`).join("") || "<li>No major issues</li>"}
         </ul>
 
         <!-- Suggestions -->
         <h3 style="margin-top:20px;">💡 Suggestions</h3>
         <ul>
-          ${(feedback.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
+          ${(updated.suggestions || []).map(s => `<li>${s}</li>`).join("") || "<li>No suggestions</li>"}
         </ul>
 
       </div>
