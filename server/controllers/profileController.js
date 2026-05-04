@@ -4,9 +4,7 @@ const {uploadToS3} = require("../services/mediaServices");
 const getProfile = async (req, res) => {
   
   try {
-    const user = await User.findById(req.id).select(
-      "name email role avatarUrl"
-    );
+    const user = await User.findById(req.id)
 
     return res.json(user);
   } catch (err) {
