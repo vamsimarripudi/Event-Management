@@ -50,6 +50,7 @@ const Profile = () => {
   const [showDelete, setShowDelete] = useState(false);
 
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   // ---------- API ----------
 
@@ -61,6 +62,7 @@ const Profile = () => {
       const options = {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({userId})
       };
 
       const res = await fetch(url, options);
