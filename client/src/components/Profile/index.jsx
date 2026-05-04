@@ -48,6 +48,7 @@ const Profile = () => {
    
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
        const getProfile = async () => {
         setApiStatus(apiStatusConstants.inProgress);
         try {
