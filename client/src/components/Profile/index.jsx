@@ -101,7 +101,7 @@ const Profile = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ email, role }),
+        body: JSON.stringify({ email, role, userId }),
       };
 
       await fetch(url, options);
@@ -123,7 +123,7 @@ const Profile = () => {
             headers: {
             Authorization: `Bearer ${token}`,
             },
-            body: formData,
+            body: {formData,userId},
             }
     );
 
@@ -142,6 +142,7 @@ const Profile = () => {
       const options = {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
+        body:JSON.stringify({userId})
       };
 
       await fetch(url, options);

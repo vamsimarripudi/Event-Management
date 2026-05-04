@@ -2,8 +2,9 @@ const User = require("../models/User");
 const {uploadToS3} = require("../services/mediaServices");
 
 const getProfile = async (req, res) => {
-  const {userId} = req.body;
+  
   try {
+    const {userId} = req.body;
     const user = await User.findById(userId).select(
       "name email role avatarUrl"
     );
