@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-
+import { Component } from "react";
 
 import {
   Page,
@@ -27,7 +26,6 @@ import {
   SkeletonCard,
   SkeletonAvatar,
   SkeletonLine,
-  
 } from "./styledComponents";
 
 const apiStatus = {
@@ -37,59 +35,36 @@ const apiStatus = {
   failure: "FAILURE",
 };
 
-const Profile = () => {
-  const [status, setStatus] = useState(apiStatus.initial);
-  const [profile, setProfile] = useState({});
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("user");
-  const [file, setFile] = useState(null);
+class Profile extends Component {
+  state = {
+    status: apiStatus.initial,
+    profile: {},
+    email: "",
+    role: "user",
+    file: null,
 
-  const [showActions, setShowActions] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
-  const [showUpload, setShowUpload] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
+    showActions: false,
+    showPreview: false,
+    showUpload: false,
+    showDelete: false,
+  };
 
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  token = localStorage.getItem("token");
+
+  componentDidMount() {
+    this.getProfile();
+  }
 
   // ---------- API ----------
 
-  const getProfile = async () => {
-    setStatus(apiStatus.loading);
-
-    try {
-      const url = "https://event.backendportfolio.xyz/api/profile";
-      const options = {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({userId})
-      };
-
-      const res = await fetch(url, options);
-      if (!res.ok) throw new Error();
-
-      const data = await res.json();
-
-      setProfile(data);
-      setEmail(data.email || "");
-      setRole(data.role || "user");
-
-      setStatus(apiStatus.success);
-    } catch {
-      setStatus(apiStatus.failure);
-    }
-  };
-
-
-useEffect(() => {
-  const fetchProfile = async () => {
-    setStatus(apiStatus.loading);
+  getProfile = async () => {
+    this.setState({ status: apiStatus.loading });
 
     try {
       const res = await fetch(
         "https://event.backendportfolio.xyz/api/profile",
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${this.token}` },
         }
       );
 
@@ -97,86 +72,89 @@ useEffect(() => {
 
       const data = await res.json();
 
-      setProfile(data);
-      setEmail(data.email || "");
-      setRole(data.role || "user");
-
-      setStatus(apiStatus.success);
+      this.setState({
+        profile: data,
+        email: data.email || "",
+        role: data.role || "user",
+        status: apiStatus.success,
+      });
     } catch {
-      setStatus(apiStatus.failure);
+      this.setState({ status: apiStatus.failure });
     }
   };
 
-  fetchProfile();
-}, [token]); // ✅ only real dependency
+  updateProfile = async () => {
+    const { email, role } = this.state;
 
-  const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-  const updateProfile = async () => {
     try {
-      const url = "https://event.backendportfolio.xyz/api/update-profile";
-      const options = {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ email, role, userId }),
-      };
+      await fetch(
+        "https://event.backendportfolio.xyz/api/update-profile",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          },
+          body: JSON.stringify({ email, role }),
+        }
+      );
 
-      await fetch(url, options);
-      getProfile();
+      this.getProfile();
     } catch {}
   };
 
-  const handleUpload = async () => {
+  handleFileChange = (e) => {
+    this.setState({ file: e.target.files[0] });
+  };
+
+  handleUpload = async () => {
+    const { file } = this.state;
     if (!file) return;
 
     try {
-        const formData = new FormData();
-        formData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file); // ✅ must match backend
 
-        const res = await fetch(
-            "https://event.backendportfolio.xyz/api/profile/avatar",
-            {
-            method: "POST",
-            headers: {
-            Authorization: `Bearer ${token}`,
-            },
-            body: {formData,userId},
-            }
-         );
+      await fetch(
+        "https://event.backendportfolio.xyz/api/profile/avatar",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+          body: formData,
+        }
+      );
 
-        const data = await res.json();
-        setFile(data)
-        setShowUpload(false);
-        getProfile();
+      this.setState({
+        file: null,
+        showUpload: false,
+      });
+
+      this.getProfile();
     } catch (err) {
-    console.error(err);
+      console.error(err);
     }
-};
+  };
 
-  const deleteAvatar = async () => {
+  deleteAvatar = async () => {
     try {
-      const url = "https://event.backendportfolio.xyz/api/profile/avatar";
-      const options = {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-        body:JSON.stringify({userId})
-      };
+      await fetch(
+        "https://event.backendportfolio.xyz/api/profile/avatar",
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${this.token}` },
+        }
+      );
 
-      await fetch(url, options);
-
-      setShowDelete(false);
-      getProfile();
+      this.setState({ showDelete: false });
+      this.getProfile();
     } catch {}
   };
 
   // ---------- Views ----------
 
-  const renderLoading = () => (
+  renderLoading = () => (
     <Card>
       <Header>
         <SkeletonAvatar />
@@ -185,147 +163,174 @@ useEffect(() => {
           <SkeletonLine width="100px" />
         </div>
       </Header>
-
       <SkeletonCard />
       <SkeletonCard />
     </Card>
   );
 
-  const renderFailure = () => (
+  renderFailure = () => (
     <Card>
-       <iframe 
-         src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie" title="Failure" style={{border:"0px"}}>
-      </iframe>
-      <PrimaryBtn onClick={getProfile}>Retry</PrimaryBtn>
+      <iframe
+        src="https://lottie.host/embed/86d6b71b-5abd-457f-951f-7d35ae52689d/yf9HfTT6Ql.lottie"
+        title="Failure"
+        style={{ border: "0px" }}
+      />
+      <PrimaryBtn onClick={this.getProfile}>Retry</PrimaryBtn>
     </Card>
   );
 
-  const renderSuccess = () => (
-    <Card>
-      <Header>
-        <AvatarWrap onClick={() => setShowActions(true)}>
-          <Avatar src={profile?.avatarUrl} alt="avatar" />
-        </AvatarWrap>
+  renderSuccess = () => {
+    const {
+      profile,
+      email,
+      role,
+      file,
+      showActions,
+      showPreview,
+      showUpload,
+      showDelete,
+    } = this.state;
 
-        <div>
-          <Name>{profile?.name}</Name>
-          <SubText>Profile Settings</SubText>
-        </div>
-      </Header>
+    return (
+      <Card>
+        <Header>
+          <AvatarWrap onClick={() => this.setState({ showActions: true })}>
+            <Avatar
+              src={profile?.avatarUrl || "/default-avatar.png"}
+              alt="avatar"
+            />
+          </AvatarWrap>
 
-      {/* ---------- FORM ---------- */}
-      <Field>
-        <Label>Name (readonly)</Label>
-        <Input value={profile?.name} disabled />
-      </Field>
+          <div>
+            <Name>{profile?.name}</Name>
+            <SubText>Profile Settings</SubText>
+          </div>
+        </Header>
 
-      <Field>
-        <Label>Email</Label>
-        <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Field>
+        <Field>
+          <Label>Name</Label>
+          <Input value={profile?.name} disabled />
+        </Field>
 
-      <Field>
-        <Label>Role</Label>
-        <Select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="user">User</option>
-          <option value="developer">Developer</option>
-          <option value="organizer">Organizer</option>
-        </Select>
-      </Field>
+        <Field>
+          <Label>Email</Label>
+          <Input
+            value={email}
+            onChange={(e) => this.setState({ email: e.target.value })}
+          />
+        </Field>
 
-      <Row>
-        <PrimaryBtn onClick={updateProfile}>Save</PrimaryBtn>
-        <GhostBtn onClick={getProfile}>Reset</GhostBtn>
-      </Row>
+        <Field>
+          <Label>Role</Label>
+          <Select
+            value={role}
+            onChange={(e) => this.setState({ role: e.target.value })}
+          >
+            <option value="user">User</option>
+            <option value="developer">Developer</option>
+            <option value="organizer">Organizer</option>
+          </Select>
+        </Field>
 
-      {/* ---------- ACTION SHEET ---------- */}
-      {showActions && (
-        <Overlay onClick={() => setShowActions(false)}>
-          <ActionSheet onClick={(e) => e.stopPropagation()}>
-            <SheetBtn onClick={() => setShowPreview(true)}>View</SheetBtn>
-            <SheetBtn onClick={() => setShowUpload(true)}>Replace</SheetBtn>
-            <SheetBtn danger onClick={() => setShowDelete(true)}>
-              Delete
-            </SheetBtn>
-          </ActionSheet>
-        </Overlay>
-      )}
+        <Row>
+          <PrimaryBtn onClick={this.updateProfile}>Save</PrimaryBtn>
+          <GhostBtn onClick={this.getProfile}>Reset</GhostBtn>
+        </Row>
 
-      {/* ---------- FULL IMAGE ---------- */}
-      {showPreview && (
-        <Overlay onClick={() => setShowPreview(false)}>
-          <FullImage src={profile?.avatarUrl} />
-        </Overlay>
-      )}
+        {/* Actions */}
+        {showActions && (
+          <Overlay onClick={() => this.setState({ showActions: false })}>
+            <ActionSheet onClick={(e) => e.stopPropagation()}>
+              <SheetBtn onClick={() => this.setState({ showPreview: true })}>
+                View
+              </SheetBtn>
+              <SheetBtn onClick={() => this.setState({ showUpload: true })}>
+                Replace
+              </SheetBtn>
+              <SheetBtn onClick={() => this.setState({ showDelete: true })}>
+                Delete
+              </SheetBtn>
+            </ActionSheet>
+          </Overlay>
+        )}
 
-      {/* ---------- UPLOAD ---------- */}
-      {showUpload && (
-            <Overlay>
+        {/* Preview */}
+        {showPreview && (
+          <Overlay onClick={() => this.setState({ showPreview: false })}>
+            <FullImage src={profile?.avatarUrl} />
+          </Overlay>
+        )}
+
+        {/* Upload */}
+        {showUpload && (
+          <Overlay>
             <Modal style={{ background: "#ffffff" }}>
-            <ModalTitle>Upload New Avatar</ModalTitle>
+              <ModalTitle>Upload New Avatar</ModalTitle>
 
-            <div style={{ marginBottom: "12px" }}>
-            <input type="file" onChange={handleFileChange} />
-            </div>
+              <input type="file" onChange={this.handleFileChange} />
 
-            {file && (
+              {file && (
                 <img
-                    src={URL.createObjectURL(file)}
-                    alt="preview"
-                    style={{
+                  src={URL.createObjectURL(file)}
+                  alt="preview"
+                  style={{
                     width: "100px",
                     height: "100px",
                     borderRadius: "50%",
-                    marginBottom: "12px",
+                    marginTop: "10px",
                     objectFit: "cover",
-                }}
+                  }}
                 />
-            )}
+              )}
 
-            <ModalRow>
-            <PrimaryBtn onClick={handleUpload}>Upload</PrimaryBtn>
-            <GhostBtn onClick={() => setShowUpload(false)}>
-            Cancel
-            </GhostBtn>
-            </ModalRow>
+              <ModalRow>
+                <PrimaryBtn onClick={this.handleUpload}>
+                  Upload
+                </PrimaryBtn>
+                <GhostBtn
+                  onClick={() => this.setState({ showUpload: false })}
+                >
+                  Cancel
+                </GhostBtn>
+              </ModalRow>
             </Modal>
-            </Overlay>
-       )}
+          </Overlay>
+        )}
 
-      {/* ---------- DELETE ---------- */}
-      {showDelete && (
-        <Overlay>
-          <Modal>
-            <ModalTitle>Delete avatar?</ModalTitle>
-            <ModalRow>
-              <DangerBtn onClick={deleteAvatar}>Delete</DangerBtn>
-              <GhostBtn onClick={() => setShowDelete(false)}>
-                Cancel
-              </GhostBtn>
-            </ModalRow>
-          </Modal>
-        </Overlay>
-      )}
-    </Card>
-  );
+        {/* Delete */}
+        {showDelete && (
+          <Overlay>
+            <Modal>
+              <ModalTitle>Delete avatar?</ModalTitle>
+              <ModalRow>
+                <DangerBtn onClick={this.deleteAvatar}>Delete</DangerBtn>
+                <GhostBtn
+                  onClick={() => this.setState({ showDelete: false })}
+                >
+                  Cancel
+                </GhostBtn>
+              </ModalRow>
+            </Modal>
+          </Overlay>
+        )}
+      </Card>
+    );
+  };
 
-  const renderView = () => {
+  render() {
+    const { status } = this.state;
+
     switch (status) {
       case apiStatus.loading:
-        return renderLoading();
+        return <Page>{this.renderLoading()}</Page>;
       case apiStatus.success:
-        return renderSuccess();
+        return <Page>{this.renderSuccess()}</Page>;
       case apiStatus.failure:
-        return renderFailure();
+        return <Page>{this.renderFailure()}</Page>;
       default:
         return null;
     }
-  };
-
-  return <Page>{renderView()}</Page>;
-};
+  }
+}
 
 export default Profile;

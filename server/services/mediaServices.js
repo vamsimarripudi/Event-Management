@@ -5,14 +5,18 @@ const uploadToS3 = async (file) => {
   try {
     const s3 = await connectS3();
 
+
     const key = `profile/${Date.now()}-${file.originalname}`;
 
     const params = {
-      Bucket: process.env.S3_BUCKET,
+      Bucket: process.env.AWS_BUCKET_KEY,
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
+
+
+     
 
     await s3.send(new PutObjectCommand(params));
 

@@ -41,7 +41,9 @@ const updateProfile = async (req, res) => {
 const uploadAvatar = async(req,res) => {
     try{
         const file = req.file
-        
+        if (!file) {
+          return res.status(400).json({ message: "No file uploaded" }); // ✅ return
+        }
         const url = await uploadToS3(file);
         const user = await User.findByIdAndUpdate(
              req.id,
