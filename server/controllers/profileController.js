@@ -8,9 +8,9 @@ const getProfile = async (req, res) => {
       "name email role avatarUrl"
     );
 
-    res.json(user);
+    return res.json(user);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -51,9 +51,9 @@ const uploadAvatar = async(req,res) => {
             {returnDocument: "after"},
         );
 
-        res.json({avatarUrl: user.avatarUrl});
+       return res.json({avatarUrl: user.avatarUrl});
     }catch(err){
-        res.status(500).json({message: err.message})
+       return res.status(500).json({message: err.message})
     }
 
 }
@@ -67,9 +67,9 @@ const deleteAvatar = async (req, res) => {
       { returnDocument: "after" }
     );
 
-    res.json({ message: "Avatar removed" });
+   return res.json({ message: "Avatar removed" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
