@@ -12,7 +12,7 @@ const {setTransporter} = require("./services/emailTransporter");
 const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
 const adminRoutes = require("./routes/adminRoutes");
-const userRoutes = require("./routes/userRoute");
+const userRoute = require("./routes/userRoute");
 
 
 const PORT = process.env.PORT || 5000;
@@ -27,7 +27,7 @@ app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/api/feedback", feedbackRoute);
 app.use("/api/admin", adminRoutes);
-app.use("/api", userRoutes);
+app.use("/api", userRoute);
 
 
 app.get("/", (req,res) => {
