@@ -4,8 +4,7 @@ const {uploadToS3} = require("../services/mediaServices");
 const getProfile = async (req, res) => {
   
   try {
-    const {userId} = req.body;
-    const user = await User.findById(userId).select(
+    const user = await User.findById(req.id).select(
       "name email role avatarUrl"
     );
 
@@ -18,15 +17,13 @@ const getProfile = async (req, res) => {
 const updateProfile = async(req,res) => {
   
     try{
-        const{email,role,userId} = req.body
-
-
+        const{email,role} = req.body
         if(!email||!role){
             res.status(404).json({message: "Required all fields"})
         }
 
         const user = await User.findByIdAndUpdate(
-             userId,
+             req.id,
             {email,role},
             {returnDocument:"after"},
         );
@@ -40,10 +37,10 @@ const updateProfile = async(req,res) => {
 const uploadAvatar = async(req,res) => {
     try{
         const file = req.file
-        const {userId} = req.body;
+        
         const url = await uploadToS3(file);
         const user = await User.findByIdAndUpdate(
-          userId,
+             req.id,
             {avatarUrl:url},
             {returnDocument: "after"},
         );
@@ -57,9 +54,9 @@ const uploadAvatar = async(req,res) => {
 
 const deleteAvatar = async (req, res) => {
   try {
-    const userId = req.body;
+    
     await User.findByIdAndUpdate(
-      userId,
+      req.id,
       { avatarUrl: "" },
       { returnDocument: "after" }
     );
