@@ -16,7 +16,7 @@ const uploadToS3 = async (file) => {
     await s3.send(new PutObjectCommand(params));
 
     // 🔥 IMPORTANT: manually construct CDN URL
-    const url = `https://assets.vamsimarripudi.tech/${key}`;
+    const url = `https://assests.vamsimarripudi.tech/${key}`;
 
     return url;
 
