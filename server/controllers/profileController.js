@@ -4,7 +4,7 @@ const {uploadToS3} = require("../services/mediaServices");
 const getProfile = async (req, res) => {
   
   try {
-    const user = await User.findById(req.id)
+    const user = await User.findById(req.user.id)
 
     return res.json(user);
   } catch (err) {
@@ -21,7 +21,7 @@ const updateProfile = async (req, res) => {
     }
 
     const user = await User.findByIdAndUpdate(
-      req.user._id,
+      req.user.id,
       { email, role },
       { returnDocument: "after" }
     );
@@ -44,7 +44,7 @@ const uploadAvatar = async(req,res) => {
         }
         const url = await uploadToS3(file);
         const user = await User.findByIdAndUpdate(
-             req.id,
+             req.user.id,
             {avatarUrl:url},
             {returnDocument: "after"},
         );
@@ -60,7 +60,7 @@ const deleteAvatar = async (req, res) => {
   try {
     
     await User.findByIdAndUpdate(
-      req.id,
+      req.user.id,
       { avatarUrl: "" },
       { returnDocument: "after" }
     );
