@@ -1,4 +1,5 @@
 const multer = require("multer");
+const path = require("path")
 
 // memory storage (since you're sending buffer to S3)
 const storage = multer.memoryStorage();
