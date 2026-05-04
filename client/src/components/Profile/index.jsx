@@ -1,5 +1,13 @@
 import { Component } from "react";
 
+
+import {
+  HighlightRing,
+  Ripple,
+  NewBadge,
+  Hint,
+} from "./onboardingStyles";
+
 import {
   Page,
   Card,
@@ -42,7 +50,9 @@ class Profile extends Component {
     email: "",
     role: "user",
     file: null,
-
+    showOnboarding:false,
+    showRipple:false,
+    highlightActive:false,
     showActions: false,
     showPreview: false,
     showUpload: false,
@@ -52,9 +62,58 @@ class Profile extends Component {
   token = localStorage.getItem("token");
 
   componentDidMount() {
+    const data = JSON.parse(localStorage.getItem("profile_onboarding")) || {};
+    
+    const now = Date.now()
+    const isExpired = data.expiry && now > data.expiry;
+    const isSeen = data.seen;
+
+    if(!isSeen && !isExpired){
+      this.setState({
+        showOnboarding:true,
+        highlightActive:true,
+      })
+
+      setTimeout(()=> {
+        this.setState({
+          highlightActive:false
+        });
+      },2000)
+    }
+
     this.getProfile();
   }
 
+  markOnboardingSeen = () => {
+    const now = Date.now();
+
+      localStorage.setItem(
+      "profile_onboarding",
+      JSON.stringify({
+      seen: true,
+      expiry: now + 24 * 60 * 60 * 1000, // 24h fallback
+      })
+      );
+
+    this.setState({ showOnboarding: false });
+    };
+
+    
+  handleAvatarClick = () => {
+    const { showOnboarding } = this.state;
+
+    if (showOnboarding) {
+    this.setState({ showRipple: true });
+
+    this.markOnboardingSeen();
+
+    setTimeout(() => {
+    this.setState({ showRipple: false });
+    }, 600);
+    }
+  }
+
+//
   // ---------- API ----------
 
   getProfile = async () => {
@@ -194,16 +253,24 @@ class Profile extends Component {
     return (
       <Card>
         <Header>
-          <AvatarWrap onClick={() => this.setState({ showActions: true })}>
-            <Avatar
-              src={profile?.avatarUrl || "/default-avatar.png"}
-              alt="avatar"
-            />
+          <AvatarWrap onClick={this.handleAvatarClick}>
+              <Avatar src={profile.avatarUrl} alt="avatar" />
+
+              {this.state.showOnboarding && this.state.highlightActive && (
+              <HighlightRing />
+              )}
+
+              {this.state.showOnboarding && <NewBadge>NEW</NewBadge>}
+
+              {this.state.showRipple && <Ripple />}
           </AvatarWrap>
 
           <div>
             <Name>{profile?.name}</Name>
             <SubText>Profile Settings</SubText>
+            {this.state.showOnboarding && (
+              <Hint>Click to manage your profile</Hint>
+            )}
           </div>
         </Header>
 
