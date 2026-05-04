@@ -1,18 +1,68 @@
 const User = require("../models/User");
+const {uploadToS3} = require("../services/mediaServices");
 
-const getUserProfile = async(req,res)=>{
-    const {id} = req.body
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select(
+      "name email role avatarUrl"
+    );
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const updateProfile = async(req,res) => {
     try{
-        
-        const user = await User.findById(id).select("-password");
-        if(!user){
-          return  res.status(404).json({message: "User Not Found"})
+        const{email,role} = req.body
+
+        if(!email||!role){
+            res.status(404).json({message: "Required all fields"})
         }
-       return res.json(user)
-    }
-    catch(err){
-        res.json(err.message);
+
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            {email,role},
+            {returnDocument:"after"},
+        );
+
+        return res.json(user)
+    }catch(err){
+        res.status(500).json({message: err.message});
     }
 }
 
-module.exports = {getUserProfile};
+const uploadAvatar = async(req,res) => {
+    try{
+        const file = req.file
+
+        const url = await uploadToS3(file);
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            {avatarUrl:url},
+            {returnDocument: "after"},
+        );
+
+        res.json({avatarUrl: user.avatarUrl});
+    }catch(err){
+        res.status(500).json({message: err.message})
+    }
+
+}
+
+const deleteAvatar = async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      req.user._id,
+      { avatarUrl: "" },
+      { returnDocument: "after" }
+    );
+
+    res.json({ message: "Avatar removed" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = {getProfile,updateProfile,uploadAvatar,deleteAvatar};

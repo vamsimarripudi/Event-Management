@@ -10,6 +10,15 @@ email: {
     required: true,
     unique: true,
     },
+role :{
+    type:String,
+    enum:["user","developer","organizer"],
+    default:"user"
+},
+avatarUrl:{
+    type:String,
+    default:""
+},
 password: {
     type: String,
     required: true,      

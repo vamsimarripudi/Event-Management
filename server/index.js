@@ -13,7 +13,6 @@ const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoute");
-const mediaRoutes = require("./routes/mediaRoute");
 
 
 const PORT = process.env.PORT || 5000;
@@ -29,7 +28,6 @@ app.use("/api/registration", registrationRoutes);
 app.use("/api/user", feedbackRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
-app.use("api/media", mediaRoutes)
 
 
 app.get("/", (req,res) => {
@@ -67,6 +65,16 @@ app.get("/api/secret", verifyToken, (req,res) => {
     }
 
 });
+
+app.use((err, req, res, next) => {
+  if (err.message.includes("Only")) {
+    return res.status(400).json({ message: err.message });
+  }
+
+  console.error(err);
+  res.status(500).json({ message: "Server Error" });
+});
+
 
 const startServer = async () => {
   try {

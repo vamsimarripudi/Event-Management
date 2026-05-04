@@ -1,9 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../middleware/token");
-const {getUserProfile} = require("../controllers/profileController");
+const {
+  getProfile,
+  updateProfile,
+  uploadAvatar,
+  deleteAvatar,
+} = require("../controllers/profileController");
 
-router.get('/profile',verifyToken,getUserProfile);
+
+const upload = require("../services/fileFilter"); // multer
+
+router.get("/profile", verifyToken, getProfile);
+router.put("/update-profile", verifyToken, updateProfile);
+router.post("/profile/avatar",verifyToken, upload.single("file"), uploadAvatar);
+router.delete("/profile/avatar", verifyToken, deleteAvatar);
 
 module.exports = router;
+
+
 
