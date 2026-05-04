@@ -58,7 +58,7 @@ const Profile = () => {
     setStatus(apiStatus.loading);
 
     try {
-      const url = "https://event.backendportfolio.xyz/api/user/profile";
+      const url = "https://event.backendportfolio.xyz/api/profile";
       const options = {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
@@ -87,7 +87,7 @@ useEffect(() => {
 
     try {
       const res = await fetch(
-        "https://event.backendportfolio.xyz/api/user/profile",
+        "https://event.backendportfolio.xyz/api/profile",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -116,7 +116,7 @@ useEffect(() => {
 
   const updateProfile = async () => {
     try {
-      const url = "https://event.backendportfolio.xyz/api/user/update-profile";
+      const url = "https://event.backendportfolio.xyz/api/update-profile";
       const options = {
         method: "PUT",
         headers: {
@@ -139,7 +139,7 @@ useEffect(() => {
         formData.append("file", file);
 
         const res = await fetch(
-            "https://event.backendportfolio.xyz/api/user/profile/avatar",
+            "https://event.backendportfolio.xyz/api/profile/avatar",
             {
             method: "POST",
             headers: {
@@ -160,7 +160,7 @@ useEffect(() => {
 
   const deleteAvatar = async () => {
     try {
-      const url = "https://event.backendportfolio.xyz/api/user/profile/avatar";
+      const url = "https://event.backendportfolio.xyz/api/profile/avatar";
       const options = {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
