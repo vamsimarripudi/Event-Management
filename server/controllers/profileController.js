@@ -14,25 +14,29 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async(req,res) => {
-  
-    try{
-        const{email,role} = req.body
-        if(!email||!role){
-            res.status(404).json({message: "Required all fields"})
-        }
+const updateProfile = async (req, res) => {
+  try {
+    const { email, role } = req.body;
 
-        const user = await User.findByIdAndUpdate(
-             req.id,
-            {email,role},
-            {returnDocument:"after"},
-        );
-
-        return res.json(user)
-    }catch(err){
-        res.status(500).json({message: err.message});
+    if (!email) {
+      return res.status(400).json({ error: "Email required" }); // ✅ return
     }
-}
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { email, role },
+      { returnDocument: "after" }
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" }); // ✅ return
+    }
+
+    return res.status(200).json(user); // ✅ single response
+  } catch (err) {
+    return res.status(500).json({ error: err.message }); // ✅ no next()
+  }
+};
 
 const uploadAvatar = async(req,res) => {
     try{

@@ -27,7 +27,7 @@ import {
   SkeletonCard,
   SkeletonAvatar,
   SkeletonLine,
-  ErrorBox,
+  
 } from "./styledComponents";
 
 const apiStatus = {
@@ -80,13 +80,35 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-    await getProfile();
+
+useEffect(() => {
+  const fetchProfile = async () => {
+    setStatus(apiStatus.loading);
+
+    try {
+      const res = await fetch(
+        "https://event.backendportfolio.xyz/api/user/profile",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+
+      setProfile(data);
+      setEmail(data.email || "");
+      setRole(data.role || "user");
+
+      setStatus(apiStatus.success);
+    } catch {
+      setStatus(apiStatus.failure);
+    }
   };
 
   fetchProfile();
-  }, []);
+}, [token]); // ✅ only real dependency
 
   const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -125,10 +147,10 @@ const Profile = () => {
             },
             body: {formData,userId},
             }
-    );
+         );
 
         const data = await res.json();
-
+        setFile(data)
         setShowUpload(false);
         getProfile();
     } catch (err) {
