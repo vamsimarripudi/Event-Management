@@ -108,7 +108,7 @@ const submitFeedback = async (req, res) => {
       page,
     });
 
-    console.log("✅ Feedback saved:", feedback._id);
+    
 
     // ✅ Send styled email to user
     if (userId) {
@@ -144,7 +144,7 @@ const submitFeedback = async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+    
     return res.status(500).json({ message: err.message });
   }
 };

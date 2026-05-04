@@ -18,28 +18,28 @@ const startWorker = async () => {
     // 1. DB
     const MONGO_URI = await getSecret("/event-api/MONGO_URL");
     await mongoose.connect(MONGO_URI);
-    console.log("✅ Worker DB Connected");
+    
 
     // 2. AI
     await initAI();
-    console.log("✅ AI Initialized");
+    
 
     // 3. Mail
     await initMailer();
-    console.log("✅ Mail Transporter Ready");
+    
 
     const worker = new Worker(
       "feedback-queue",
       async (job) => {
         const { feedbackId } = job.data;
 
-        console.log("🚀 Worker started for:", feedbackId);
+        
 
         try {
           const feedback = await WebsiteFeedback.findById(feedbackId);
 
           if (!feedback) {
-            console.log("❌ Feedback not found");
+            
             return;
           }
 
@@ -48,7 +48,7 @@ const startWorker = async () => {
           // ---- AI ----
           let analysis = {};
           try {
-            console.log("🧠 Running AI...");
+            
             analysis = await analyzeFeedback(feedback.message);
           } catch (err) {
             console.error("❌ AI ERROR:", err.message);
@@ -78,7 +78,7 @@ const startWorker = async () => {
             throw new Error("Update failed");
           }
 
-          console.log("💾 DB updated:", updated._id);
+          
 
           // ---- EMAIL ----
           try {
@@ -90,7 +90,7 @@ const startWorker = async () => {
               html,
             });
 
-            console.log("📩 ADMIN EMAIL SENT");
+            
           } catch (err) {
             console.error("❌ EMAIL ERROR:", err.message);
           }
@@ -111,7 +111,7 @@ const startWorker = async () => {
       console.error("❌ Job failed:", err.message);
     });
 
-    console.log("🧠 Worker is running...");
+    
   } catch (err) {
     console.error("❌ Worker startup failed:", err);
     process.exit(1);

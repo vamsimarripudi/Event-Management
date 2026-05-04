@@ -11,7 +11,7 @@ const initAI = async () => {
     apiKey,
   });
 
-  console.log("AI initialized ✅");
+  
 };
 
 const getAI = () => {
@@ -197,7 +197,7 @@ const analyzeFeedback = async (message) => {
 };
 
 const buildAdminReport = ({ feedback }) => {
-  console.log(feedback);
+  
 
   return `
   <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:20px;">

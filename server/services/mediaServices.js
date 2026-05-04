@@ -4,8 +4,6 @@ const { PutObjectCommand } = require("@aws-sdk/client-s3");
 const uploadToS3 = async (file) => {
   try {
     const s3 = await connectS3();
-
-
     const key = `profile/${Date.now()}-${file.originalname}`;
 
     const params = {
@@ -14,9 +12,6 @@ const uploadToS3 = async (file) => {
       Body: file.buffer,
       ContentType: file.mimetype,
     };
-
-
-     
 
     await s3.send(new PutObjectCommand(params));
 

@@ -80,20 +80,20 @@ const startServer = async () => {
   try {
 {/*----------------------------------------------*/}
 
-    console.log("Connecting DB...");
+    
     await connectDB();
-    console.log("Database is Live..")
+    
 
 {/*----------------------------------------------*/}
 
-    console.log("Initializing mailer...");
+    
     const transporter = await initMailer();
-    console.log("Transporter Connected")
+   
 
 {/*----------------------------------------------*/}
 
     setTransporter(transporter);
-    console.log("Transporter Sent to getTransportor");
+    
 
 {/*----------------------------------------------*/}
 
@@ -103,7 +103,7 @@ const startServer = async () => {
 
 {/*----------------------------------------------*/}
 
-    console.log("Starting server...");
+    
     app.listen(PORT, () => {
       console.log("Server running on port 5000");
     });

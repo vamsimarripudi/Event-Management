@@ -44,7 +44,7 @@ const login = async(req,res) => {
             return res.status(400).json({message: "Invalid Credentials"})
         }
 
-        console.log(user._id)
+        
 
         const jwtToken = jwt.sign(
             {id:user._id},
