@@ -13,6 +13,7 @@ const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoute");
+const mediaRoutes = require("./routes/mediaRoute");
 
 
 const PORT = process.env.PORT || 5000;
@@ -25,10 +26,10 @@ app.use(express.static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
-app.use("/api/user/", feedbackRoute);
+app.use("/api/user", feedbackRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
-
+app.use("api/media", mediaRoutes)
 
 
 app.get("/", (req,res) => {
