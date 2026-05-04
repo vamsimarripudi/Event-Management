@@ -113,7 +113,7 @@ class Profile extends Component {
 
     try {
       const formData = new FormData();
-      formData.append("file", file); // ✅ must match backend
+      formData.append("avatar", file); // ✅ must match backend
 
       await fetch(
         "https://event.backendportfolio.xyz/api/profile/avatar",

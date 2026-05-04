@@ -13,7 +13,7 @@ const upload = require("../services/fileFilter"); // multer
 
 router.get("/profile", verifyToken, getProfile);
 router.put("/update-profile", verifyToken, updateProfile);
-router.post("/profile/avatar",verifyToken, upload.single("file"), uploadAvatar);
+router.post("/profile/avatar",verifyToken, upload.single("avatar"), uploadAvatar);
 router.delete("/profile/avatar", verifyToken, deleteAvatar);
 
 module.exports = router;

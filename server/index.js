@@ -25,7 +25,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRoutes);
 app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
-app.use("/api/user", feedbackRoute);
+app.use("/api/feedback", feedbackRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api", userRoutes);
 
