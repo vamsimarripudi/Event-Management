@@ -27,7 +27,7 @@ app.use("/api/event", eventRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/api/user", feedbackRoute);
 app.use("/api/admin", adminRoutes);
-app.use("/api/user", userRoutes);
+app.use("/api", userRoutes);
 
 
 app.get("/", (req,res) => {
