@@ -85,3 +85,16 @@ export const Layout = styled.div`
     flex-direction: column;
   }
 `;
+
+export const NewBadge = styled.span`
+  margin-left: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  
+  line-height: 1;
+`;

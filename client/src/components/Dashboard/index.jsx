@@ -14,6 +14,7 @@ import {
   TabButton,
   ContentWrapper,
   Layout,
+  NewBadge
 } from "./styledComponents";
 
 const Dashboard = () => {
@@ -52,13 +53,13 @@ const Dashboard = () => {
               $active={activeTab === "profile"}
               onClick={() => setActiveTab("profile")}
             >
-              Profile
+              Profile <NewBadge>NEW</NewBadge>
             </TabButton>
             <TabButton
               $active={activeTab === "analytics"}
               onClick={() => setActiveTab("analytics")}
               >
-                Analytics
+                Analytics <NewBadge>NEW</NewBadge>
             </TabButton>
           </Tabs>
 
