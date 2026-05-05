@@ -8,6 +8,6 @@ const feedbackLimiter = rateLimit({
   max: 20, // max 20 submissions per IP
 });
 
-router.post("/feedback",feedbackLimiter,submitFeedback)
+router.post("/feed",feedbackLimiter,submitFeedback)
 router.get("/api/feedback", getAllFeedback)
 module.exports = router;
