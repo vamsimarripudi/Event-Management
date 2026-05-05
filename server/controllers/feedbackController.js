@@ -263,7 +263,7 @@ const getFeedbackAnalytics = async (req, res) => {
       {$sort: {"_id.month": 1, "_id.day": 1}},
     ])
 
-    const max = Math.max(...trendAgg.map(id => d.count),1 );
+    const max = Math.max(...trendAgg.map(d => d.count),1 );
 
     const trend = trendAgg.map((id) => ({
       value: Math.round((d.count/max)*100)

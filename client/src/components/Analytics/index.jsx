@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { Component } from "react";
 import {
   Container,
   TopBar,
@@ -20,99 +20,116 @@ import {
 
 const filters = ["7d", "30d", "all"];
 
-const Analytics = () => {
-  const [activeFilter, setActiveFilter] = useState("7d");
-  const [data, setData] = useState(null);
+class Analytics extends Component {
+  state = {
+    activeFilter: "7d",
+    data: null,
+  };
 
-  const token = localStorage.getItem("token");
+  componentDidMount() {
+    this.fetchAnalytics(this.state.activeFilter);
+  }
 
-  const fetchAnalytics = async (range) => {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.activeFilter !== this.state.activeFilter) {
+      this.fetchAnalytics(this.state.activeFilter);
+    }
+  }
+
+  fetchAnalytics = async (range) => {
     try {
-      const url = `/api/feedback/analytics?range=${range}`;
+      const token = localStorage.getItem("token");
+
+      const url = `https://event.backendportfolio.xyz/api/feedback/analytics?range=${range}`;
+
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const json = await res.json();
-      setData(json);
+
+      this.setState({ data: json });
     } catch (err) {
       console.error(err);
     }
   };
 
-  useEffect(() => {
-    fetchAnalytics(activeFilter);
-  }, [activeFilter]);
+  setFilter = (filter) => {
+    this.setState({ activeFilter: filter });
+  };
 
-  if (!data) return <Container>Loading...</Container>;
+  render() {
+    const { activeFilter, data } = this.state;
 
-  return (
-    <Container>
-      {/* ---------- Filter ---------- */}
-      <TopBar>
-        {filters.map((f) => (
-          <FilterButton
-            key={f}
-            active={f === activeFilter}
-            onClick={() => setActiveFilter(f)}
-          >
-            {f.toUpperCase()}
-          </FilterButton>
-        ))}
-      </TopBar>
+    if (!data) return <Container>Loading...</Container>;
 
-      {/* ---------- Stats ---------- */}
-      <Grid>
-        <Card>
-          <Title>Total</Title>
-          <StatValue>{data.totalFeedback}</StatValue>
-        </Card>
-
-        <Card>
-          <Title>Rating</Title>
-          <StatValue>{data.avgRating}</StatValue>
-        </Card>
-
-        <Card>
-          <Title>Positive</Title>
-          <StatValue>{data.sentiment.positive}%</StatValue>
-        </Card>
-      </Grid>
-
-      {/* ---------- Mini Trend Chart ---------- */}
-      <Section>
-        <SectionTitle>Trend</SectionTitle>
-
-        <ChartWrapper>
-          {data.trend?.map((point, index) => (
-            <ChartPoint
-              key={index}
-              style={{ height: `${point.value}%` }}
-            />
+    return (
+      <Container>
+        {/* ---------- Filter ---------- */}
+        <TopBar>
+          {filters.map((f) => (
+            <FilterButton
+              key={f}
+              active={f === activeFilter}
+              onClick={() => this.setFilter(f)}
+            >
+              {f.toUpperCase()}
+            </FilterButton>
           ))}
+        </TopBar>
 
-          <ChartLine />
-        </ChartWrapper>
-      </Section>
+        {/* ---------- Stats ---------- */}
+        <Grid>
+          <Card>
+            <Title>Total</Title>
+            <StatValue>{data?.totalFeedback}</StatValue>
+          </Card>
 
-      {/* ---------- Sentiment Bars ---------- */}
-      <Section>
-        <SectionTitle>Sentiment</SectionTitle>
+          <Card>
+            <Title>Rating</Title>
+            <StatValue>{data?.avgRating}</StatValue>
+          </Card>
 
-        {["positive", "neutral", "negative"].map((key) => (
-          <BarRow key={key}>
-            <BarLabel>
-              {key} ({data.sentiment[key]}%)
-            </BarLabel>
+          <Card>
+            <Title>Positive</Title>
+            <StatValue>{data?.sentiment?.positive}%</StatValue>
+          </Card>
+        </Grid>
 
-            <BarTrack>
-              <BarFill value={data.sentiment[key]} />
-            </BarTrack>
-          </BarRow>
-        ))}
-      </Section>
-    </Container>
-  );
-};
+        {/* ---------- Mini Trend Chart ---------- */}
+        <Section>
+          <SectionTitle>Trend</SectionTitle>
+
+          <ChartWrapper>
+            {data?.trend?.map((point, index) => (
+              <ChartPoint
+                key={index}
+                style={{ height: `${point.value}%` }}
+              />
+            ))}
+            <ChartLine />
+          </ChartWrapper>
+        </Section>
+
+        {/* ---------- Sentiment Bars ---------- */}
+        <Section>
+          <SectionTitle>Sentiment</SectionTitle>
+
+          {["positive", "neutral", "negative"].map((key) => (
+            <BarRow key={key}>
+              <BarLabel>
+                {key} ({data?.sentiment[key]}%)
+              </BarLabel>
+
+              <BarTrack>
+                <BarFill value={data?.sentiment[key]} />
+              </BarTrack>
+            </BarRow>
+          ))}
+        </Section>
+      </Container>
+    );
+  }
+}
 
 export default Analytics;
