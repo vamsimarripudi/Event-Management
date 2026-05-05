@@ -254,7 +254,7 @@ class Profile extends Component {
       <Card>
         <Header>
           <AvatarWrap onClick={this.handleAvatarClick}>
-              <Avatar src={profile.avatarUrl} alt="avatar" />
+              <Avatar src={profile.avatarUrl} alt="avatar" onClick={() => this.setState({showActions : true})}  />
 
               {this.state.showOnboarding && this.state.highlightActive && (
               <HighlightRing />
@@ -334,7 +334,7 @@ class Profile extends Component {
             <Modal style={{ background: "#ffffff" }}>
               <ModalTitle>Upload New Avatar</ModalTitle>
 
-              <input type="file" onChange={this.handleFileChange} />
+              <input type="file" onChange={this.handleFileChange} style={{margin:"10px"}} />
 
               {file && (
                 <img
