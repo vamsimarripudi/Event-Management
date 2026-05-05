@@ -157,28 +157,27 @@ const getAllFeedback = async(req,res)=>{
 
 const getFeedbackAnalytics = async (req, res) => {
   try {
-
-    const range = req.query.range || "7d"
+    const range = req.query.range || "7d";
 
     let dateFilter = {};
-    const now = new Date()
-
-    if(range ==="7d"){
+    
+    if (range === "7d") {
       const d = new Date();
       d.setDate(d.getDate() - 7);
-      dateFilter.createdAt = {$gte: d};
-    }else if(range === "30d"){
-      const d = new Date()
-      d.setDate(d.getDate() -7)
-      dateFilter.createdAt = {$gte: d};
+      dateFilter.createdAt = { $gte: d };
+    } else if (range === "30d") {
+      const d = new Date();
+      d.setDate(d.getDate() - 30); // ✅ fixed
+      dateFilter.createdAt = { $gte: d };
     }
+    // "all" → no filter
 
-
-    const total = await WebsiteFeedback.countDocuments();
+    // 1. total (FILTERED — important)
+    const total = await WebsiteFeedback.countDocuments(dateFilter);
 
     // 2. average rating
     const avgData = await WebsiteFeedback.aggregate([
-      {$match: dateFilter},
+      { $match: dateFilter },
       {
         $group: {
           _id: null,
@@ -191,7 +190,7 @@ const getFeedbackAnalytics = async (req, res) => {
 
     // 3. sentiment counts
     const sentimentData = await WebsiteFeedback.aggregate([
-      {$match: dateFilter},
+      { $match: dateFilter },
       {
         $group: {
           _id: "$sentiment",
@@ -207,10 +206,12 @@ const getFeedbackAnalytics = async (req, res) => {
     };
 
     sentimentData.forEach((item) => {
-      sentiment[item._id] = item.count;
+      if (sentiment.hasOwnProperty(item._id)) {
+        sentiment[item._id] = item.count;
+      }
     });
 
-    // convert to percentage
+    // convert to percentage (safe)
     Object.keys(sentiment).forEach((key) => {
       sentiment[key] = total
         ? Math.round((sentiment[key] / total) * 100)
@@ -219,7 +220,7 @@ const getFeedbackAnalytics = async (req, res) => {
 
     // 4. top issues
     const issuesData = await WebsiteFeedback.aggregate([
-      {$match: dateFilter},
+      { $match: dateFilter },
       { $unwind: "$issues" },
       {
         $group: {
@@ -235,7 +236,7 @@ const getFeedbackAnalytics = async (req, res) => {
 
     // 5. top suggestions
     const suggestionData = await WebsiteFeedback.aggregate([
-      { $match : dateFilter},
+      { $match: dateFilter },
       { $unwind: "$suggestions" },
       {
         $group: {
@@ -249,39 +250,47 @@ const getFeedbackAnalytics = async (req, res) => {
 
     const topSuggestions = suggestionData.map((i) => i._id);
 
+    // 6. trend
     const trendAgg = await WebsiteFeedback.aggregate([
-      { $match: dateFilter},
+      { $match: dateFilter },
       {
         $group: {
-          _id:{
-            day: {$dayOfMonth: "$createdAt"},
-            month: {$month: "$createdAt"},
+          _id: {
+            day: { $dayOfMonth: "$createdAt" },
+            month: { $month: "$createdAt" },
           },
-          count : {$sum: 1},
+          count: { $sum: 1 },
         },
       },
-      {$sort: {"_id.month": 1, "_id.day": 1}},
-    ])
+      { $sort: { "_id.month": 1, "_id.day": 1 } },
+    ]);
 
-    const max = Math.max(...trendAgg.map(d => d.count),1 );
+    const max = Math.max(...trendAgg.map((d) => d.count), 1);
 
-    const trend = trendAgg.map((id) => ({
-      value: Math.round((d.count/max)*100)
-    }))
+    const trend = trendAgg.map((d) => ({
+      value: Math.round((d.count / max) * 100),
+    }));
 
+    // FINAL RESPONSE (stable shape)
     res.json({
-      totalFeedback: total,
-      avgRating: Number(avgRating.toFixed(1)),
-      sentiment,
-      topIssues,
-      topSuggestions,
-      trend
+      totalFeedback: total || 0,
+      avgRating: Number(avgRating.toFixed(1)) || 0,
+      sentiment: sentiment || {
+        positive: 0,
+        neutral: 0,
+        negative: 0,
+      },
+      topIssues: topIssues || [],
+      topSuggestions: topSuggestions || [],
+      trend: trend || [],
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Analytics error" });
+    console.error("ANALYTICS ERROR:", err);
+    res.status(500).json({
+      message: "Analytics error",
+      error: err.message, // expose for debugging
+    });
   }
 };
-
 
 module.exports = { submitFeedback, getAllFeedback, getFeedbackAnalytics };
