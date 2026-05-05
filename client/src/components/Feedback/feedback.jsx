@@ -1,38 +1,44 @@
 import { useState } from "react";
 import Popup from "reactjs-popup";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "reactjs-popup/dist/index.css";
 import StarRating from "./ratingFile";
+
 import {
-    FloatingButton,
-    ModalContainer,
-    Title,
-    Label,
-    
-    Select,
-    Textarea,
-    ButtonRow,
-    CancelBtn,
-    SubmitBtn
+  FloatingButton,
+  ModalContainer,
+  Title,
+  Label,
+  Select,
+  Textarea,
+  ButtonRow,
+  CancelBtn,
+  SubmitBtn,
+  RatingText, // ✅ make sure this exists in styledComponents
+  ErrorText,  // optional (recommended)
 } from "./styledComponents";
 
-import RatingText from "./ratingFile"
-
-const  FeedbackPopup = () => {
+const FeedbackPopup = () => {
   const [rating, setRating] = useState(5);
   const [category, setCategory] = useState("general");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const location = useLocation()
+  const [error, setError] = useState("");
+
+  const location = useLocation();
+
   const handleSubmit = async (close) => {
     if (!message.trim()) {
-      alert("Please enter feedback");
+      setError("Please enter feedback");
       return;
     }
 
     try {
       setLoading(true);
-      const userId = localStorage.getItem("userId")
+      setError("");
+
+      const userId = localStorage.getItem("userId");
+
       const res = await fetch(
         "https://event.backendportfolio.xyz/api/feedback/feed",
         {
@@ -44,7 +50,7 @@ const  FeedbackPopup = () => {
             rating,
             category,
             message,
-            page: window.location.pathname,
+            page: location.pathname,
             userId,
           }),
         }
@@ -53,32 +59,40 @@ const  FeedbackPopup = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || "Failed");
+        throw new Error(data.message || "Failed to submit feedback");
       }
 
-      alert("Feedback submitted successfully");
+      // ✅ Reset state
       setMessage("");
-      close();
+      setRating(5);
+      setCategory("general");
+
+      close(); // close modal cleanly
 
     } catch (err) {
       console.error(err);
-      alert(err.message || "Error submitting feedback");
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
-  const hiddenRoutes = ["/login", "/register", "/forgot-password", "/reset-password/", "/not-found"];
+  const hiddenRoutes = [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/not-found",
+  ];
 
-  // ❌ Hide on auth pages
-  const shouldHide = hiddenRoutes.some(route =>
+  const shouldHide = hiddenRoutes.some((route) =>
     location.pathname.startsWith(route)
   );
 
   if (shouldHide) return null;
 
   return (
-    <Popup 
+    <Popup
       trigger={<FloatingButton>Feedback</FloatingButton>}
       modal
       nested
@@ -87,7 +101,7 @@ const  FeedbackPopup = () => {
         <ModalContainer>
           <Title>Give Feedback</Title>
 
-          {/* ⭐ Star Rating */}
+          {/* ⭐ Rating */}
           <Label>Rating</Label>
           <StarRating value={rating} onChange={setRating} />
           <RatingText>{rating} / 5</RatingText>
@@ -104,18 +118,26 @@ const  FeedbackPopup = () => {
           </Select>
 
           {/* Message */}
-        
           <Label>Message</Label>
           <Textarea
-            placeholder="Your feedback..."
+            placeholder="Describe your experience..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
 
-          {/* Buttons */}
+          {/* Error */}
+          {error && <ErrorText>{error}</ErrorText>}
+
+          {/* Actions */}
           <ButtonRow>
-            <CancelBtn onClick={close}>Cancel</CancelBtn>
-            <SubmitBtn onClick={() => handleSubmit(close)} disabled={loading}>
+            <CancelBtn onClick={close} disabled={loading}>
+              Cancel
+            </CancelBtn>
+
+            <SubmitBtn
+              onClick={() => handleSubmit(close)}
+              disabled={loading}
+            >
               {loading ? "Submitting..." : "Submit"}
             </SubmitBtn>
           </ButtonRow>
@@ -123,6 +145,6 @@ const  FeedbackPopup = () => {
       )}
     </Popup>
   );
-}
+};
 
-export default FeedbackPopup
+export default FeedbackPopup;

@@ -16,6 +16,18 @@ export const FloatingButton = styled.button`
     background: #333;
   }
 `;
+
+export const RatingText = styled.div`
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 10px;
+`;
+
+export const ErrorText = styled.div`
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 6px;
+`;
 export const ModalContainer = styled.div`
   width: 100%;
   padding: 24px;
