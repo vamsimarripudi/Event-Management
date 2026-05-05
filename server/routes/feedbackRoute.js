@@ -1,6 +1,6 @@
 const express = require("express")
 const router = express.Router()
-const {submitFeedback,getAllFeedback} = require("../controllers/feedbackController");
+const {submitFeedback,getAllFeedback, getFeedbackAnalytics} = require("../controllers/feedbackController");
 const rateLimit = require("express-rate-limit");
 
 const feedbackLimiter = rateLimit({
@@ -10,4 +10,5 @@ const feedbackLimiter = rateLimit({
 
 router.post("/feed",feedbackLimiter,submitFeedback)
 router.get("/api/feedback", getAllFeedback)
+router.get("/analytics", verifyToken, getFeedbackAnalytics);
 module.exports = router;

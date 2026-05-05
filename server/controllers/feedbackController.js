@@ -155,4 +155,133 @@ const getAllFeedback = async(req,res)=>{
   res.json(data)
 }
 
-module.exports = { submitFeedback, getAllFeedback };
+const getFeedbackAnalytics = async (req, res) => {
+  try {
+
+    const range = req.query.range || "7d"
+
+    let dateFilter = {};
+    const now = new Date()
+
+    if(range ==="7d"){
+      const d = new Date();
+      d.setDate(d.getDate() - 7);
+      dateFilter.createdAt = {$gte: d};
+    }else if(range === "30d"){
+      const d = new Date()
+      d.setDate(d.getDate() -7)
+      dateFilter.createdAt = {$gte: d};
+    }
+
+
+    const total = await WebsiteFeedback.countDocuments();
+
+    // 2. average rating
+    const avgData = await WebsiteFeedback.aggregate([
+      {$match: dateFilter},
+      {
+        $group: {
+          _id: null,
+          avgRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    const avgRating = avgData[0]?.avgRating || 0;
+
+    // 3. sentiment counts
+    const sentimentData = await WebsiteFeedback.aggregate([
+      {$match: dateFilter},
+      {
+        $group: {
+          _id: "$sentiment",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    let sentiment = {
+      positive: 0,
+      neutral: 0,
+      negative: 0,
+    };
+
+    sentimentData.forEach((item) => {
+      sentiment[item._id] = item.count;
+    });
+
+    // convert to percentage
+    Object.keys(sentiment).forEach((key) => {
+      sentiment[key] = total
+        ? Math.round((sentiment[key] / total) * 100)
+        : 0;
+    });
+
+    // 4. top issues
+    const issuesData = await WebsiteFeedback.aggregate([
+      {$match: dateFilter},
+      { $unwind: "$issues" },
+      {
+        $group: {
+          _id: "$issues",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+    ]);
+
+    const topIssues = issuesData.map((i) => i._id);
+
+    // 5. top suggestions
+    const suggestionData = await WebsiteFeedback.aggregate([
+      { $match : dateFilter},
+      { $unwind: "$suggestions" },
+      {
+        $group: {
+          _id: "$suggestions",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+    ]);
+
+    const topSuggestions = suggestionData.map((i) => i._id);
+
+    const trendAgg = await WebsiteFeedback.aggregate([
+      { $match: dateFilter},
+      {
+        $group: {
+          _id:{
+            day: {$dayOfMonth: "$createdAt"},
+            month: {$month: "$createdAt"},
+          },
+          count : {$sum: 1},
+        },
+      },
+      {$sort: {"_id.month": 1, "_id.day": 1}},
+    ])
+
+    const max = Math.max(...trendAgg.map(id => d.count),1 );
+
+    const trend = trendAgg.map((id) => ({
+      value: Math.round((d.count/max)*100)
+    }))
+
+    res.json({
+      totalFeedback: total,
+      avgRating: Number(avgRating.toFixed(1)),
+      sentiment,
+      topIssues,
+      topSuggestions,
+      trend
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Analytics error" });
+  }
+};
+
+
+module.exports = { submitFeedback, getAllFeedback, getFeedbackAnalytics };

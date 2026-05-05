@@ -34,7 +34,7 @@ const  FeedbackPopup = () => {
       setLoading(true);
       const userId = localStorage.getItem("userId")
       const res = await fetch(
-        "https://event.backendportfolio.xyz/api/user/feedback",
+        "https://event.backendportfolio.xyz/api/feedback/feed",
         {
           method: "POST",
           headers: {
