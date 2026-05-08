@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Event = require("../models/Event");
+const Registration = require("../models/RegistrationModel")
 const {uploadToS3} = require("../services/mediaServices");
 
 const getProfile = async (req, res) => {
@@ -71,4 +73,67 @@ const deleteAvatar = async (req, res) => {
   }
 };
 
-module.exports = {getProfile,updateProfile,uploadAvatar,deleteAvatar};
+const getProfileAnalysis = async(req,res)=>{
+  try{
+    const userId = req.user.id 
+
+    const user = await User.findById(userId)
+
+    const joinedEvents = await Registration.countDocuments({
+      user: userId,
+    })
+
+    const feedbackCount = await Feedback.countDocuments({
+      user: userId
+    })
+
+
+    let strength = 0;
+
+    if(user.avatarUrl) strength+=25;
+    if(user.bio) strength +=20
+    if(user.role) strength += 20
+    if(user.email) strength +=15
+    if(joinedEvents > 0) strength +=10
+    if(feedbackCount > 0)  strength +=10
+
+    let engagementLevel = "Begineer";
+    if(joinedEvents>=3){
+      engagementLevel = "Active";
+    }
+    if(joinedEvents >= 10){
+      engagementLevel = "Contributor"
+    }
+    if(joinedEvents>20){
+      engagementLevel = "Power User";
+    }
+
+    let summary = "New user exploring the platform."
+
+    if(joinedEvents>5 && feedbackCount > 5){
+      summary = "Highly engaged user actively participating in events and contributing valuable feedback."
+
+    }
+
+    if(user.role === "organizer"){
+      summary = "Organizer focused on building engaging event experiences and community interaction."
+
+    }
+
+    res.json({
+      profileStrength: strength,
+      engagementLevel,
+      joinedEvents,
+      feedbackCount,
+      summary,
+    })
+
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message: "Failed to analyze profile"})
+  }
+
+
+}
+
+module.exports = {getProfile,updateProfile,uploadAvatar,deleteAvatar, getProfileAnalysis};

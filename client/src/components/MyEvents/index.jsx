@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 import {
   DashboardContainer,
   ContentWrapper,
@@ -107,9 +107,10 @@ const MyEvents = () => {
         setEvents((prev) =>
           prev.filter((e) => e._id !== registrationId)
         );
+        toast.success("Event Cancelled")
       }
     } catch (err) {
-      console.log(err);
+      toast.error(err)
     }
   };
 

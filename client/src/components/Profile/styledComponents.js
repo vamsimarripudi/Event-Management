@@ -316,3 +316,70 @@ export const ErrorBox = styled.p`
   color: #ef4444;
   font-weight: 500;
 `;
+
+export const StrengthCard = styled.div`
+    padding:20px;
+    border-radius:18px;
+    background:rgba(99,102,241,0.08);
+`
+
+export const ProgressBar = styled.div`
+    width:100%;
+    height:10px;
+    border-radius:999px;
+    background: #e5e7eb;
+    overflow:hidden;
+    margin:12px 0;
+
+`
+
+export const Progress = styled.div`
+    width:${({value}) => value}%;
+    height:100%;
+
+    background: linear-gradient(
+    90deg,
+    #6366f1,
+    #4f46e5
+    );
+    transition:width 0.4s ease;
+`
+
+export const AnalysisGrid = styled.div`
+   display:grid;
+   grid-template-columns: repeat(3,1fr);
+   gap:16px;
+
+   @media (max-width:768px) {
+   grid-templete-columns:1fr;
+   }
+`
+
+export const AnalysisCard = styled.div`
+    padding:20px;
+    border-radius:18px;
+    background:${({theme}) => theme.bg};
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+`
+
+export const Value = styled.h2`
+    margin:0;
+`
+
+export const SummaryCard = styled.div`
+    padding:22px;
+    border-radius:18px;
+
+    background: linear-gradient(
+    135deg,
+    rgb(99,102,241,0.1),
+    rgb(79,70,229,0.05)
+    );
+`
+
+export const SummaryText = styled.p`
+    line-height:1.7;
+    margin-top:10px;
+`

@@ -104,7 +104,7 @@ const Events = () => {
           
             <EventUnOrderedList>
               {events.map((event) => (
-                <EventCard key={event._id} event={event} />
+                <EventCard key={event._id} event={event} eventId={event._id} />
               ))}
             </EventUnOrderedList>
 

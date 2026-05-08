@@ -34,7 +34,17 @@ import {
   SkeletonCard,
   SkeletonAvatar,
   SkeletonLine,
+  AnalysisGrid,
+  AnalysisCard,
+  Value,
+  StrengthCard,
+  ProgressBar,
+  Progress,
+  SummaryCard,
+  SummaryText,
+
 } from "./styledComponents";
+import toast from "react-hot-toast";
 
 const apiStatus = {
   initial: "INITIAL",
@@ -57,8 +67,9 @@ class Profile extends Component {
     showPreview: false,
     showUpload: false,
     showDelete: false,
+    analysisData:{},
   };
-
+  
   token = localStorage.getItem("token");
 
   componentDidMount() {
@@ -82,6 +93,7 @@ class Profile extends Component {
     }
 
     this.getProfile();
+    this.getProfileAnalysis();
   }
 
   markOnboardingSeen = () => {
@@ -161,6 +173,24 @@ class Profile extends Component {
       this.getProfile();
     } catch {}
   };
+
+  getProfileAnalysis = async() => {
+    this.setState({ status: apiStatus.loading })
+    try{
+      const token = localStorage.getItem("token");
+      const response = await fetch("https://event.backendportfolio.xyz/api/analysis",{
+        headers:{
+          Authorization:`Bearer ${token}`,
+        }
+      });
+
+      const data = await response.json();
+      this.setState({analysisData:data})
+    }catch(err){
+      toast.error(err.message);
+    }
+
+  }
 
   handleFileChange = (e) => {
     this.setState({ file: e.target.files[0] });
@@ -248,6 +278,7 @@ class Profile extends Component {
       showPreview,
       showUpload,
       showDelete,
+      analysisData,
     } = this.state;
 
     return (
@@ -298,6 +329,50 @@ class Profile extends Component {
             <option value="organizer">Organizer</option>
           </Select>
         </Field>
+        <StrengthCard>
+          <Label>Profile Strength</Label>
+          <ProgressBar>
+            <Progress value={analysisData.profileStrength}/>
+          </ProgressBar>
+          <Value>
+            {analysisData.profileStrength} % Complete
+          </Value>
+        </StrengthCard>
+        <AnalysisGrid>
+          <AnalysisCard>
+            <Value>
+              {analysisData.joinedEvents}
+            </Value>
+            <Label>
+              Events Joined
+            </Label>
+          </AnalysisCard>
+          <AnalysisCard>
+            <Value>
+              {analysisData.feedbackCount}
+            </Value>
+            <Label>
+              Feedback Submitted
+            </Label>
+          </AnalysisCard>
+          <AnalysisCard>
+            <Value>
+              {analysisData.engagementLevel}
+            </Value>
+            <Label>
+              Engagement
+            </Label>
+          </AnalysisCard>
+          
+        </AnalysisGrid>
+        <SummaryCard>
+          <Label>
+            AI Profile Insight 
+          </Label>
+          <SummaryText>
+            {analysisData.summary}
+          </SummaryText>
+        </SummaryCard>
 
         <Row>
           <PrimaryBtn onClick={this.updateProfile}>Save</PrimaryBtn>

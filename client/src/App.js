@@ -13,11 +13,42 @@ import ProtectedRoute from "./components/protectedRoute";
 import FeedbackPopup from './components/Feedback/feedback';
 import Profile from "./components/Profile";
 import MyEvents from "./components/MyEvents";
-
+import {Toaster} from "react-hot-toast";
+import Analytics  from './components/Analytics';
 
 
 const App = () => {
   return (
+    <>
+    <Toaster 
+        position="top-right"
+        reverseOrder = {false}
+        toastOptions={{
+          duration:3000,
+
+          style:{
+            background:"#111827",
+            color:"#fff",
+            borderRadius:"12px",
+            padding:"14px 16px",
+            fontSize:"14px"
+          },
+
+          success:{
+            iconTheme:{
+              primary:"#22c55e",
+              secondary:"#fff"
+            },
+          },
+
+          error:{
+            iconTheme:{
+              primary:"#ef4444",
+              secondary:"#fff",
+            },
+          },
+        }}
+        />
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/register" element = {<Register/>} />
@@ -29,6 +60,7 @@ const App = () => {
         <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path = "/dashboard/my-events" element={<ProtectedRoute><MyEvents/></ProtectedRoute>}/>
+        <Route path="/analytics" element={<ProtectedRoute><Analytics/></ProtectedRoute>}/>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound/>}/>
@@ -36,6 +68,7 @@ const App = () => {
       </Routes>
      <FeedbackPopup/>
     </Router>
+    </>
   );
 }
 

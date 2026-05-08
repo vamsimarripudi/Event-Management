@@ -6,6 +6,7 @@ const {
   updateProfile,
   uploadAvatar,
   deleteAvatar,
+  getProfileAnalysis
 } = require("../controllers/profileController");
 
 
@@ -15,6 +16,7 @@ router.get("/profile", verifyToken, getProfile);
 router.put("/update-profile", verifyToken, updateProfile);
 router.post("/profile/avatar",verifyToken, upload.single("avatar"), uploadAvatar);
 router.delete("/profile/avatar", verifyToken, deleteAvatar);
+router.get("/analysis", verifyToken, getProfileAnalysis)
 
 module.exports = router;
 

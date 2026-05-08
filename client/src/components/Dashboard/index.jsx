@@ -6,7 +6,7 @@ import Sidebar from "../Sidebar";
 
 import MyEvents from "../MyEvents";
 import Profile from "../Profile";
-import Analytics from "../Analytics"
+
 
 import {
   Container,
@@ -24,8 +24,7 @@ const Dashboard = () => {
     switch (activeTab) {
       case "profile":
         return <Profile />;
-      case  "analytics":
-        return <Analytics/>
+     
       case "events":
       default:
         return <MyEvents />;
@@ -55,12 +54,7 @@ const Dashboard = () => {
             >
               Profile <NewBadge>NEW</NewBadge>
             </TabButton>
-            <TabButton
-              $active={activeTab === "analytics"}
-              onClick={() => setActiveTab("analytics")}
-              >
-                Analytics <NewBadge>NEW</NewBadge>
-            </TabButton>
+            
           </Tabs>
 
           {/* Animated Content */}

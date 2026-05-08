@@ -13,6 +13,7 @@ import {
         localStorage.removeItem('token');
         window.location.href = '/login';
         localStorage.removeItem("userId");
+        localStorage.removeItem("user")
     }
 
     

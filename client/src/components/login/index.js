@@ -1,5 +1,6 @@
 import {useState,useEffect} from "react";
 import {Eye,EyeOff} from "lucide-react";
+import apiRequest from "../../utils/apiRequest";
 import {
     LoginContainer,
     LoginButton,
@@ -35,29 +36,26 @@ const Login = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         
-        try {
-            const url = 'https://event.backendportfolio.xyz/api/auth/login';
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-            });
-            const data = await response.json();
-            console.log(data)
-            if (response.ok) {
-                localStorage.setItem('token', data.jwtToken);
-                persistUserFromToken()
-               
-                navigate('/events');
-            } else {
-                throw new Error(data.message || 'Login failed');
-            }
-
+        try{
+          const data = await apiRequest("https://event.backendportfolio.xyz/api/auth/login",{
+            method:"POST",
+            body:JSON.stringify({
+              email,password
+            })
+          },
+          {
+            loading:"Checking credentials...",
+            success:"Login Successful"
+          }
+        )
+        
+        localStorage.setItem("token",data.jwtToken);
+        localStorage.setItem("user",data.role)
+        persistUserFromToken()
+        navigate("/events")
+        }catch(err){
+          console.log(err)
         }
-        catch (err) {
-           console.log(err.message)
-        }
-
     }
 
     useEffect(() => {

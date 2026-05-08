@@ -7,20 +7,17 @@ import {
   RegisterTitle,
   RegisterInput,
   RegisterButton,
-  ErrorMessage,
-  SuccessMessage,
   LoginLink,
   Label,
   InputGroup,
 } from "./styledComponents";
+import toast from "react-hot-toast"
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -29,11 +26,11 @@ const Register = () => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      toast.error("Password dosen't match. please try again");
       return;
     }
 
-    setError('');
+    
     setLoading(true);
 
     try {
@@ -48,19 +45,16 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess('Registration successful. Redirecting to login...');
-        setError('');
-
+        toast.success('Registration successful. Redirecting to login...');
         setTimeout(() => {
           navigate('/login');
         }, 1000);
       } else {
-        setError(data.message || 'Registration failed.');
-        setSuccess('');
+        toast.error(data.message || "Registration Failed");
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
-      setSuccess('');
+      toast.error('An error occurred. Please try again.');
+     
     } finally {
       setLoading(false);
     }
@@ -124,9 +118,6 @@ const Register = () => {
           <RegisterButton type="submit" disabled={loading}>
             {loading ? 'Registering...' : 'Register'}
           </RegisterButton>
-
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          {success && <SuccessMessage>{success}</SuccessMessage>}
 
           <LoginLink>
             Already have an account? <Link to="/login">Log in</Link>

@@ -44,16 +44,13 @@ const login = async(req,res) => {
             return res.status(400).json({message: "Invalid Credentials"})
         }
 
-        
-
         const jwtToken = jwt.sign(
             {id:user._id},
             process.env.JWT_SECRET,
             {expiresIn:"1d"},
         )
-        
-
-        res.json({jwtToken})
+        const role = user.role;
+        res.json({jwtToken,role})
 
 }
 /*Get users by id  Api Controller*/

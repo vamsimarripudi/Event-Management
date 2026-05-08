@@ -55,3 +55,27 @@ export const SidebarLink = styled.a`
     }
 `;
 
+
+export const SidebarItem = styled.div`
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px 14px;
+border-radius:14px;
+
+cusor:${({disabled}) => disabled ? "not-allowed":"pointer"};
+opacity:${({disabled}) => disabled ? 0.55 : 1};
+transition: all 0.2s ease;
+
+&:hover {
+background: ${({disabled}) => disabled ? "transparent" : "rgba(99,102,241,0.1)"};
+transform: ${({disabled}) => disabled ? "none":"translateX(4px)"};
+};
+
+`
+
+export const SidebarText = styled.p`
+    margin:0;
+    font-size:15px;
+    font-weight:500;
+`

@@ -3,7 +3,7 @@ import Popup from "reactjs-popup";
 import { useLocation } from "react-router-dom";
 import "reactjs-popup/dist/index.css";
 import StarRating from "./ratingFile";
-
+import toast from "react-hot-toast"
 import {
   FloatingButton,
   ModalContainer,
@@ -14,8 +14,7 @@ import {
   ButtonRow,
   CancelBtn,
   SubmitBtn,
-  RatingText, // ✅ make sure this exists in styledComponents
-  ErrorText,  // optional (recommended)
+  RatingText, // ✅ make sure this exists in styledComponent
 } from "./styledComponents";
 
 const FeedbackPopup = () => {
@@ -23,19 +22,19 @@ const FeedbackPopup = () => {
   const [category, setCategory] = useState("general");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+ 
 
   const location = useLocation();
 
   const handleSubmit = async (close) => {
     if (!message.trim()) {
-      setError("Please enter feedback");
+      toast.error("Please enter feedback");
       return;
     }
 
     try {
       setLoading(true);
-      setError("");
+     
 
       const userId = localStorage.getItem("userId");
 
@@ -61,7 +60,7 @@ const FeedbackPopup = () => {
       if (!res.ok) {
         throw new Error(data.message || "Failed to submit feedback");
       }
-
+      toast.success("Feedback Sent To Admin. Thank you")
       // ✅ Reset state
       setMessage("");
       setRating(5);
@@ -70,8 +69,7 @@ const FeedbackPopup = () => {
       close(); // close modal cleanly
 
     } catch (err) {
-      console.error(err);
-      setError(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -125,8 +123,6 @@ const FeedbackPopup = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
 
-          {/* Error */}
-          {error && <ErrorText>{error}</ErrorText>}
 
           {/* Actions */}
           <ButtonRow>

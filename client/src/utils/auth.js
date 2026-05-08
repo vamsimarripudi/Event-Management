@@ -14,6 +14,7 @@ export const persistUserFromToken = () => {
     const userId = decoded?.id || decoded?._id || decoded?.userId || null;
     const name = decoded?.name || "";
     const email = decoded?.email || "";
+    
 
     if (!userId) {
       console.warn("UserId not found in token payload");
@@ -22,6 +23,7 @@ export const persistUserFromToken = () => {
 
     // persist
     localStorage.setItem("userId", userId);
+   
     if (name) localStorage.setItem("userName", name);
     if (email) localStorage.setItem("userEmail", email);
 
@@ -37,7 +39,8 @@ export const getStoredUser = () => ({
   id: localStorage.getItem("userId"),
   name: localStorage.getItem("userName"),
   email: localStorage.getItem("userEmail"),
-});
+  role: localStorage.getItem("user"),
+})
 
 export const getToken = () => localStorage.getItem("token");
 
@@ -46,4 +49,6 @@ export const clearAuth = () => {
   localStorage.removeItem("userId");
   localStorage.removeItem("userName");
   localStorage.removeItem("userEmail");
+  
 };
+

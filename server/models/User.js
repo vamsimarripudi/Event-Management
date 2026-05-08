@@ -12,7 +12,7 @@ email: {
     },
 role :{
     type:String,
-    enum:["user","developer","organizer"],
+    enum:["user","developer","organizer","admin"],
     default:"user"
 },
 avatarUrl:{

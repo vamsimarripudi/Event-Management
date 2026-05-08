@@ -22,20 +22,19 @@ import {
   TagsContainer,
   Tag,
   RegisterButton,
-  LoadingMessage,
+  
   StatusBadge,
   Skeleton,
-  SuccessMessage
+  
 } from "./styledComponents";
+import toast from "react-hot-toast";
 
 const EventDetails = () => {
   const { id } = useParams();
   const [event, setEvent] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [isSuccess, setSuccess] = useState("");
+  const [loading, setLoading] = useState(true)
   const[isRegistered,setIsRegistered] = useState(false);
-  const [error, setError] = useState("");
-  const [isError, setErr] = useState(false);
+  
 
   // FETCH EVENT
   useEffect(() => {
@@ -56,7 +55,8 @@ const EventDetails = () => {
         setEvent(data);
       } catch (err) {
         console.error(err);
-        setError("Failed to load event");
+        toast.error(err.message)
+       
       } finally {
         setLoading(false);
       }
@@ -79,7 +79,7 @@ const EventDetails = () => {
         );
 
         const data = await res.json();
-
+        
         setIsRegistered(data.isRegistered);
         
   };
@@ -107,18 +107,14 @@ const EventDetails = () => {
       const data = await response.json();
 
       if (response.ok) {
-        
-        setErr(false);
-        setSuccess(data.message);
-        window.location.reload()
+        toast.success("Event Registered Successfully")
       } else {
-        setError(data.message || "Registration failed");
-        setErr(true);
+        toast.error(data.message)
       }
     } catch (err) {
-      console.error(err);
-      setError("Something went wrong");
-      setErr(true);
+     
+      toast.error(err.messgae)
+      
     }
   };
 
@@ -249,12 +245,6 @@ const EventDetails = () => {
             <Link to="/events">
               <RegisterButton type="button">Back</RegisterButton>
             </Link>
-
-            {isError ? (
-              <LoadingMessage>{error}</LoadingMessage>
-            ) : (
-              <SuccessMessage>{isSuccess}</SuccessMessage>
-            )}
           </EventCard>
         </ContentWrapper>
       </EventDetailsContainer>
