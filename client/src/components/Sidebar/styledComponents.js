@@ -76,6 +76,6 @@ transform: ${({disabled}) => disabled ? "none":"translateX(4px)"};
 
 export const SidebarText = styled.p`
     margin:0;
-    font-size:15px;
+    font-size:1.5rem;
     font-weight:500;
 `
