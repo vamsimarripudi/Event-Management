@@ -181,7 +181,7 @@ class Profile extends Component {
       const response = await fetch("https://event.backendportfolio.xyz/api/analysis",{
         headers:{
           Authorization:`Bearer ${token}`,
-        }
+        },
       });
 
       const data = await response.json();

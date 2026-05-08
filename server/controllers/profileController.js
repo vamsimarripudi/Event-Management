@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Event = require("../models/Event");
-const Registration = require("../models/RegistrationModel")
+const Registration = require("../models/RegistrationModel");
+const WebsiteFeedback = require("../models/websiteFeedbackForm");
 const {uploadToS3} = require("../services/mediaServices");
 
 const getProfile = async (req, res) => {
@@ -83,7 +84,7 @@ const getProfileAnalysis = async(req,res)=>{
       user: userId,
     })
 
-    const feedbackCount = await Feedback.countDocuments({
+    const feedbackCount = await WebsiteFeedback.countDocuments({
       user: userId
     })
 
