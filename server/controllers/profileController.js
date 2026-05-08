@@ -81,11 +81,11 @@ const getProfileAnalysis = async(req,res)=>{
     const user = await User.findById(userId)
 
     const joinedEvents = await Registration.countDocuments({
-      user: userId,
+      userId: userId,
     })
 
     const feedbackCount = await WebsiteFeedback.countDocuments({
-      user: userId
+      userId: userId
     })
 
 
