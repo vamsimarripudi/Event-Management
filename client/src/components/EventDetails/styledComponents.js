@@ -8,7 +8,7 @@ export const EventDetailsContainer = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     min-height: 100vh;
-    background: #f4f6fa;
+    background:${({theme}) => theme.bg};
     padding-left: 220px; /* Space for sidebar */
     padding-top: 64px; /* Space for navbar */
     @media (max-width: 768px) {
@@ -24,7 +24,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const EventCard = styled.div`
-  background: #fff;
+  background: ${({theme}) => theme.card}
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -90,7 +90,7 @@ export const TagsContainer = styled.div`
 `;
 
 export const Tag = styled.span`
-  background: #e2e8f0;
+  background: ${({theme}) => theme.bg}
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
@@ -160,7 +160,7 @@ export const Skeleton = styled.div`
   border-radius: 6px;
   margin-bottom: 10px;
 
-  background: #e2e8f0;
+  background: ${({theme}) => theme.bg}
   background-image: linear-gradient(
     to right,
     #e2e8f0 0%,

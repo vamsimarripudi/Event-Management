@@ -15,11 +15,23 @@ import Profile from "./components/Profile";
 import MyEvents from "./components/MyEvents";
 import {Toaster} from "react-hot-toast";
 import Analytics  from './components/Analytics';
+import { ThemeProvider } from 'styled-components';
+import {darkTheme,lightTheme} from "./theme";
+import { ThemeContext } from "./context/ThemeContext";
+import { useContext } from 'react';
+import GlobalStyle from './styles/GlobalStyles';
 
 
 const App = () => {
+  const {activeTheme} = useContext(ThemeContext);
   return (
     <>
+    <ThemeProvider 
+    theme={
+      activeTheme === "dark"?darkTheme:lightTheme
+    }
+    >
+      <GlobalStyle/>
     <Toaster 
         position="top-right"
         reverseOrder = {false}
@@ -68,6 +80,7 @@ const App = () => {
       </Routes>
      <FeedbackPopup/>
     </Router>
+    </ThemeProvider>
     </>
   );
 }

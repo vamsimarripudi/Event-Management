@@ -1,22 +1,38 @@
-import { MdAnalytics, MdLock} from "react-icons/md";
-import {
-    SidebarItem,
-    SidebarText,
-} from "./styledComponents";
+import { useContext } from "react";
+import { MdAnalytics, MdLock, MdDarkMode, MdLightMode, MdComputer} from "react-icons/md";
+
 import {
     SidebarContainer,
-    SidebarLink
+    SidebarLink,
+    SidebarItem,
+    SidebarBottom,
+    Divider,
+    SidebarText
+
 } from "./styledComponents"
 
 import { useNavigate } from "react-router-dom";
+import { ThemeContext } from "../../context/ThemeContext";
 
 
 const Sidebar = () => {
     const navigate = useNavigate();
 
     const user = localStorage.getItem("user")
+    const {themeMode,changeTheme} = useContext(ThemeContext);
+    const cycleTheme = () => {
+        if(themeMode === "system"){
+            changeTheme("dark")
+        }
+        else if (themeMode === "dark"){
+            changeTheme("light")
+        }
+        else{
+            changeTheme("system")
+        }
+    }
 
-    const isAdmin = user?.role === "admin";
+    const isAdmin = user === "admin";
 
     const onClickAnalytics = () => {
         if(!isAdmin) return ;
@@ -33,6 +49,16 @@ const Sidebar = () => {
                     Analytics
                 </SidebarText>
             </SidebarItem>
+            <SidebarBottom>
+                <Divider/>
+                <SidebarItem onClick={cycleTheme}>
+                    {themeMode ==="dark" && (<MdDarkMode size={20}/>)}
+                    {themeMode ==="light" && (<MdLightMode size={20}/>)}
+                    {themeMode ==="system" && (<MdComputer size={20}/>)}
+                    <SidebarText>{themeMode}</SidebarText>
+                </SidebarItem>
+            </SidebarBottom>
+            
         </SidebarContainer>
     )
 }

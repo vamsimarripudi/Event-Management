@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const EventCardContainer = styled.div`
-    background: #fff;
+    background:${({theme}) => theme.bg}
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 20px;
@@ -19,7 +19,7 @@ export const EventCardContainer = styled.div`
 `;
 
 export const EventItem = styled.div`
-    background: #fff;
+    background:${({theme}) => theme.card}
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 20px;
@@ -38,13 +38,14 @@ export const EventCardTitle = styled.h2`
     font-size: 1.35rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: #232526;
+    color: ${({theme}) => theme.text}
 `;
 
 export const EventCardDate = styled.p`
     color: #007bff;
     margin-bottom: 1rem;
     font-weight: 500;
+    
 `;
 
 export const EventCardRegisterButton = styled.button`
@@ -65,31 +66,31 @@ export const EventCardRegisterButton = styled.button`
 `;
 
 export const EventDescription = styled.p`
-    color: #555;
+    color: ${({theme}) => theme.text}
     margin-bottom: 1rem;
     font-size: 1rem;
     line-height: 1.5;
 `;
 
 export const EventState = styled.p`
-    color: #777;
+    color: ${({theme}) => theme.text}
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 `;
 
 export const EventVenue = styled.p`
-    color: #777;
+    color: ${({theme}) => theme.text}
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 `;
 export const EventCountry = styled.p`
-    color: #777;
+    color: ${({theme}) => theme.text}
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 `;
 
 export const EventItemContainer = styled.div`
-    background: #fff;
+    background: ${({theme}) => theme.card}
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 20px;
@@ -108,11 +109,11 @@ export const EventItemTitle = styled.h2`
     font-size: 1.35rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
-    color: #232526;
+    color: ${({theme}) => theme.text}
 `;
 
 export const EventCategory = styled.p`
-    color: #777;
+    color: ${({theme}) => theme.text}
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 `;

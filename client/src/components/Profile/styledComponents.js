@@ -34,7 +34,7 @@ export const Card = styled.div`
   padding: 24px;
   border-radius: 20px;
 
-  background: rgba(255,255,255,0.6);
+  background: ${({theme}) => theme.card};
   backdrop-filter: blur(12px);
 
   border: 1px solid rgba(255,255,255,0.2);
@@ -184,7 +184,7 @@ export const GhostBtn = styled.button`
 
   cursor: pointer;
   transition: all 0.2s ease;
-
+  color: ${({theme}) => theme.text};
   &:hover {
     background: rgba(99,102,241,0.06);
     border-color: #6366f1;
@@ -318,68 +318,119 @@ export const ErrorBox = styled.p`
 `;
 
 export const StrengthCard = styled.div`
-    padding:20px;
-    border-radius:18px;
-    background:rgba(99,102,241,0.08);
-`
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(99, 102, 241, 0.08);
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom:10px;
+  @media screen and (max-width: 768px) {
+    padding: 16px;
+    border-radius: 16px;
+  }
+`;
 
 export const ProgressBar = styled.div`
-    width:100%;
-    height:10px;
-    border-radius:999px;
-    background: #e5e7eb;
-    overflow:hidden;
-    margin:12px 0;
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  overflow: hidden;
+  margin: 12px 0;
 
-`
+  @media screen and (max-width: 768px) {
+    height: 8px;
+  }
+`;
 
 export const Progress = styled.div`
-    width:${({value}) => value}%;
-    height:100%;
+  width: ${({ value }) => value}%;
+  height: 100%;
+  border-radius: inherit;
 
-    background: linear-gradient(
+  background: linear-gradient(
     90deg,
     #6366f1,
     #4f46e5
-    );
-    transition:width 0.4s ease;
-`
+  );
+
+  transition: width 0.4s ease;
+`;
 
 export const AnalysisGrid = styled.div`
-   display:grid;
-   grid-template-columns: repeat(3,1fr);
-   gap:16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
 
-   @media (max-width:768px) {
-   grid-templete-columns:1fr;
-   }
-`
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+`;
 
 export const AnalysisCard = styled.div`
-    padding:20px;
-    border-radius:18px;
-    background:${({theme}) => theme.bg};
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-`
+  padding: 20px;
+  border-radius: 18px;
+  background: ${({ theme }) => theme.bg};
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+
+  @media screen and (max-width: 768px) {
+    padding: 16px;
+    border-radius: 16px;
+  }
+`;
 
 export const Value = styled.h2`
-    margin:0;
-`
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  word-break: break-word;
+
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
+`;
 
 export const SummaryCard = styled.div`
-    padding:22px;
-    border-radius:18px;
+  padding: 22px;
+  border-radius: 18px;
 
-    background: linear-gradient(
+  background: linear-gradient(
     135deg,
-    rgb(99,102,241,0.1),
-    rgb(79,70,229,0.05)
-    );
-`
+    rgba(99, 102, 241, 0.1),
+    rgba(79, 70, 229, 0.05)
+  );
+
+  width: 100%;
+  box-sizing: border-box;
+
+  @media screen and (max-width: 768px) {
+    padding: 18px;
+    border-radius: 16px;
+  }
+`;
 
 export const SummaryText = styled.p`
-    line-height:1.7;
-    margin-top:10px;
-`
+  line-height: 1.7;
+  margin-top: 10px;
+  font-size: 15px;
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+`;

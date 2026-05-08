@@ -6,7 +6,7 @@ export const EventsContainer = styled.div`
     align-items: flex-start;
     justify-content: flex-start;
     min-height: 100vh;
-    background: #f4f6fa;
+    background: ${({theme}) => theme};
     padding-left: 220px; /* Space for sidebar */
     padding-top: 64px; /* Space for navbar */
     @media (max-width: 768px) {
@@ -203,6 +203,7 @@ export const Button = styled.button`
     border:0px;
     font-weight:bold;
     cursor:pointer;
+    color:${({theme}) => theme.primary}
 
 `
 

@@ -3,13 +3,12 @@ export const FloatingButton = styled.button`
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #111;
-  color: #fff;
+  background: ${({theme}) => theme.card}
   padding: 12px 16px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  z-index: 9999;
+  z-index: 999
 
 
   &:hover {
@@ -19,7 +18,7 @@ export const FloatingButton = styled.button`
 
 export const RatingText = styled.div`
   font-size: 12px;
-  color: #94a3b8;
+  color: ${({theme}) => theme.text}
   margin-bottom: 10px;
 `;
 
@@ -31,7 +30,7 @@ export const ErrorText = styled.div`
 export const ModalContainer = styled.div`
   width: 100%;
   padding: 24px;
-  background: #fff;
+  background: ${({theme}) => theme.card};
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -43,7 +42,7 @@ export const ModalContainer = styled.div`
       transform: translate(-50%, -50%);
       width: 90%;
       max-width: 400px;
-      background: white;
+      background: ${({theme}) => theme.card}
       border-radius: 10px;
       padding: 20px;
       z-index: 1000;
@@ -87,8 +86,8 @@ export const CancelBtn = styled.button`
 `;
 
 export const SubmitBtn = styled.button`
-  background: #111;
-  color: #fff;
+  background:${({theme}) => theme.bg}
+  color: ${({theme}) => theme.text}
   border: none;
   padding: 8px 12px;
   border-radius: 5px;

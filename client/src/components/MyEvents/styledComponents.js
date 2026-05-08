@@ -12,7 +12,7 @@ export const DashboardContainer = styled.div`
 export const ContentWrapper = styled.div`
   flex: 1;
   padding: 24px;
-  background: #f5f7fa;
+  background: ${({theme}) => theme.bg}
   min-height: 100vh;
 
   @media (max-width: 768px) {
@@ -52,12 +52,12 @@ export const Grid = styled.div`
 
 /* Card */
 export const Card = styled.div`
-  background: #ffffff;
+  background: ${({theme}) => theme.card}
   padding: 18px;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   transition: all 0.2s ease;
-
+  border-width: 1px solid ${({theme}) => theme.bg};
   &:hover {
     transform: translateY(-4px);
   }
@@ -71,7 +71,7 @@ export const Card = styled.div`
 export const Title = styled.h3`
   font-size: 17px;
   margin-bottom: 10px;
-  color: #111;
+  color: ${({theme}) => theme.text}
   cursor: pointer;
 
   &:hover {
@@ -82,8 +82,8 @@ export const Title = styled.h3`
 /* Badge */
 export const Badge = styled.span`
   display: inline-block;
-  background: #111;
-  color: #fff;
+  background:${({theme}) => theme.card}
+  color: ${({theme}) => theme.text}
   font-size: 12px;
   padding: 5px 10px;
   border-radius: 6px;
@@ -93,7 +93,7 @@ export const Badge = styled.span`
 /* Meta */
 export const Meta = styled.p`
   font-size: 13px;
-  color: #666;
+  color: ${({theme}) => theme.text}
   margin-bottom: 6px;
 `;
 
@@ -103,7 +103,7 @@ export const Button = styled.button`
   margin-top: 12px;
   padding: 12px;
   background: ${({ disabled }) => (disabled ? "#9ca3af" : "#ef4444")};
-  color: #fff;
+  color: ${({theme}) => theme.text}
   border: none;
   border-radius: 10px;
   font-weight: 600;
@@ -129,7 +129,7 @@ export const CenterBox = styled.div`
 `;
 
 export const Message = styled.p`
-  color: #666;
+  color: ${({theme}) => theme.text}
   font-size: 14px;
 `;
 
@@ -137,7 +137,7 @@ export const Message = styled.p`
 export const NoEventsContainer = styled.div`
   text-align: center;
   padding: 40px;
-  background: #ffffff;
+  background: ${({theme}) => theme.bg}
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.05);
 
@@ -148,11 +148,12 @@ export const NoEventsContainer = styled.div`
 
 export const NoEventsTitle = styled.h3`
   margin-bottom: 10px;
+  color: ${({theme}) => theme.text}
   font-size: 18px;
 `;
 
 export const NoEventsText = styled.p`
-  color: #777;
+  color: ${({theme}) => theme.text}
   margin-bottom: 16px;
   font-size: 14px;
 `;

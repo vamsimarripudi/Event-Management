@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const NavbarContainer = styled.nav`
- background: rgba(255, 255, 255, 0.75);
+ background: ${({theme}) => theme.navbar};
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  color:"#333";
+  color:${({theme}) => theme.text};
   padding: 0 32px;
   display: flex;
   justify-content: space-between;
@@ -23,7 +23,7 @@ export const NavbarContainer = styled.nav`
 `;
 
 export const Header = styled.h1`
-  color: #333;
+  color: ${({theme}) => theme.text};
   margin: 0;
   font-size: 1.7rem;
   font-weight: 700;
@@ -42,6 +42,7 @@ export const LogoutButton = styled.button`
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 500;
+  margin-left:auto;
   transition: background 0.2s;
   &:hover {
     background: #0056b3;
@@ -83,3 +84,17 @@ export const MobileLogout = styled.button`
     }
   }
 `;
+
+export const Theme = styled.div`
+margin-right:10px;
+
+@media screen and (min-width:768px){
+display:none;
+
+}
+`
+
+export const MobileContainer = styled.div`
+display:flex;
+align-items:center;
+`

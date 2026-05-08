@@ -25,6 +25,7 @@ export const RegisterForm = styled.form`
 
 export const RegisterTitle = styled.h2`
     margin-bottom: 1rem;
+    color:#131313;
 `;
 
 export const RegisterInput = styled.input`
@@ -55,26 +56,10 @@ export const RegisterButton = styled.button`
     }
 `;
 
-export const ErrorMessage = styled.p`
-    color: red;
-    margin-top: 0.5rem;
-`;
-
-export const SuccessMessage = styled.p`
-    color: green;
-    margin-top: 0.5rem;
-    
-    @media (max-width: 400px) {
-        font-size: 0.9rem;
-    }
-    
-    @media (max-width: 300px) {
-        font-size: 0.8rem;
-    }
-`;
 
 export const LoginLink = styled.p`
     margin-top: 1rem;
+    color:#333;
     a {
         color: #007bff;
         text-decoration: none;
@@ -115,6 +100,7 @@ export const Label = styled.label`
     align-self: flex-start;
     margin-bottom: 0.25rem;
     font-weight: bold;
+    color:#131313;
     @media (max-width: 400px) {
         font-size: 0.9rem;
     }

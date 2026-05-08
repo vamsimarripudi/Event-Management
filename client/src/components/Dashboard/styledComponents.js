@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   flex: 1;
   padding: 24px;
-  background: #f5f7fa;
+  background:${({theme}) => theme.bg};
   min-height: 100vh;
   margin-left:220px;
   margin-top:60px;
@@ -26,7 +26,7 @@ export const Tabs = styled.div`
   display: flex;
   gap: 10px;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.75);
+  background:${({theme}) => theme.bg}
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
@@ -63,7 +63,7 @@ export const TabButton = styled.button`
 
 /* Content wrapper */
 export const ContentWrapper = styled.div`
-  background: #ffffff;
+  background:${({theme}) => theme.card};
   border-radius: 14px;
   padding: 20px;
   
