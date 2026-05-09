@@ -63,28 +63,7 @@ app.use(express.static("public"));
 
 app.set("io", io);
 
-app.use((req, res, next) => {
 
-  const start = Date.now();
-
-  res.on("finish", () => {
-
-    const duration =
-      Date.now() - start;
-
-    console.log(
-      `${req.method} ${req.originalUrl} - ${duration}ms`
-    );
-
-    const io = req.app.get("io");
-
-    io.emit("dashboard:update");
-
-  });
-
-  next();
-
-});
 
 app.use("/api/auth", authRoutes);
 
