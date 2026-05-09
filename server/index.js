@@ -4,9 +4,7 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-
 const connectDB = require("./db");
-
 const authRoutes = require("./routes/authRoute");
 const eventRoutes = require("./routes/eventRoutes");
 const registrationRoutes = require("./routes/registrationRoute");
@@ -14,22 +12,17 @@ const feedbackRoute = require("./routes/feedbackRoute");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoute = require("./routes/userRoute");
 const metricRoutes = require("./routes/metricRoutes");
-
 const verifyToken = require("./middleware/token");
-
 const { initMailer } = require("./mailer");
 const { setTransporter } = require("./services/emailTransporter");
-
 const { initAI, getAI } = require("./services/aiService");
-
+const metricsMiddleware = require("./middleware/metricMiddleware");
 const PORT = process.env.PORT || 5000;
-
 const app = express();
-
 const server = http.createServer(app);
 
 
-
+app.use(metricsMiddleware)
 const io = new Server(server, {
   cors: {
     origin: "https://event.vamsimarripudi.tech",
