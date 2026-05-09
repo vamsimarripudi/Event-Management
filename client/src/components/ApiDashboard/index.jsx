@@ -1,5 +1,7 @@
 import { Component } from "react";
 import CountUp from "react-countup";
+import socket from "../../socket";
+
 import {
   ResponsiveContainer,
   AreaChart,
@@ -72,7 +74,30 @@ class ApiDashboard extends Component {
 
   componentDidMount() {
     this.getDashboardData();
+    this.connectSocket();
   }
+
+  componentWillUnmount() {
+    socket.off("dashboard:metrics");
+    socket.off("connect");
+    socket.off("disconnect");
+  }
+
+  connectSocket = () => {
+    socket.on("connect", () => {
+      console.log("Socket Connected");
+    });
+
+    socket.on("dashboard:metrics", () => {
+      console.log("Realtime Dashboard Update");
+
+      this.getDashboardData();
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket Disconnected");
+    });
+  };
 
   getDashboardData = async () => {
     this.setState({ status: apiStatus.loading });
@@ -132,6 +157,8 @@ class ApiDashboard extends Component {
         status: apiStatus.success,
       });
     } catch (err) {
+      console.log(err);
+
       this.setState({
         status: apiStatus.failure,
       });
@@ -140,7 +167,9 @@ class ApiDashboard extends Component {
 
   getLatencyColor = (value) => {
     if (value < 200) return "#22c55e";
+
     if (value < 800) return "#f59e0b";
+
     return "#ef4444";
   };
 
@@ -150,6 +179,7 @@ class ApiDashboard extends Component {
         {Array.from({ length: 6 }).map((_, index) => (
           <LoaderCard key={index}>
             <Skeleton height="18px" width="120px" />
+
             <Skeleton height="40px" width="80px" />
           </LoaderCard>
         ))}
@@ -170,9 +200,13 @@ class ApiDashboard extends Component {
   renderFailureView = () => (
     <Page>
       <FailureCard>
-        <h2>Unable to load observability metrics</h2>
+        <h2>
+          Unable to load observability metrics
+        </h2>
 
-        <RetryButton onClick={this.getDashboardData}>
+        <RetryButton
+          onClick={this.getDashboardData}
+        >
           Retry
         </RetryButton>
       </FailureCard>
@@ -188,11 +222,12 @@ class ApiDashboard extends Component {
       search,
     } = this.state;
 
-    const filteredEndpoints = endpoints.filter((item) =>
-      item._id.endpoint
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
+    const filteredEndpoints =
+      endpoints.filter((item) =>
+        item._id.endpoint
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
 
     return (
       <Page>
@@ -203,7 +238,8 @@ class ApiDashboard extends Component {
             </HeroTitle>
 
             <HeroText>
-              Monitoring backend performance in realtime
+              Monitoring backend performance in
+              realtime
             </HeroText>
           </div>
 
@@ -215,7 +251,10 @@ class ApiDashboard extends Component {
 
         <StatsGrid>
           <StatCard>
-            <StatLabel>Total Requests</StatLabel>
+            <StatLabel>
+              Total Requests
+            </StatLabel>
+
             <StatValue>
               <CountUp
                 end={overview.totalRequests || 0}
@@ -225,7 +264,10 @@ class ApiDashboard extends Component {
           </StatCard>
 
           <StatCard>
-            <StatLabel>Avg Response</StatLabel>
+            <StatLabel>
+              Avg Response
+            </StatLabel>
+
             <StatValue>
               <CountUp
                 end={overview.avgResponse || 0}
@@ -236,7 +278,10 @@ class ApiDashboard extends Component {
           </StatCard>
 
           <StatCard>
-            <StatLabel>Failed Requests</StatLabel>
+            <StatLabel>
+              Failed Requests
+            </StatLabel>
+
             <StatValue>
               <CountUp
                 end={overview.failedRequests || 0}
@@ -246,7 +291,10 @@ class ApiDashboard extends Component {
           </StatCard>
 
           <StatCard>
-            <StatLabel>Success Rate</StatLabel>
+            <StatLabel>
+              Success Rate
+            </StatLabel>
+
             <StatValue>
               <CountUp
                 end={overview.successRate || 0}
@@ -263,7 +311,10 @@ class ApiDashboard extends Component {
               Response Timeline
             </SectionTitle>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer
+              width="100%"
+              height={300}
+            >
               <AreaChart data={timeline}>
                 <defs>
                   <linearGradient
@@ -311,7 +362,10 @@ class ApiDashboard extends Component {
               Status Distribution
             </SectionTitle>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer
+              width="100%"
+              height={300}
+            >
               <PieChart>
                 <Pie
                   data={statusData}
@@ -320,12 +374,14 @@ class ApiDashboard extends Component {
                   outerRadius={100}
                   dataKey="value"
                 >
-                  {statusData.map((entry, index) => (
-                    <Cell
-                      key={index}
-                      fill={entry.color}
-                    />
-                  ))}
+                  {statusData.map(
+                    (entry, index) => (
+                      <Cell
+                        key={index}
+                        fill={entry.color}
+                      />
+                    )
+                  )}
                 </Pie>
 
                 <Tooltip />
@@ -365,10 +421,14 @@ class ApiDashboard extends Component {
               <TBody>
                 {filteredEndpoints.map((item) => (
                   <Tr key={item._id.endpoint}>
-                    <Td>{item._id.endpoint}</Td>
+                    <Td>
+                      {item._id.endpoint}
+                    </Td>
 
                     <Td>
-                      <MethodBadge method={item._id.method}>
+                      <MethodBadge
+                        method={item._id.method}
+                      >
                         {item._id.method}
                       </MethodBadge>
                     </Td>
@@ -381,16 +441,25 @@ class ApiDashboard extends Component {
                           item.avgTime
                         )}
                       >
-                        {Math.round(item.avgTime)}ms
+                        {Math.round(
+                          item.avgTime
+                        )}
+                        ms
                       </StatusBadge>
                     </Td>
 
                     <Td>
-                      {Math.round(item.minTime)}ms
+                      {Math.round(
+                        item.minTime
+                      )}
+                      ms
                     </Td>
 
                     <Td>
-                      {Math.round(item.maxTime)}ms
+                      {Math.round(
+                        item.maxTime
+                      )}
+                      ms
                     </Td>
                   </Tr>
                 ))}
@@ -404,7 +473,8 @@ class ApiDashboard extends Component {
                 <h4>{item.endpoint}</h4>
 
                 <p>
-                  {item.method} • {item.duration}ms
+                  {item.method} •{" "}
+                  {item.duration}ms
                 </p>
               </SlowCard>
             ))}
@@ -434,5 +504,3 @@ class ApiDashboard extends Component {
 }
 
 export default ApiDashboard;
-
-

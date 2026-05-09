@@ -1,5 +1,7 @@
 require("dotenv").config({path:"./.env"});
 const express = require("express");
+const http = require("http");
+const {Server} = require("socket.io")
 const connectDB = require("./db");
 const authRoutes = require("./routes/authRoute");
 const cors = require("cors");
@@ -19,6 +21,25 @@ const metricRoutes = require("./routes/metricRoutes");
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: "https://event.backendportfolio.xyz",
+        methods: ["GET", "POST","PUT","DELETE"],
+        credentials:true,
+    }
+});
+
+io.on("connection", (socket) => {
+    console.log("User Connected:", socket.id);
+
+    socket.on("disconnect", () => {
+        console.log("User Disconnected");
+    });
+});
+
+
 app.use(express.json());
 app.use(cors());
 app.use(metricMiddleware)
@@ -78,6 +99,30 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server Error" });
 });
 
+app.set("io", io);
+
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on("finish", () => {
+    const duration =
+      Date.now() - start;
+
+    console.log(
+      `${req.method} ${req.originalUrl} - ${duration}ms`
+    );
+
+    io.emit("dashboard:metrics", {
+      endpoint: req.originalUrl,
+      method: req.method,
+      status: res.statusCode,
+      duration,
+      timestamp: new Date(),
+    });
+  });
+
+  next();
+});
 
 const startServer = async () => {
   try {
@@ -107,7 +152,7 @@ const startServer = async () => {
 {/*----------------------------------------------*/}
 
     
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log("Server running on port 5000");
     });
 
