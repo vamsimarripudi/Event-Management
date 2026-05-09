@@ -12,5 +12,5 @@ const feedbackLimiter = rateLimit({
 
 router.post("/feed",feedbackLimiter,submitFeedback)
 router.get("/api/feedback",verifyToken, getAllFeedback)
-router.get("/analytics", verifyToken,adminAuth, getFeedbackAnalytics);
+router.get("/analytics", verifyToken, getFeedbackAnalytics);
 module.exports = router;

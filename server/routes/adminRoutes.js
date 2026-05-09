@@ -1,9 +1,10 @@
 // routes/adminRoutes.js
 const express = require("express");
 const router = express.Router();
-const adminAuth = require("../middleware/adminAuth");
+const verifyToken = require("../middleware/token");
 const { sendNewsletter } = require("../controllers/adminController");
+const verifyToken = require("../middleware/token");
 
-router.post("/newsletter", adminAuth, sendNewsletter);
+router.post("/newsletter", verifyToken, sendNewsletter);
 
 module.exports = router;

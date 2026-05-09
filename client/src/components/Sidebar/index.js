@@ -35,9 +35,9 @@ const Sidebar = () => {
             <SidebarLink href="/dashboard">Dashboard</SidebarLink>
             <SidebarLink href="/events">Events</SidebarLink>
             {user === "admin" && (
-                <SidebarText>
+                <SidebarLink href="/analytics">
                     Analytics
-                </SidebarText>
+                </SidebarLink>
             )}
             <SidebarBottom>
                 <Divider/>

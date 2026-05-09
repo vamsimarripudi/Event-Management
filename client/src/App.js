@@ -74,9 +74,9 @@ const App = () => {
         <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path = "/dashboard/my-events" element={<ProtectedRoute><MyEvents/></ProtectedRoute>}/>
-        <Route path="/analytics" element={<ProtectedRoute><AdminRoute><Analytics/></AdminRoute></ProtectedRoute>}/>
+        <Route path="/analytics" element={<AdminRoute><Analytics/></AdminRoute>}/>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
-        <Route path = "/api-dashboard" element = {<ProtectedRoute><AdminRoute><ApiDashboard/></AdminRoute></ProtectedRoute>}/>
+        <Route path = "/api-dashboard" element = {<AdminRoute><ApiDashboard/></AdminRoute>}/>
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound/>}/>
        
