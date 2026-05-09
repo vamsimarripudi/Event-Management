@@ -19,74 +19,100 @@ const metricsMiddleware = (
       return;
     }
 
-    const duration =
-      Date.now() - start;
+    try {
 
-    console.log(
-      `${req.method} ${req.originalUrl} - ${duration}ms`
-    );
+      const duration =
+        Date.now() - start;
 
-    const overview =
-      await ApiMetric.aggregate([
-        {
-          $group: {
-            _id: null,
+      console.log(
+        `${req.method} ${req.originalUrl} - ${duration}ms`
+      );
 
-            totalRequests: {
-              $sum: 1,
-            },
+      // SAVE METRIC FIRST
 
-            avgResponse: {
-              $avg: "$duration",
-            },
+      await ApiMetric.create({
+        endpoint:
+          req.originalUrl,
 
-            failedRequests: {
-              $sum: {
-                $cond: [
-                  {
-                    $gte: [
-                      "$statusCode",
-                      400,
-                    ],
-                  },
-                  1,
-                  0,
-                ],
+        method:
+          req.method,
+
+        duration,
+
+        statusCode:
+          res.statusCode,
+      });
+
+      // THEN AGGREGATE
+
+      const overview =
+        await ApiMetric.aggregate([
+          {
+            $group: {
+              _id: null,
+
+              totalRequests: {
+                $sum: 1,
+              },
+
+              avgResponse: {
+                $avg: "$duration",
+              },
+
+              failedRequests: {
+                $sum: {
+                  $cond: [
+                    {
+                      $gte: [
+                        "$statusCode",
+                        400,
+                      ],
+                    },
+                    1,
+                    0,
+                  ],
+                },
               },
             },
           },
-        },
-      ]);
+        ]);
 
-    const data = overview[0];
+      const data = overview[0];
 
-    const successRate =
-      Math.round(
-        ((data.totalRequests -
-          data.failedRequests) /
-          data.totalRequests) *
-          100
+      const successRate =
+        Math.round(
+          ((data.totalRequests -
+            data.failedRequests) /
+            data.totalRequests) *
+            100
+        );
+
+      const io =
+        req.app.get("io");
+
+      io.emit(
+        "dashboard:overview",
+        {
+          totalRequests:
+            data.totalRequests,
+
+          avgResponse:
+            Math.round(
+              data.avgResponse
+            ),
+
+          failedRequests:
+            data.failedRequests,
+
+          successRate,
+        }
       );
 
-    const io = req.app.get("io");
+    } catch (err) {
 
-    io.emit(
-      "dashboard:overview",
-      {
-        totalRequests:
-          data.totalRequests,
+      console.log(err);
 
-        avgResponse:
-          Math.round(
-            data.avgResponse
-          ),
-
-        failedRequests:
-          data.failedRequests,
-
-        successRate,
-      }
-    );
+    }
 
   });
 
