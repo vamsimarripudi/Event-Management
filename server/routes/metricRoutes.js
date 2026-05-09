@@ -8,7 +8,7 @@ const {
   getEndpoints,
   getSlowRequests,
 } = require(
-  "../controllers/metricsController"
+  "../controllers/metricController"
 );
 
 router.get("/overview", getOverview);
