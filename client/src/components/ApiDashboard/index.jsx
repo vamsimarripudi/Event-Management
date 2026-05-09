@@ -88,15 +88,27 @@ class ApiDashboard extends Component {
       console.log("Socket Connected");
     });
 
-    socket.on("dashboard:metrics", () => {
-      console.log("Realtime Dashboard Update");
+    socket.on("dashboard:metrics", (data) => {
 
-      this.getDashboardData();
-    });
+      this.setState((prevState) => ({
+        overview: {
+          ...prevState.overview,
 
-    socket.on("disconnect", () => {
-      console.log("Socket Disconnected");
-    });
+          totalRequests:
+            data.totalRequests,
+
+          avgResponse:
+            data.avgResponse,
+
+          failedRequests:
+            data.failedRequests,
+
+          successRate:
+            data.successRate,
+        },
+      }));
+
+   });
   };
 
   getDashboardData = async () => {

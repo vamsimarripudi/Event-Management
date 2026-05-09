@@ -5,24 +5,40 @@ const metricsMiddleware = (
   res,
   next
 ) => {
+
   const start = Date.now();
 
   res.on("finish", () => {
-    setImmediate(async () => {
-      try {
-        const duration =
-          Date.now() - start;
 
-        await ApiMetric.create({
-          endpoint: req.originalUrl,
-          method: req.method,
-          statusCode: res.statusCode,
-          duration,
-        });
-      } catch (err) {
-        console.log(err.message);
-      }
-    });
+    const duration =
+      Date.now() - start;
+
+    global.metrics.totalRequests += 1;
+
+    global.metrics.totalResponseTime +=
+      duration;
+
+    global.metrics.avgResponse =
+      Math.round(
+        global.metrics.totalResponseTime /
+          global.metrics.totalRequests
+      );
+
+    if (res.statusCode >= 400) {
+      global.metrics.failedRequests += 1;
+    }
+
+    const successRequests =
+      global.metrics.totalRequests -
+      global.metrics.failedRequests;
+
+    global.metrics.successRate =
+      Math.round(
+        (successRequests /
+          global.metrics.totalRequests) *
+          100
+      );
+
   });
 
   next();
