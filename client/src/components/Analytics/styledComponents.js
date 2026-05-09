@@ -1,101 +1,168 @@
 import styled from "styled-components";
 
-/* ---------- Layout ---------- */
+/* ---------- Main Container ---------- */
+
 export const Container = styled.div`
-background:${({theme}) => theme.bg}
-  padding: 20px;
+  min-height: 100vh;
+  padding: 16px;
+  background: ${({ theme }) => theme.bg};
+
+  @media screen and (min-width: 768px) {
+    padding: 24px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding: 32px;
+  }
 `;
+
+/* ---------- Top Filter Section ---------- */
 
 export const TopBar = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 `;
 
 export const FilterButton = styled.button`
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
 
-  background: ${({ active }) =>
-    active ? "#6366f1" : "#e5e7eb"};
-  color: ${({ active }) => (active ? "#fff" : "#000")};
+  background: ${({ active, theme }) =>
+    active ? "#6366f1" : theme.card};
+
+  color: ${({ active, theme }) =>
+    active ? "#ffffff" : theme.text};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;
 
-/* ---------- Cards ---------- */
+/* ---------- Stats Grid ---------- */
+
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (min-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 export const Card = styled.div`
-  padding: 16px;
-  border-radius: 12px;
+  padding: 18px;
+  border-radius: 18px;
+
   background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
 `;
 
 export const Title = styled.p`
-  color:${({theme}) => theme.text}
+  margin: 0;
   font-size: 13px;
+
+  color: ${({ theme }) => theme.mutedText};
 `;
 
 export const StatValue = styled.h2`
-color:${({theme}) => theme.text}
-  margin: 4px 0;
+  margin-top: 8px;
+  font-size: 28px;
+
+  color: ${({ theme }) => theme.text};
 `;
 
-/* ---------- Sections ---------- */
+/* ---------- Section Wrapper ---------- */
+
 export const Section = styled.div`
-background:${({theme}) => theme.card}
   margin-top: 24px;
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
 `;
 
 export const SectionTitle = styled.h3`
-color:${({theme}) => theme.text}
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+
+  color: ${({ theme }) => theme.text};
 `;
 
 /* ---------- Chart ---------- */
+
 export const ChartWrapper = styled.div`
   display: flex;
   align-items: flex-end;
-  gap: 6px;
-  height: 100px;
-background:${({theme}) => theme.card}
+  gap: 8px;
+
+  height: 140px;
 `;
 
 export const ChartPoint = styled.div`
-background:${({theme}) => theme.card}
-  width: 10px;
+  width: 12px;
+  border-radius: 20px;
+
   background: #6366f1;
-  border-radius: 4px;
+
+  height: ${({ height }) => height || "40px"};
+
+  @media screen and (min-width: 768px) {
+    width: 14px;
+  }
 `;
 
 export const ChartLine = styled.div`
-background:${({theme}) => theme.card}
   position: absolute;
 `;
 
-/* ---------- Bars ---------- */
+/* ---------- Progress Bars ---------- */
+
 export const BarRow = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 `;
 
 export const BarLabel = styled.p`
+  margin-bottom: 8px;
   font-size: 13px;
+
+  color: ${({ theme }) => theme.text};
 `;
 
 export const BarTrack = styled.div`
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 4px;
+  width: 100%;
+  height: 10px;
+
+  border-radius: 999px;
+  overflow: hidden;
+
+  background: ${({ theme }) => theme.track};
 `;
 
 export const BarFill = styled.div`
   height: 100%;
   width: ${({ value }) => value}%;
+
+  border-radius: inherit;
+
   background: #6366f1;
-  border-radius: 4px;
 `;

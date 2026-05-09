@@ -1,171 +1,266 @@
 import styled from "styled-components";
 
+/* ---------- Main Container ---------- */
+
 export const RegisterContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f2f5;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 16px;
+
+  background: ${({ theme }) => theme.bg};
 `;
+
+/* ---------- Register Form ---------- */
 
 export const RegisterForm = styled.form`
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    @media (max-width: 400px) {
-        width: 100%;
-    }
+  width: 100%;
+  max-width: 380px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 24px;
+
+  border-radius: 22px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
+
+  @media screen and (max-width: 480px) {
+    padding: 20px;
+  }
 `;
+
+/* ---------- Titles ---------- */
 
 export const RegisterTitle = styled.h2`
-    margin-bottom: 1rem;
-    color:#131313;
-`;
+  margin-bottom: 20px;
 
-export const RegisterInput = styled.input`
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-`;
+  font-size: 28px;
+  font-weight: 700;
 
-export const RegisterButton = styled.button`
-    width: 100%;
-    height: 2.5rem;
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    &:hover {
-        background-color: #0056b3;
-    }
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-`;
+  color: ${({ theme }) => theme.text};
 
-
-export const LoginLink = styled.p`
-    margin-top: 1rem;
-    color:#333;
-    a {
-        color: #007bff;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 400px) {
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 400px) {
-        font-size: 0.9rem;
-    }
-    
-    @media (max-width: 300px) {
-        font-size: 0.8rem;  
-    }
-    
-`;
-
-export const LoadingMessage = styled.p`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    
-    @media (max-width: 400px) {
-        font-size: 0.9rem;
-    }
-    @media (max-width: 300px) {
-        font-size: 0.8rem;
-    }
-`;
-
-export const Label = styled.label`
-    align-self: flex-start;
-    margin-bottom: 0.25rem;
-    font-weight: bold;
-    color:#131313;
-    @media (max-width: 400px) {
-        font-size: 0.9rem;
-    }
-    @media (max-width: 300px) {
-        font-size: 0.8rem;
-    }
-`;
-
-export const InputGroup = styled.div`
-    width: 100%;
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    @media (max-width: 400px) {
-        width: 100%;
-    }
-`;
-
-export const AuthCard = styled.div`
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 300px;
-    @media (max-width: 400px) {
-        width: 100%;
-    }
+  @media screen and (max-width: 480px) {
+    font-size: 24px;
+  }
 `;
 
 export const AuthTitle = styled.h2`
-    margin-bottom: 1rem;
-    @media (max-width: 400px) {
-        font-size: 1.5rem;
-    }
-    @media (max-width: 300px) {
-        font-size: 1.2rem;
-    }
+  margin-bottom: 18px;
+
+  font-size: 26px;
+  font-weight: 700;
+
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (max-width: 480px) {
+    font-size: 22px;
+  }
+`;
+
+/* ---------- Input Group ---------- */
+
+export const InputGroup = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 16px;
+`;
+
+export const Label = styled.label`
+  margin-bottom: 6px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: ${({ theme }) => theme.text};
+`;
+
+/* ---------- Inputs ---------- */
+
+export const RegisterInput = styled.input`
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  background: ${({ theme }) => theme.bg};
+
+  color: ${({ theme }) => theme.text};
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+
+  &:focus {
+    outline: none;
+
+    border-color: #6366f1;
+
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.mutedText};
+  }
+`;
+
+/* ---------- Buttons ---------- */
+
+export const RegisterButton = styled.button`
+  width: 100%;
+  height: 46px;
+
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
 export const AuthButton = styled.button`
-    width: 100%;
-    padding: 0.5rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;    
-    cursor: pointer;
-    &:hover {
-        background-color: #0056b3;
-    }
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-    @media (max-width: 400px) {
-        font-size: 0.9rem;
-    }
-    @media (max-width: 300px) {
-        font-size: 0.8rem;
-    }
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
+/* ---------- Login Link ---------- */
 
+export const LoginLink = styled.p`
+  margin-top: 18px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  a {
+    color: #6366f1;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 13px;
+  }
+`;
+
+/* ---------- Loading ---------- */
+
+export const LoadingMessage = styled.p`
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 14px;
+
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (max-width: 480px) {
+    font-size: 13px;
+  }
+`;
+
+/* ---------- Auth Card ---------- */
+
+export const AuthCard = styled.div`
+  width: 100%;
+  max-width: 380px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 24px;
+
+  border-radius: 22px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
+
+  @media screen and (max-width: 480px) {
+    padding: 20px;
+  }
+`;

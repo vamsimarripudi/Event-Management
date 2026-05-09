@@ -1,26 +1,35 @@
 export const lightTheme = {
-    bg:"#f5f7fb",
-    card:"#ffffff",
-    text:"#111827",
-    subText: "#6b7280",
-    border:"#e5e7eb",
-
-    sidebar:"#ffffff",
-    navbar:"#fff",
-
-    primary:"#6366f1",
-
-}
+  bg: "#f5f7fb",
+  card: "#ffffff",
+  text: "#111827",
+  mutedText: "#6b7280",
+  border: "#e5e7eb",
+  sidebar: "#ffffff",
+  navbar: "rgba(255,255,255,0.75)",
+  primary: "#6366f1",
+  shadow: "0 8px 30px rgba(0,0,0,0.06)",
+  track: "#e5e7eb",
+  success: "#22c55e",
+  danger: "#ef4444",
+  warning: "#f59e0b",
+  overlay: "rgba(0,0,0,0.45)",
+  glass: "rgba(255,255,255,0.7)",
+};
 
 export const darkTheme = {
-    bg:"#0f172a",
-    card:"#111827",
-    text:"#f9fafb",
-    subText: "#9ca3af",
-    border:"#1f2937",
-
-    sidebar:"#111827",
-    navbar:"#111827",
-
-    primary:"#818cf8",
-}
+  bg: "#0f172a",
+  card: "#111827",
+  text: "#f9fafb",
+  mutedText: "#9ca3af",
+  border: "#1f2937",
+  sidebar: "rgba(17,24,39,0.88)",
+  navbar: "rgba(17,24,39,0.78)",
+  primary: "#818cf8",
+  shadow: "0 10px 35px rgba(0,0,0,0.45)",
+  track: "#1e293b",
+  success: "#22c55e",
+  danger: "#ef4444",
+  warning: "#f59e0b",
+  overlay: "rgba(0,0,0,0.65)",
+  glass: "rgba(17,24,39,0.72)",
+};

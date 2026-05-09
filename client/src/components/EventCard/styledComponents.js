@@ -1,137 +1,160 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+/* ---------- Shared Card Style ---------- */
+
+const CardStyle = `
+  width: 100%;
+
+  padding: 16px;
+  margin-bottom: 18px;
+
+  border-radius: 18px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  @media screen and (min-width: 768px) {
+    padding: 20px;
+  }
+`;
+
+/* ---------- Main Event Card ---------- */
 
 export const EventCardContainer = styled.div`
-    background:${({theme}) => theme.bg}
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    margin: 20px;
-    width: 300px;
-    transition: box-shadow 0.2s;
-    &:hover {
-        box-shadow: 0 8px 32px rgba(0,123,255,0.12);
-    }
-    @media (max-width: 400px) {
-        width: 100%;
-        margin:10px;
-        padding:10px;
-    }
+  ${CardStyle}
 `;
 
 export const EventItem = styled.div`
-    background:${({theme}) => theme.card}
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    margin-bottom: 1.5rem;
-    width: 300px;
-    transition: box-shadow 0.2s;
-    &:hover {
-        box-shadow: 0 8px 32px rgba(0,123,255,0.12);
-    }
-    @media (max-width: 400px) {
-        width: 100%;
-    }
-`;  
-
-export const EventCardTitle = styled.h2`
-    font-size: 1.35rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-    color: ${({theme}) => theme.text}
-`;
-
-export const EventCardDate = styled.p`
-    color: #007bff;
-    margin-bottom: 1rem;
-    font-weight: 500;
-    
-`;
-
-export const EventCardRegisterButton = styled.button`
-    padding: 0.5rem 1rem;   
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    &:hover {
-        background-color: #0056b3;
-    }
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-`;
-
-export const EventDescription = styled.p`
-    color: ${({theme}) => theme.text}
-    margin-bottom: 1rem;
-    font-size: 1rem;
-    line-height: 1.5;
-`;
-
-export const EventState = styled.p`
-    color: ${({theme}) => theme.text}
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-`;
-
-export const EventVenue = styled.p`
-    color: ${({theme}) => theme.text}
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-`;
-export const EventCountry = styled.p`
-    color: ${({theme}) => theme.text}
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+  ${CardStyle}
 `;
 
 export const EventItemContainer = styled.div`
-    background: ${({theme}) => theme.card}
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    margin-bottom: 1.5rem;
-    width: 300px;
-    transition: box-shadow 0.2s;
-    &:hover {
-        box-shadow: 0 8px 32px rgba(0,123,255,0.12);
-    }
-    @media (max-width: 400px) {
-        width: 100%;
-    }
+  ${CardStyle}
+`;
+
+/* ---------- Titles ---------- */
+
+export const EventCardTitle = styled.h2`
+  margin-bottom: 10px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: ${({ theme }) => theme.text};
+
+  line-height: 1.4;
 `;
 
 export const EventItemTitle = styled.h2`
-    font-size: 1.35rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-    color: ${({theme}) => theme.text}
+  margin-bottom: 10px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: ${({ theme }) => theme.text};
+
+  line-height: 1.4;
+`;
+
+/* ---------- Event Info ---------- */
+
+export const EventCardDate = styled.p`
+  margin-bottom: 14px;
+
+  color: #6366f1;
+
+  font-size: 14px;
+  font-weight: 600;
+`;
+
+export const EventDescription = styled.p`
+  margin-bottom: 16px;
+
+  color: ${({ theme }) => theme.text};
+
+  font-size: 15px;
+  line-height: 1.7;
+`;
+
+export const EventState = styled.p`
+  margin-bottom: 8px;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  font-size: 14px;
+`;
+
+export const EventVenue = styled.p`
+  margin-bottom: 8px;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  font-size: 14px;
+`;
+
+export const EventCountry = styled.p`
+  margin-bottom: 8px;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  font-size: 14px;
 `;
 
 export const EventCategory = styled.p`
-    color: ${({theme}) => theme.text}
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  font-size: 14px;
+`;
+
+/* ---------- Buttons ---------- */
+
+const ButtonStyle = `
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  background: #6366f1;
+  color: #ffffff;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+`;
+
+export const EventCardRegisterButton = styled.button`
+  ${ButtonStyle}
 `;
 
 export const EventViewDetailsButton = styled.button`
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    &:hover {
-        background-color: #0056b3;
-    }
-    &:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
+  ${ButtonStyle}
 `;
-

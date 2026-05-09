@@ -1,185 +1,304 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-export  const LoginContainer = styled.div`
-  width: 100%;
-  height: 100vh;
+/* ---------- Main Container ---------- */
+
+export const LoginContainer = styled.div`
   position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
   overflow: hidden;
+
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 50%, #faf5ff 100%);
+  align-items: center;
+
+  padding: 16px;
+
+  background: ${({ theme }) => theme.bg};
 `;
 
-export  const BackgroundDecorationTop = styled.div`
+/* ---------- Background Decorations ---------- */
+
+export const BackgroundDecorationTop = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 500px;
-  height: 500px;
-  background: linear-gradient(135deg, rgba(147, 197, 253, 0.4) 0%, rgba(196, 181, 253, 0.4) 100%);
+
+  top: -120px;
+  right: -120px;
+
+  width: 320px;
+  height: 320px;
+
   border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.25),
+    rgba(168, 85, 247, 0.2)
+  );
+
   filter: blur(80px);
+
+  @media screen and (min-width: 768px) {
+    width: 500px;
+    height: 500px;
+  }
 `;
 
-export  const BackgroundDecorationBottom = styled.div`
+export const BackgroundDecorationBottom = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 400px;
-  height: 400px;
-  background: linear-gradient(45deg, rgba(165, 180, 252, 0.4) 0%, rgba(251, 207, 232, 0.4) 100%);
+
+  bottom: -100px;
+  left: -100px;
+
+  width: 280px;
+  height: 280px;
+
   border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.2),
+    rgba(236, 72, 153, 0.18)
+  );
+
   filter: blur(80px);
+
+  @media screen and (min-width: 768px) {
+    width: 420px;
+    height: 420px;
+  }
 `;
 
-export  const LoginWrapper = styled.div`
+/* ---------- Wrapper ---------- */
+
+export const LoginWrapper = styled.div`
   position: relative;
+
   width: 100%;
-  max-width: 28rem;
-  margin: 0 1rem;
+  max-width: 420px;
+
+  z-index: 2;
 `;
 
-export  const LoginCard = styled.div`
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  padding: 2rem;
-  border: 1px solid #f3f4f6;
+/* ---------- Login Card ---------- */
+
+export const LoginCard = styled.div`
+  padding: 24px;
+
+  border-radius: 24px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
+
+  backdrop-filter: blur(18px);
+
+  @media screen and (min-width: 768px) {
+    padding: 32px;
+  }
 `;
 
-export  const LoginHeader = styled.div`
+/* ---------- Header ---------- */
+
+export const LoginHeader = styled.div`
   text-align: center;
-  margin-bottom: 2rem;
+
+  margin-bottom: 28px;
 `;
 
-export  const LoginTitle = styled.h1`
-  font-size: 1.875rem;
-  color: #111827;
-  margin-bottom: 0.5rem;
+export const LoginTitle = styled.h1`
+  margin-bottom: 8px;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (max-width: 480px) {
+    font-size: 28px;
+  }
 `;
 
-export  const LoginSubtitle = styled.p`
-  color: #4b5563;
-  font-size: 0.875rem;
+export const LoginSubtitle = styled.p`
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: ${({ theme }) => theme.mutedText};
 `;
 
-export  const LoginForm = styled.form`
+/* ---------- Form ---------- */
+
+export const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+
+  gap: 18px;
 `;
 
-export  const FormGroup = styled.div`
+export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+
+  gap: 8px;
 `;
 
-export  const FormLabel = styled.label`
-  font-size: 0.875rem;
-  color: #374151;
+export const FormLabel = styled.label`
+  font-size: 14px;
+  font-weight: 500;
+
+  color: ${({ theme }) => theme.text};
 `;
 
-export  const FormInput = styled.input`
+/* ---------- Inputs ---------- */
+
+export const FormInput = styled.input`
   width: 100%;
-  padding: 0.75rem 1rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  color: #111827;
-  font-size: 1rem;
-  transition: all 0.2s;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  background: ${({ theme }) => theme.bg};
+
+  color: ${({ theme }) => theme.text};
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
 
   &::placeholder {
-    color: #9ca3af;
+    color: ${({ theme }) => theme.mutedText};
   }
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+    border-color: #6366f1;
+
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
   }
 `;
 
-export  const PasswordWrapper = styled.div`
+export const PasswordWrapper = styled.div`
   position: relative;
 `;
 
-export  const PasswordToggle = styled.button`
+export const PasswordToggle = styled.button`
   position: absolute;
-  right: 1rem;
+
   top: 50%;
+  right: 14px;
+
   transform: translateY(-50%);
-  background: none;
+
   border: none;
-  color: #9ca3af;
+  outline: none;
+
+  background: transparent;
+
   cursor: pointer;
-  padding: 0.25rem;
-  transition: color 0.2s;
+
+  color: ${({ theme }) => theme.mutedText};
+
+  transition: 0.2s ease;
 
   &:hover {
-    color: #4b5563;
+    color: ${({ theme }) => theme.text};
   }
 
   svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 20px;
+    height: 20px;
   }
 `;
 
-export  const ForgotPassword = styled.div`
+/* ---------- Forgot Password ---------- */
+
+export const ForgotPassword = styled.div`
   display: flex;
   justify-content: flex-end;
 
   a {
-    font-size: 0.875rem;
-    color: #2563eb;
+    font-size: 13px;
+
+    color: #6366f1;
+
     text-decoration: none;
-    transition: color 0.2s;
+
+    transition: 0.2s ease;
 
     &:hover {
-      color: #1d4ed8;
+      opacity: 0.9;
     }
   }
 `;
 
-export  const LoginButton = styled.button`
+/* ---------- Login Button ---------- */
+
+export const LoginButton = styled.button`
   width: 100%;
-  background: #2563eb;
-  color: white;
-  padding: 0.75rem 1.5rem;
+
   border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+  outline: none;
+
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+  padding: 12px 16px;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
 
   &:hover {
-    background: #1d4ed8;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 `;
 
-export  const LoginFooter = styled.div`
-  margin-top: 1.5rem;
+/* ---------- Footer ---------- */
+
+export const LoginFooter = styled.div`
+  margin-top: 22px;
+
   text-align: center;
 
   p {
-    color: #4b5563;
-    font-size: 0.875rem;
+    font-size: 14px;
+
+    color: ${({ theme }) => theme.mutedText};
   }
 
   a {
-    color: #2563eb;
+    color: #6366f1;
+
     text-decoration: none;
-    transition: color 0.2s;
+
+    transition: 0.2s ease;
 
     &:hover {
-      color: #1d4ed8;
+      opacity: 0.9;
     }
   }
 `;

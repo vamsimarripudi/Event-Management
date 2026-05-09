@@ -1,45 +1,91 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+
+/* ---------- Main Container ---------- */
 
 export const NotFoundContainer = styled.div`
-display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f2f5;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
 
   text-align: center;
-  padding: 2rem;
+
+  padding: 20px;
+
+  background: ${({ theme }) => theme.bg};
 `;
 
+/* ---------- Typography ---------- */
+
 export const NotFoundTitle = styled.h1`
-  color: #333;
+  margin-bottom: 12px;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (max-width: 480px) {
+    font-size: 26px;
+  }
 `;
 
 export const NotFoundMessage = styled.p`
-  color: #666;
+  max-width: 420px;
+
+  margin-bottom: 20px;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  color: ${({ theme }) => theme.mutedText};
 `;
+
+/* ---------- Image ---------- */
 
 export const NotFoundImage = styled.img`
-  width: 300px;
-    margin-bottom: 2rem;
+  width: 100%;
+  max-width: 320px;
 
-    @media (max-width: 400px) {
-        width: 100%;
-    }
+  margin-bottom: 24px;
+
+  object-fit: contain;
+
+  @media screen and (max-width: 480px) {
+    max-width: 240px;
+  }
 `;
+
+/* ---------- Button ---------- */
 
 export const BackButton = styled.button`
-  margin-top: 1rem; 
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    &:hover {
-        background-color: #0056b3;
-    }
-`;
+  border: none;
+  outline: none;
 
+  cursor: pointer;
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+`;

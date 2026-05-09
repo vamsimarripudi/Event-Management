@@ -31,9 +31,11 @@ import {
   Modal,
   ModalTitle,
   ModalRow,
-  SkeletonCard,
   SkeletonAvatar,
   SkeletonLine,
+  SkeletonInput,
+  SkeletonButton,
+  SkeletonAnalysisCard,
   AnalysisGrid,
   AnalysisCard,
   Value,
@@ -42,7 +44,6 @@ import {
   Progress,
   SummaryCard,
   SummaryText,
-
 } from "./styledComponents";
 import toast from "react-hot-toast";
 
@@ -243,19 +244,74 @@ class Profile extends Component {
 
   // ---------- Views ----------
 
-  renderLoading = () => (
-    <Card>
-      <Header>
-        <SkeletonAvatar />
-        <div>
+ renderLoading = () => (
+      <Card>
+        <Header>
+          <SkeletonAvatar />
+          <div style={{ flex: 1 }}>
+            <SkeletonLine width="180px" height="18px" />
+            <SkeletonLine width="120px" />
+            <SkeletonLine width="160px" />
+          </div>
+        </Header>
+        <Field>
+          <Label>
+            <SkeletonLine width="70px" />
+          </Label>
+          <SkeletonInput />
+        </Field>
+        <Field>
+          <Label>
+            <SkeletonLine width="70px" />
+          </Label>
+          <SkeletonInput />
+        </Field>
+
+        <Field>
+          <Label>
+            <SkeletonLine width="70px" />
+          </Label>
+          <SkeletonInput />
+        </Field>
+
+        <StrengthCard>
           <SkeletonLine width="140px" />
-          <SkeletonLine width="100px" />
-        </div>
-      </Header>
-      <SkeletonCard />
-      <SkeletonCard />
-    </Card>
-  );
+          <ProgressBar>
+            <Progress value={70} />
+          </ProgressBar>
+          <SkeletonLine width="140px" />
+        </StrengthCard>
+
+        <AnalysisGrid>
+          <SkeletonAnalysisCard>
+            <SkeletonLine width="50px" height="26px" />
+            <SkeletonLine width="120px" />
+          </SkeletonAnalysisCard>
+          <SkeletonAnalysisCard>
+            <SkeletonLine width="50px" height="26px" />
+            <SkeletonLine width="150px" />
+          </SkeletonAnalysisCard>
+
+          <SkeletonAnalysisCard>
+            <SkeletonLine width="50px" height="26px" />
+            <SkeletonLine width="110px" />
+          </SkeletonAnalysisCard>
+        </AnalysisGrid>
+        <SummaryCard>
+          <SkeletonLine width="180px" />
+          <div style={{ marginTop: "12px" }}>
+            <SkeletonLine />
+            <SkeletonLine />
+            <SkeletonLine width="92%" />
+            <SkeletonLine width="85%" />
+          </div>
+        </SummaryCard>
+        <Row>
+          <SkeletonButton width="140px" />
+          <SkeletonButton width="140px" />
+        </Row>
+      </Card>
+    );
 
   renderFailure = () => (
     <Card>

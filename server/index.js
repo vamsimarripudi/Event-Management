@@ -13,13 +13,15 @@ const {initAI} = require("./services/aiService");
 const {getAI} = require("./services/aiService");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoute = require("./routes/userRoute");
-
+const metricMiddleware = require("./middleware/metricMiddleware");
+const metricRoutes = require("./routes/metricRoutes");
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(metricMiddleware)
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
 app.use("/api/auth", authRoutes);
@@ -28,6 +30,7 @@ app.use("/api/registration", registrationRoutes);
 app.use("/api/feedback", feedbackRoute);
 app.use("/api/admin", adminRoutes);
 app.use("/api", userRoute);
+app.use("/api/admin/metrics", metricRoutes);
 
 
 app.get("/", (req,res) => {

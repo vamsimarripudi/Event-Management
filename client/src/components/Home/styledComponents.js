@@ -1,34 +1,61 @@
 import styled from "styled-components";
 
+/* ---------- Main Layout ---------- */
+
 export const MainCardContainer = styled.div`
+  min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+
   padding: 16px;
+
+  background: ${({ theme }) => theme.bg};
+
   background-size: cover;
 `;
 
+/* ---------- Main Card ---------- */
+
 export const EventManagmentCard = styled.div`
+  width: 100%;
+  max-width: 420px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  background-color: #ffffff;
-  width: 100%;
-  max-width: 420px;
-  padding: 32px 24px;
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  padding: 28px 22px;
+
+  border-radius: 24px;
+
+  background: ${({ theme }) => theme.card};
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  box-shadow: ${({ theme }) => theme.shadow};
+
   text-align: center;
+
+  @media screen and (min-width: 768px) {
+    padding: 36px 28px;
+  }
 `;
 
-export const Title = styled.h1`
-  font-size: 32px;
-  margin: 0;
-  color: #111827;
+/* ---------- Typography ---------- */
 
-  @media (min-width: 768px) {
+export const Title = styled.h1`
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  color: ${({ theme }) => theme.text};
+
+  @media screen and (min-width: 768px) {
     font-size: 40px;
   }
 `;
@@ -36,46 +63,66 @@ export const Title = styled.h1`
 export const Description = styled.p`
   width: 100%;
   max-width: 320px;
-  font-size: 14px;
-  color: #6b7280;
-  line-height: 1.6;
+
   margin: 16px 0 24px;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  color: ${({ theme }) => theme.mutedText};
 `;
 
 export const SubHeading = styled.p`
-  margin: 0;
   margin-top: 8px;
-  font-size: 16px;
-  color: #4b5563;
+
+  font-size: 15px;
+
+  color: ${({ theme }) => theme.mutedText};
 `;
 
-export const UserActionButtons = styled.div`
-  display: flex;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
+/* ---------- Button Wrapper ---------- */
 
-  @media (max-width: 480px) {
-    flex-direction: column;
+export const UserActionButtons = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-top: 10px;
+
+  @media screen and (min-width: 480px) {
+    flex-direction: row;
   }
 `;
 
+/* ---------- Register Button ---------- */
+
 export const RegisterButton = styled.button`
   flex: 1;
-  padding: 12px 20px;
-  border-radius: 8px;
+
   border: none;
-  background: #2563eb;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 14px;
+  outline: none;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  padding: 12px 20px;
+
+  border-radius: 12px;
+
+  background: #6366f1;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
 
   &:hover {
-    background: #1d4ed8;
+    opacity: 0.9;
     transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
   }
 
   &:active {
@@ -83,21 +130,32 @@ export const RegisterButton = styled.button`
   }
 `;
 
+/* ---------- Login Button ---------- */
+
 export const LoginButton = styled.button`
   flex: 1;
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background: transparent;
-  color: #111827;
-  font-weight: 600;
-  font-size: 14px;
+
+  border: 1px solid ${({ theme }) => theme.border};
+
+  outline: none;
+
   cursor: pointer;
-  transition: all 0.2s ease;
+
+  padding: 12px 20px;
+
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: ${({ theme }) => theme.text};
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
 
   &:hover {
-    background: #f3f4f6;
-    border-color: #9ca3af;
+    background: ${({ theme }) => theme.bg};
   }
 
   &:active {
