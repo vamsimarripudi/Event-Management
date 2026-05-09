@@ -105,9 +105,7 @@ app.use((req, res, next) => {
         100
     );
 
-    console.log(
-      `${req.method} ${req.originalUrl} - ${duration}ms`
-    );
+    
   });
 
   next();
