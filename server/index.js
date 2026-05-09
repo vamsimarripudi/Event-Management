@@ -28,13 +28,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-global.metrics = {
-  totalRequests: 0,
-  totalResponseTime: 0,
-  avgResponse: 0,
-  failedRequests: 0,
-  successRate: 100,
-};
+
 
 const io = new Server(server, {
   cors: {
@@ -52,14 +46,7 @@ io.on("connection", (socket) => {
   });
 });
 
-setInterval(() => {
-  io.emit("dashboard:metrics", {
-    totalRequests: global.metrics.totalRequests,
-    avgResponse: global.metrics.avgResponse,
-    failedRequests: global.metrics.failedRequests,
-    successRate: global.metrics.successRate,
-  });
-}, 3000);
+
 
 app.use(express.json());
 
@@ -77,38 +64,26 @@ app.use(express.static("public"));
 app.set("io", io);
 
 app.use((req, res, next) => {
+
   const start = Date.now();
 
   res.on("finish", () => {
-    const duration = Date.now() - start;
 
-    global.metrics.totalRequests += 1;
+    const duration =
+      Date.now() - start;
 
-    global.metrics.totalResponseTime += duration;
-
-    global.metrics.avgResponse = Math.round(
-      global.metrics.totalResponseTime /
-        global.metrics.totalRequests
+    console.log(
+      `${req.method} ${req.originalUrl} - ${duration}ms`
     );
 
-    if (res.statusCode >= 400) {
-      global.metrics.failedRequests += 1;
-    }
+    const io = req.app.get("io");
 
-    const successRequests =
-      global.metrics.totalRequests -
-      global.metrics.failedRequests;
+    io.emit("dashboard:update");
 
-    global.metrics.successRate = Math.round(
-      (successRequests /
-        global.metrics.totalRequests) *
-        100
-    );
-
-    
   });
 
   next();
+
 });
 
 app.use("/api/auth", authRoutes);

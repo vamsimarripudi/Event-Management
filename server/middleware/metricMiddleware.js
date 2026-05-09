@@ -13,34 +13,17 @@ const metricsMiddleware = (
     const duration =
       Date.now() - start;
 
-    global.metrics.totalRequests += 1;
+    console.log(
+      `${req.method} ${req.originalUrl} - ${duration}ms`
+    );
 
-    global.metrics.totalResponseTime +=
-      duration;
+    const io = req.app.get("io");
 
-    global.metrics.avgResponse =
-      Math.round(
-        global.metrics.totalResponseTime /
-          global.metrics.totalRequests
-      );
-
-    if (res.statusCode >= 400) {
-      global.metrics.failedRequests += 1;
-    }
-
-    const successRequests =
-      global.metrics.totalRequests -
-      global.metrics.failedRequests;
-
-    global.metrics.successRate =
-      Math.round(
-        (successRequests /
-          global.metrics.totalRequests) *
-          100
-      );
+    io.emit("dashboard:update");
 
   });
 
   next();
+
 };
 module.exports = metricsMiddleware;

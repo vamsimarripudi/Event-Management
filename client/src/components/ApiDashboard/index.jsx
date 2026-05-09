@@ -73,43 +73,46 @@ class ApiDashboard extends Component {
   };
 
   componentDidMount() {
-    this.getDashboardData();
+   this.getDashboardData();
     this.connectSocket();
+    this.dashboardInterval =
+      setInterval(() => {
+        this.getDashboardData();
+      }, 3000);
   }
 
   componentWillUnmount() {
-    socket.off("dashboard:metrics");
+    socket.off("dashboard:update");
     socket.off("connect");
     socket.off("disconnect");
+    clearInterval(this.dashboardInterval);
   }
 
   connectSocket = () => {
-    socket.on("connect", () => {
-      console.log("Socket Connected");
-    });
 
-    socket.on("dashboard:metrics", (data) => {
+  socket.on("connect", () => {
 
-      this.setState((prevState) => ({
-        overview: {
-          ...prevState.overview,
+    console.log("Socket Connected");
 
-          totalRequests:
-            data.totalRequests,
+  });
 
-          avgResponse:
-            data.avgResponse,
+  socket.on("dashboard:update", () => {
 
-          failedRequests:
-            data.failedRequests,
+    console.log(
+      "Realtime Dashboard Update"
+    );
 
-          successRate:
-            data.successRate,
-        },
-      }));
+    this.getDashboardData();
 
-   });
-  };
+  });
+
+  socket.on("disconnect", () => {
+
+    console.log("Socket Disconnected");
+
+  });
+
+};
 
   getDashboardData = async () => {
     this.setState({ status: apiStatus.loading });
