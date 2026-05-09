@@ -39,6 +39,12 @@ io.on("connection", (socket) => {
     });
 });
 
+setInterval(() => {
+
+  io.emit("dashboard:metrics");
+
+}, 1500);
+
 
 app.use(express.json());
 app.use(cors());

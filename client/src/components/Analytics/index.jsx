@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Navbar from "../Navbar";
+import Sidebar from "../Sidebar";
 import {
   Container,
   TopBar,
@@ -64,6 +66,9 @@ class Analytics extends Component {
     if (!data) return <Container>Loading...</Container>;
 
     return (
+      
+      <>
+      <Navbar/>
       <Container>
         {/* ---------- Filter ---------- */}
         <TopBar>
@@ -128,6 +133,7 @@ class Analytics extends Component {
           ))}
         </Section>
       </Container>
+      </>
     );
   }
 }

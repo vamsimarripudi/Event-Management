@@ -6,9 +6,11 @@ export const Container = styled.div`
   min-height: 100vh;
   padding: 16px;
   background: ${({ theme }) => theme.bg};
+  margin-top:60px;
 
   @media screen and (min-width: 768px) {
     padding: 24px;
+    margin-top:50px;
   }
 
   @media screen and (min-width: 1024px) {
