@@ -6,128 +6,115 @@ const {sendEmail} = require("../mailer");
 
 
 const registerForEvent = async (req, res) => {
-  const { eventId } = req.body;
-  const user = await User.findById(req.user.id);
   try {
-    const event = await Event.findById(eventId);
+    const { eventId } = req.body;
 
+    const userId = req.user.id;
+
+    /* ---------- Parallel Queries ---------- */
+
+    const [event, user, existingRegistration] =
+      await Promise.all([
+        Event.findById(eventId).lean(),
+
+        User.findById(userId)
+          .select("name email")
+          .lean(),
+
+        Registration.findOne({
+          userId,
+          eventId,
+        }).lean(),
+      ]);
     if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    if (new Date(event.dateTime.start) < new Date()) {
-      return res.status(400).json({
-        message: "Cannot register for past events",
+      return res.status(404).json({
+        message: "Event not found",
       });
     }
-
-    if (event.capacity <= 0) {
-      return res.status(400).json({ message: "Event is full" });
+    if (
+      new Date(event.dateTime.start) <
+      new Date()
+    ) {
+      return res.status(400).json({
+        message:
+          "Cannot register for past events",
+      });
     }
-
-    const existingRegistration = await Registration.findOne({
-      userId: req.user.id,
-      eventId,
-    });
 
     if (existingRegistration) {
       return res.status(400).json({
         message: "Already registered",
-        registrationId: existingRegistration._id,
+        registrationId:
+          existingRegistration._id,
       });
     }
 
-    const registration = await Registration.create({
-      userId: req.user.id,
-      eventId,
-    });
+    const updatedEvent =
+      await Event.findOneAndUpdate(
+        {
+          _id: eventId,
+          capacity: { $gt: 0 },
+        },
+        {
+          $inc: {
+            capacity: -1,
+          },
+        },
+        {
+          new: true,
+        }
+      ).lean();
 
-    await Event.findByIdAndUpdate(eventId, {
-      $inc: { capacity: -1 },
-    });
-
-    let html;
-
-    const eventName= event.name
-    const eventDate = event.dateTime.start
-    console.log(`Event Name:${eventName}, Event Date was:${eventDate}` )
-    try{
-      html = await generateEmailHTML({eventName,eventDate});
-    }catch(err){
-      html: `
-        <div style="font-family:Arial, Helvetica, sans-serif; background:#f6f6f6; padding:30px;">
-          <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-
-            <!-- Header -->
-            <div style="background:#111; color:#fff; padding:20px; text-align:center;">
-              <h2 style="margin:0;">Event Registration Confirmed</h2>
-            </div>
-
-            <!-- Body -->
-            <div style="padding:25px;">
-              <p style="font-size:16px;">Hi ${user.name || "there"},</p>
-
-              <p style="font-size:15px; color:#333;">
-                You have successfully registered for the following event:
-              </p>
-
-              <div style="background:#f9f9f9; padding:15px; border-radius:6px; margin:20px 0;">
-                <p style="margin:5px 0;"><b>Event:</b> ${event.name}</p>
-                <p style="margin:5px 0;"><b>Date:</b> ${new Date(event.dateTime.start).toLocaleString()}</p>
-                <p style="margin:5px 0;"><b>Organizer:</b> ${event.organizer || "Event Team"}</p>
-              </div>
-
-              <p style="font-size:14px; color:#555;">
-                We’re excited to have you with us. Make sure to check your dashboard for updates and event details.
-              </p>
-
-              <!-- CTA Button -->
-              <div style="text-align:center; margin:25px 0;">
-                <a href="https://event.vamsimarripudi.tech/dashboard"
-                  style="background:#111; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
-                  View Dashboard
-                </a>
-              </div>
-
-              <p style="font-size:14px; color:#555;">
-                If you have any questions, feel free to reach out.
-              </p>
-
-              <p style="margin-top:25px;">
-                Regards,<br/>
-                <b>Event Management Team</b>
-              </p>
-              <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=${event.name}">
-                Add to Calendar
-              </a>
-            </div>
-
-            <!-- Footer -->
-            <div style="background:#f1f1f1; text-align:center; padding:15px; font-size:12px; color:#777;">
-              © ${new Date().getFullYear()} Event Management. All rights reserved.
-            </div>
-
-          </div>
-        </div>
-        `
+    if (!updatedEvent) {
+      return res.status(400).json({
+        message: "Event is full",
+      });
     }
+    const registration =
+      await Registration.create({
+        userId,
+        eventId,
+      });
 
-    const styledHTML = buildStyledEmail({event,user});
-
-    sendEmail({
-      to:user.email,
-      subject: "Event Registration Confirmed",
-      html
-    });
-
-    return res.status(201).json({
+    res.status(201).json({
       message: "Registered successfully",
       isRegistered: true,
       registrationId: registration._id,
     });
 
+    setImmediate(async () => {
+      try {
+        const html =
+          await generateEmailHTML({
+            eventName: event.name,
+            eventDate:
+              event.dateTime.start,
+          });
+
+        await sendEmail({
+          to: user.email,
+          subject:
+            "Event Registration Confirmed",
+          html,
+        });
+
+        console.log(
+          `Confirmation mail sent to ${user.email}`
+        );
+      } catch (err) {
+        console.log(
+          "Email Error:",
+          err.message
+        );
+      }
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        "Something went wrong while registering",
+    });
   }
 };
 

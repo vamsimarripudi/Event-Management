@@ -26,32 +26,32 @@ const generateEmailHTML = async ({ eventName, eventDate }) => {
   const client = getAI();
 
   const prompt = `
-Generate a COMPLETE event registration confirmation email in HTML format.
+    Generate a COMPLETE event registration confirmation email in HTML format.
 
-Rules:
-- Do NOT leave sentences incomplete
-- Do NOT include words like "unfortunately"
-- Return ONLY clean HTML (no explanation, no markdown)
+    Rules:
+    - Do NOT leave sentences incomplete
+    - Do NOT include words like "unfortunately"
+    - Return ONLY clean HTML (no explanation, no markdown)
 
-Details:
-Event Name: ${eventName}
-Date: ${eventDate}
+    Details:
+    Event Name: ${eventName}
+    Date: ${eventDate}
 
-Include:
-- Greeting
-- Confirmation message
-- Event details
-- Friendly closing 
+    Include:
+    - Greeting
+    - Confirmation message
+    - Event details
+    - Friendly closing 
 
-and last add the button called View Dashboard and the html elements are 
- <div style="text-align:center; margin:25px 0;">
-    <a href="https://event.vamsimarripudi.tech/dashboard"
-      style="background:#111; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
-      View Dashboard
-    </a>
-  </div>
+    and last add the button called View Dashboard and the html elements are 
+    <div style="text-align:center; margin:25px 0;">
+        <a href="https://event.vamsimarripudi.tech/dashboard"
+          style="background:#111; color:#fff; padding:12px 20px; text-decoration:none; border-radius:5px; font-size:14px;">
+          View Dashboard
+        </a>
+      </div>
 
-`;
+    `;
 
   try {
     const response = await client.chat.completions.create({
