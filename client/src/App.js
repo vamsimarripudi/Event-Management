@@ -21,6 +21,7 @@ import { ThemeContext } from "./context/ThemeContext";
 import { useContext } from 'react';
 import GlobalStyle from './styles/GlobalStyles';
 import ApiDashboard from "./components/ApiDashboard";
+import AdminRoute from './utils/AdminRoute';
 
 
 const App = () => {
@@ -73,7 +74,7 @@ const App = () => {
         <Route path="/events/:id" element={<ProtectedRoute><EventDetails /></ProtectedRoute>} />
         <Route path = "/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         <Route path = "/dashboard/my-events" element={<ProtectedRoute><MyEvents/></ProtectedRoute>}/>
-        <Route path="/analytics" element={<ProtectedRoute><Analytics/></ProtectedRoute>}/>
+        <Route path="/analytics" element={<ProtectedRoute><AdminRoute><Analytics/></AdminRoute></ProtectedRoute>}/>
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
         <Route path = "/api-dashboard" element = {<ProtectedRoute><ApiDashboard/></ProtectedRoute>}/>
         <Route path="/not-found" element={<NotFound />} />

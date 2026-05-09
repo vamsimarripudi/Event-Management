@@ -5,7 +5,6 @@ import styled from "styled-components";
 export const Container = styled.div`
   flex: 1;
   min-height: 100vh;
-
   padding: 14px;
   margin-top: 10px;
 
@@ -23,7 +22,7 @@ export const Container = styled.div`
 /* ---------- Tabs ---------- */
 
 export const Tabs = styled.div`
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -100,10 +99,10 @@ export const Layout = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-top: 80px;
+  margin-top: 50px;
 
   @media screen and (min-width: 768px) {
-    margin-top: 70px;
+    margin-top: 5px;
   }
 `;
 

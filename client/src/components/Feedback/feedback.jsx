@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Popup from "reactjs-popup";
 import { useLocation } from "react-router-dom";
+import {MdFeedback} from "react-icons/md"
 import "reactjs-popup/dist/index.css";
 import StarRating from "./ratingFile";
 import toast from "react-hot-toast"
@@ -91,7 +92,10 @@ const FeedbackPopup = () => {
 
   return (
     <Popup
-      trigger={<FloatingButton>Feedback</FloatingButton>}
+      trigger={<FloatingButton>
+        <MdFeedback className="feedback-icon"/>
+        <span className="feedback-text">Feedback</span>
+        </FloatingButton>}
       modal
       nested
     >

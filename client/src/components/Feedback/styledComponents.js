@@ -5,29 +5,43 @@ import styled from "styled-components";
 export const FloatingButton = styled.button`
   position: fixed;
 
-  right: 16px;
-  bottom: 16px;
+  right: 20px;
+  bottom: 90px;
 
   z-index: 999;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
   border: none;
-  outline: none;
 
-  cursor: pointer;
+  padding: 14px 18px;
 
-  padding: 12px 18px;
-
-  border-radius: 12px;
+  border-radius: 16px;
 
   background: ${({ theme }) => theme.card};
 
   color: ${({ theme }) => theme.text};
 
-  border: 1px solid ${({ theme }) => theme.border};
-
   box-shadow: ${({ theme }) => theme.shadow};
 
+  cursor: pointer;
+
   transition: 0.2s ease;
+
+  .feedback-icon {
+    font-size: 22px;
+
+    flex-shrink: 0;
+  }
+
+  .feedback-text {
+    font-size: 14px;
+    font-weight: 600;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -37,8 +51,26 @@ export const FloatingButton = styled.button`
     transform: scale(0.97);
   }
 
+  @media screen and (max-width: 768px) {
+    width: 56px;
+    height: 56px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    bottom: 90px;
+
+    .feedback-text {
+      display: none;
+    }
+
+    .feedback-icon {
+      font-size: 24px;
+    }
+  }
+
   @media screen and (min-width: 768px) {
-    right: 20px;
     bottom: 20px;
   }
 `;
