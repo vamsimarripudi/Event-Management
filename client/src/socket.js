@@ -7,3 +7,5 @@ const socket = io(
     withCredentials: true,
   }
 );
+
+export default socket
