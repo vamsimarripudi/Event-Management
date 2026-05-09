@@ -1,4 +1,5 @@
-const ApiMetric = require("../models/ApiMetric");
+const ApiMetric =
+  require("../models/ApiMetric");
 
 const metricsMiddleware = (
   req,
@@ -24,9 +25,6 @@ const metricsMiddleware = (
     console.log(
       `${req.method} ${req.originalUrl} - ${duration}ms`
     );
-
-    const ApiMetric =
-      require("./models/ApiMetric");
 
     const overview =
       await ApiMetric.aggregate([
@@ -94,5 +92,7 @@ const metricsMiddleware = (
 
   next();
 
-}
-module.exports = metricsMiddleware;
+};
+
+module.exports =
+  metricsMiddleware;
