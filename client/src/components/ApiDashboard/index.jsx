@@ -79,7 +79,7 @@ class ApiDashboard extends Component {
   }
 
   componentWillUnmount() {
-    socket.off("dashboard:update");
+    socket.off("dashboard:overview");
     socket.off("connect");
     socket.off("disconnect");
     
@@ -93,15 +93,35 @@ class ApiDashboard extends Component {
 
   });
 
-  socket.on("dashboard:update", () => {
+  socket.on(
+  "dashboard:overview",
+  (data) => {
 
     console.log(
-      "Realtime Dashboard Update"
+      "Realtime Overview Update",
+      data
     );
 
-    this.getDashboardData();
+    this.setState((prevState) => ({
+      overview: {
+        ...prevState.overview,
 
-  });
+        totalRequests:
+          data.totalRequests,
+
+        avgResponse:
+          data.avgResponse,
+
+        failedRequests:
+          data.failedRequests,
+
+        successRate:
+          data.successRate,
+      },
+    }));
+
+  }
+);
 
   socket.on("disconnect", () => {
 
