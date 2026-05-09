@@ -9,6 +9,13 @@ const metricsMiddleware = (
   const start = Date.now();
 
   res.on("finish", () => {
+    if (
+      req.originalUrl.includes(
+        "/api/admin/metrics"
+      )
+    ) {
+      return;
+    }
 
     const duration =
       Date.now() - start;

@@ -75,17 +75,14 @@ class ApiDashboard extends Component {
   componentDidMount() {
    this.getDashboardData();
     this.connectSocket();
-    this.dashboardInterval =
-      setInterval(() => {
-        this.getDashboardData();
-      }, 3000);
+  
   }
 
   componentWillUnmount() {
     socket.off("dashboard:update");
     socket.off("connect");
     socket.off("disconnect");
-    clearInterval(this.dashboardInterval);
+    
   }
 
   connectSocket = () => {
