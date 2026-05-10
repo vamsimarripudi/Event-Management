@@ -14,6 +14,28 @@ export const lightTheme = {
   warning: "#f59e0b",
   overlay: "rgba(0,0,0,0.45)",
   glass: "rgba(255,255,255,0.7)",
+  logoText: `
+    linear-gradient(
+      90deg,
+      #0f172a 0%,
+      #334155 50%,
+      #64748b 100%
+    )
+  `,
+
+  logoAccent: `
+    linear-gradient(
+      135deg,
+      #7c3aed 0%,
+      #4f46e5 30%,
+      #0891b2 70%,
+      #06b6d4 100%
+    )
+  `,
+
+  logoShadow:
+    "0 2px 12px rgba(15,23,42,0.08)",
+
 };
 
 export const darkTheme = {
@@ -32,4 +54,25 @@ export const darkTheme = {
   warning: "#f59e0b",
   overlay: "rgba(0,0,0,0.65)",
   glass: "rgba(17,24,39,0.72)",
+  logoText: `
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #dbe4ff 45%,
+      #94a3b8 100%
+    )
+  `,
+
+  logoAccent: `
+    linear-gradient(
+      135deg,
+      #8b5cf6 0%,
+      #6366f1 30%,
+      #06b6d4 70%,
+      #67e8f9 100%
+    )
+  `,
+
+  logoShadow:
+    "0 2px 18px rgba(255,255,255,0.08)",
 };

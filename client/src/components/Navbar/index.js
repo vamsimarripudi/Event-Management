@@ -6,7 +6,7 @@ import {
     NavbarContainer,
     LogoText,
     LogoContainer,
-    LogoImage,
+    
     LogoutButton,
     MobileLogout,
     Theme,
@@ -37,11 +37,6 @@ import {
     return (
         <NavbarContainer>
             <LogoContainer>
-                <LogoImage
-                    src="https://res.cloudinary.com/dpd6wdnou/image/upload/v1778427227/Logo_xgwgx7.png"
-                    alt="Nexora Logo"
-                />
-
                 <LogoText>
                     <span>N</span>exora
                 </LogoText>

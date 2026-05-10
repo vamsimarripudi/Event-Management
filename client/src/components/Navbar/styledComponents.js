@@ -170,54 +170,91 @@ export const LogoImage = styled.img`
 `;
 
 export const LogoText = styled.h1`
-    font-size:42px;
-    font-weight:700;
-    color:white;
-    font-family:'Poppins',sans-serif;
-    letter-spacing:1px;
     margin:0;
     display:flex;
     align-items:center;
 
-    span{
-        font-size:54px;
-        font-weight:900;
-        margin-right:2px;
+    font-family:'Poppins',sans-serif;
+    font-size:46px;
+    font-weight:800;
+    letter-spacing:1.5px;
 
-        background:linear-gradient(
-            135deg,
-            #8b5cf6 0%,
-            #6366f1 25%,
-            #06b6d4 55%,
-            #22d3ee 100%
-        );
+    background:${({theme}) =>
+        theme.logoText};
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    text-shadow:${({theme}) =>
+        theme.logoShadow};
+
+    transition:all 0.3s ease;
+
+    span{
+        position:relative;
+
+        font-size:62px;
+        font-weight:900;
+
+        margin-right:3px;
+
+        background:${({theme}) =>
+            theme.logoAccent};
 
         -webkit-background-clip:text;
         -webkit-text-fill-color:transparent;
 
-        text-shadow:
-            0 0 12px rgba(99,102,241,0.45),
-            0 0 24px rgba(6,182,212,0.25);
+        filter:
+            drop-shadow(
+                0 0 14px rgba(99,102,241,0.45)
+            )
+            drop-shadow(
+                0 0 30px rgba(6,182,212,0.25)
+            );
 
-        filter:drop-shadow(0 0 8px rgba(99,102,241,0.35));
+        transform:translateY(-2px);
 
-        transform:skew(-6deg);
-        display:inline-block;
+        &::after{
+            content:"";
+
+            position:absolute;
+
+            left:8%;
+            bottom:6px;
+
+            width:84%;
+            height:8px;
+
+            background:linear-gradient(
+                90deg,
+                rgba(99,102,241,0.75),
+                rgba(6,182,212,0.75)
+            );
+
+            filter:blur(10px);
+
+            border-radius:999px;
+
+            z-index:-1;
+        }
     }
 
     @media screen and (max-width:768px){
-        font-size:30px;
+
+        font-size:34px;
 
         span{
-            font-size:40px;
+            font-size:48px;
         }
     }
 
     @media screen and (max-width:480px){
-        font-size:24px;
+
+        font-size:26px;
+        letter-spacing:0.5px;
 
         span{
-            font-size:32px;
+            font-size:36px;
         }
     }
 `;
