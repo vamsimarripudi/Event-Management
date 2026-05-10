@@ -105,7 +105,7 @@ const UnderConstruction = () => {
                 </Badge>
 
                 <Title>
-                    Nexora
+                    Vmetron
                     <AnimatedDot />
                 </Title>
                 <SubTitle>
@@ -114,13 +114,13 @@ const UnderConstruction = () => {
                     <span>
                         Event Management Platform
                     </span>
-                    — now evolving into Nexora.
+                    — now evolving into Vmetron.
 
                 </SubTitle>
 
                 <Description>
 
-                    We’re rebuilding Nexora into a
+                    We’re rebuilding Vmetron into a
                     realtime event operations infrastructure platform
                     with observability systems,
                     websocket-driven experiences,
