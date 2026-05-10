@@ -176,20 +176,40 @@ export const LogoText = styled.h1`
     font-family:'Poppins',sans-serif;
     letter-spacing:1px;
     margin:0;
+    display:flex;
+    align-items:center;
 
     span{
-        background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+        font-size:54px;
+        font-weight:900;
+        margin-right:2px;
+
+        background:linear-gradient(
+            135deg,
+            #8b5cf6 0%,
+            #6366f1 25%,
+            #06b6d4 55%,
+            #22d3ee 100%
+        );
+
         -webkit-background-clip:text;
         -webkit-text-fill-color:transparent;
-        font-size:48px;
-        font-weight:800;
+
+        text-shadow:
+            0 0 12px rgba(99,102,241,0.45),
+            0 0 24px rgba(6,182,212,0.25);
+
+        filter:drop-shadow(0 0 8px rgba(99,102,241,0.35));
+
+        transform:skew(-6deg);
+        display:inline-block;
     }
 
     @media screen and (max-width:768px){
         font-size:30px;
 
         span{
-            font-size:34px;
+            font-size:40px;
         }
     }
 
@@ -197,7 +217,7 @@ export const LogoText = styled.h1`
         font-size:24px;
 
         span{
-            font-size:28px;
+            font-size:32px;
         }
     }
 `;

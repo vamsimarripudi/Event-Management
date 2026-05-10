@@ -38,7 +38,7 @@ import {
         <NavbarContainer>
             <LogoContainer>
                 <LogoImage
-                    src="/favicon-32x32.png"
+                    src="https://res.cloudinary.com/dpd6wdnou/image/upload/v1778427227/Logo_xgwgx7.png"
                     alt="Nexora Logo"
                 />
 
