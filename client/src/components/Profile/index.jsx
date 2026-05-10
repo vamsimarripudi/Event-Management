@@ -383,7 +383,7 @@ class Profile extends Component {
             <option value="user">User</option>
             <option value="developer">Developer</option>
             <option value="organizer">Organizer</option>
-            <option value="admin">Admin</option>
+            
           </Select>
         </Field>
         <StrengthCard>
