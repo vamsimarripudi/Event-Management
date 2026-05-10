@@ -1,59 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Management API</title>
+    <meta charset="UTF-8" />
+    <meta
+        http-equiv="X-UA-Compatible"
+        content="IE=edge"
+    />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>
+        Nexora API
+    </title>
+
+    <style>
+
+        body{
+            font-family:'Poppins',sans-serif;
+            margin:0;
+            padding:40px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f172a 0%,
+                    #111827 50%,
+                    #1e293b 100%
+                );
+
+            color:#f8fafc;
+        }
+
+        .container{
+            max-width:1100px;
+            margin:auto;
+        }
+
+        h1{
+            font-size:42px;
+            margin-bottom:10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #cbd5e1
+                );
+
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .subtitle{
+            color:#94a3b8;
+            margin-bottom:40px;
+            line-height:1.7;
+        }
+
+        .section-title{
+            margin-top:50px;
+            margin-bottom:20px;
+
+            font-size:24px;
+            font-weight:700;
+
+            color:#e2e8f0;
+        }
+
+        .route-list{
+            list-style:none;
+            padding:0;
+
+            display:grid;
+            grid-template-columns:
+                repeat(auto-fit,minmax(320px,1fr));
+
+            gap:18px;
+        }
+
+        .route-card{
+            background:
+                rgba(255,255,255,0.06);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius:20px;
+
+            padding:20px;
+
+            backdrop-filter:blur(14px);
+
+            transition:0.25s ease;
+        }
+
+        .route-card:hover{
+            transform:translateY(-4px);
+
+            border:
+                1px solid rgba(99,102,241,0.35);
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.25);
+        }
+
+        .method{
+            display:inline-block;
+
+            padding:6px 12px;
+
+            border-radius:999px;
+
+            font-size:12px;
+            font-weight:700;
+
+            margin-bottom:12px;
+        }
+
+        .get{
+            background:#0f766e;
+            color:#ccfbf1;
+        }
+
+        .post{
+            background:#1d4ed8;
+            color:#dbeafe;
+        }
+
+        .put{
+            background:#854d0e;
+            color:#fef3c7;
+        }
+
+        .delete{
+            background:#991b1b;
+            color:#fee2e2;
+        }
+
+        .endpoint{
+            font-size:17px;
+            font-weight:700;
+
+            margin-bottom:10px;
+
+            color:#f8fafc;
+        }
+
+        .description{
+            color:#94a3b8;
+            line-height:1.6;
+            font-size:14px;
+        }
+
+        footer{
+            margin-top:60px;
+            text-align:center;
+
+            color:#64748b;
+        }
+
+        .note{
+            margin-top:30px;
+
+            background:
+                rgba(99,102,241,0.08);
+
+            border:
+                1px solid rgba(99,102,241,0.18);
+
+            padding:18px;
+
+            border-radius:16px;
+
+            color:#cbd5e1;
+        }
+
+        code{
+            color:#67e8f9;
+        }
+
+    </style>
 </head>
+
 <body>
-    <h1 class="text-3xl font-bold">Welcome to Event Management API Portal.</h1>
-        <p>Use the following endpoints to interact with the API:</p>
-        <ul>
-            <li><strong>POST /api/auth/register</strong> - Register a new user. Body: {email, password}</li>
-            <li><strong>POST /api/auth/login</strong> - Log in a user. Body: {email, password}</li>
-            <li><strong>POST /api/event</strong> - Create a new event. Body: {title, description, date, category, capacity}</li>
-            <li><strong>GET /api/event</strong> - Get all events.</li>
-            <li><strong>GET /api/event/:id</strong> - Get event details by ID.</li>
-            <li><strong>POST /api/registration</strong> - Register for an event. Body: {eventId}</li>
-            <li><strong>DELETE /api/registration/:eventId</strong> - Cancel registration for an event.</li>
+
+    <div class="container">
+
+        <h1>
+            Event Management API Portal
+        </h1>
+
+        <p class="subtitle">
+            Welcome to the Event Management Backend API.
+            Use the following endpoints to interact
+            with authentication, events, analytics,
+            registrations, profiles, feedback systems,
+            and realtime observability infrastructure.
+        </p>
+
+        <!-- AUTH -->
+        <h2 class="section-title">
+            🔐 Authentication Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method post">
+                    POST
+                </span>
+
+                <div class="endpoint">
+                    /api/auth/register
+                </div>
+
+                <div class="description">
+                    Register a new user.<br />
+                    Body:
+                    { name, email, password }
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method post">
+                    POST
+                </span>
+
+                <div class="endpoint">
+                    /api/auth/login
+                </div>
+
+                <div class="description">
+                    Login user and return JWT token.
+                </div>
+            </li>
+
         </ul>
 
-        <p>All endpoints (except /api/auth) require an Authorization header with a valid JWT token.</p>
-        <p>Example: Authorization: Bearer &lt;token&gt;</p>
-        <p>For more details, refer to the API documentation.</p>
-        <p>Note: Make sure to replace &lt;token&gt; with your actual JWT token.</p>
-        
+        <!-- EVENTS -->
+        <h2 class="section-title">
+            🎟 Event Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method post">
+                    POST
+                </span>
+
+                <div class="endpoint">
+                    /api/event
+                </div>
+
+                <div class="description">
+                    Create a new event.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/event
+                </div>
+
+                <div class="description">
+                    Get all events.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/event/:id
+                </div>
+
+                <div class="description">
+                    Get event details by ID.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method put">
+                    PUT
+                </span>
+
+                <div class="endpoint">
+                    /api/event/:id
+                </div>
+
+                <div class="description">
+                    Update event details.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method delete">
+                    DELETE
+                </span>
+
+                <div class="endpoint">
+                    /api/event/:id
+                </div>
+
+                <div class="description">
+                    Delete an event.
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- REGISTRATION -->
+        <h2 class="section-title">
+            📝 Registration Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method post">
+                    POST
+                </span>
+
+                <div class="endpoint">
+                    /api/registration
+                </div>
+
+                <div class="description">
+                    Register for an event.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method delete">
+                    DELETE
+                </span>
+
+                <div class="endpoint">
+                    /api/registration/:eventId
+                </div>
+
+                <div class="description">
+                    Cancel event registration.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/registration/user
+                </div>
+
+                <div class="description">
+                    Get registered events for user.
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- PROFILE -->
+        <h2 class="section-title">
+            👤 Profile Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/profile
+                </div>
+
+                <div class="description">
+                    Get user profile details.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method put">
+                    PUT
+                </span>
+
+                <div class="endpoint">
+                    /api/profile
+                </div>
+
+                <div class="description">
+                    Update user profile.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/profile/analysis
+                </div>
+
+                <div class="description">
+                    Get AI-powered profile analysis.
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- FEEDBACK -->
+        <h2 class="section-title">
+            💬 Feedback Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method post">
+                    POST
+                </span>
+
+                <div class="endpoint">
+                    /api/feedback
+                </div>
+
+                <div class="description">
+                    Submit platform feedback.
+                </div>
+            </li>
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/feedback/analytics
+                </div>
+
+                <div class="description">
+                    Get feedback analytics.
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- PERFORMANCE -->
+        <h2 class="section-title">
+            📊 Performance Routes
+        </h2>
+
+        <ul class="route-list">
+
+            <li class="route-card">
+                <span class="method get">
+                    GET
+                </span>
+
+                <div class="endpoint">
+                    /api/performance
+                </div>
+
+                <div class="description">
+                    Get realtime API observability stats.
+                </div>
+            </li>
+
+        </ul>
+
+        <div class="note">
+            🔒 All protected routes require:
+            <br /><br />
+
+            <code>
+                Authorization: Bearer &lt;token&gt;
+            </code>
+        </div>
 
         <footer>
-            <p style="text-align: center; color: #666;">Developed by Vamsi Marripudi</p>
+            Developed by Vamsi Marripudi 🚀
         </footer>
 
+    </div>
 
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                background-color: #f9f9f9;
-            }
-            h1 {
-                color: #333;
-            }
-            ul {
-                list-style-type: none;
-                padding: 0;
-            }
-            li {
-                background: #fff;
-                margin: 10px 0;
-                padding: 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            strong {
-                color: #007BFF;
-            }
-        </style>
 </body>
-
 </html>
