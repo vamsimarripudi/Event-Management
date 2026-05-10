@@ -175,7 +175,7 @@ export const LogoText = styled.h1`
     align-items:center;
 
     font-family:'Poppins',sans-serif;
-    font-size:46px;
+    font-size:40px;
     font-weight:800;
     letter-spacing:1.5px;
 
@@ -193,7 +193,7 @@ export const LogoText = styled.h1`
     span{
         position:relative;
 
-        font-size:62px;
+        font-size:55px;
         font-weight:900;
 
         margin-right:3px;
@@ -241,20 +241,20 @@ export const LogoText = styled.h1`
 
     @media screen and (max-width:768px){
 
-        font-size:34px;
+        font-size:28px;
 
         span{
-            font-size:48px;
+            font-size:42px;
         }
     }
 
     @media screen and (max-width:480px){
 
-        font-size:26px;
+        font-size:24px;
         letter-spacing:0.5px;
 
         span{
-            font-size:36px;
+            font-size:30px;
         }
     }
 `;
