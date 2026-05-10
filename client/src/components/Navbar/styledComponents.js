@@ -146,3 +146,58 @@ export const MobileContainer = styled.div`
 
   gap: 10px;
 `;
+
+export const LogoContainer = styled.div`
+    display:flex;
+    align-items:center;
+    gap:12px;
+`;
+
+export const LogoImage = styled.img`
+    width:52px;
+    height:52px;
+    object-fit:contain;
+
+    @media screen and (max-width:768px){
+        width:42px;
+        height:42px;
+    }
+
+    @media screen and (max-width:480px){
+        width:34px;
+        height:34px;
+    }
+`;
+
+export const LogoText = styled.h1`
+    font-size:42px;
+    font-weight:700;
+    color:white;
+    font-family:'Poppins',sans-serif;
+    letter-spacing:1px;
+    margin:0;
+
+    span{
+        background:linear-gradient(135deg,#8b5cf6,#06b6d4);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        font-size:48px;
+        font-weight:800;
+    }
+
+    @media screen and (max-width:768px){
+        font-size:30px;
+
+        span{
+            font-size:34px;
+        }
+    }
+
+    @media screen and (max-width:480px){
+        font-size:24px;
+
+        span{
+            font-size:28px;
+        }
+    }
+`;

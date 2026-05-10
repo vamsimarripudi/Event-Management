@@ -4,7 +4,9 @@ import { ThemeContext } from "../../context/ThemeContext";
 import {MdDarkMode, MdLightMode, MdComputer} from "react-icons/md";
 import { 
     NavbarContainer,
-    Header,
+    LogoText,
+    LogoContainer,
+    LogoImage,
     LogoutButton,
     MobileLogout,
     Theme,
@@ -34,7 +36,16 @@ import {
 
     return (
         <NavbarContainer>
-            <Header>Event Management</Header>
+            <LogoContainer>
+                <LogoImage
+                    src="/favicon-32x32.png"
+                    alt="Nexora Logo"
+                />
+
+                <LogoText>
+                    <span>N</span>exora
+                </LogoText>
+            </LogoContainer>
             <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
             <MobileContainer>
                 <Theme onClick={cycleTheme}>

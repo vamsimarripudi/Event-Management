@@ -35,7 +35,7 @@ const App = () => {
     >
       <GlobalStyle/>
     <Toaster 
-        position="top-right"
+        position="bottom-center"
         reverseOrder = {false}
         toastOptions={{
           duration:3000,
