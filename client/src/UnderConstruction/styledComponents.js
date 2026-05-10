@@ -564,3 +564,31 @@ export const StatusDot = styled.div`
         }
     }
 `;
+
+// Add in styledComponents.js
+
+export const SubTitle = styled.p`
+    margin-top:-10px;
+    margin-bottom:28px;
+
+    color:#94a3b8;
+
+    font-size:15px;
+    font-weight:500;
+
+    letter-spacing:0.3px;
+
+    span{
+        color:#e2e8f0;
+
+        font-weight:700;
+
+        margin:0 4px;
+    }
+
+    @media screen and (max-width:768px){
+        font-size:14px;
+
+        line-height:1.8;
+    }
+`;

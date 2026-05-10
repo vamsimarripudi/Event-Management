@@ -107,6 +107,15 @@ const UnderConstruction = () => {
                     Nexora
                     <AnimatedDot />
                 </Title>
+                <SubTitle>
+
+                    Previously known as
+                    <span>
+                        Event Management Platform
+                    </span>
+                    — now evolving into Nexora.
+
+                </SubTitle>
 
                 <Description>
 
