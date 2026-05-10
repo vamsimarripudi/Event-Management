@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dpd6wdnou/image/upload/v1778427285/android-chrome-512x512_n0iroe.png" />
     <meta
         http-equiv="X-UA-Compatible"
         content="IE=edge"
@@ -181,6 +182,203 @@
             color:#67e8f9;
         }
 
+        .footer{
+            position:relative;
+
+            margin-top:90px;
+
+            overflow:hidden;
+
+            border-radius:30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15,23,42,0.95) 0%,
+                    rgba(17,24,39,0.92) 50%,
+                    rgba(30,41,59,0.95) 100%
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            backdrop-filter:blur(18px);
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.38);
+        }
+
+        .footer-top-line{
+            width:100%;
+            height:4px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #8b5cf6,
+                    #6366f1,
+                    #06b6d4,
+                    #67e8f9
+                );
+        }
+
+        .footer-content{
+            padding:42px 38px;
+
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:32px;
+
+            flex-wrap:wrap;
+        }
+
+        .footer-brand h2{
+            margin:0;
+
+            display:flex;
+            align-items:center;
+
+            font-size:38px;
+            font-weight:800;
+
+            letter-spacing:1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #cbd5e1
+                );
+
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .footer-brand h2 span{
+            margin-right:4px;
+
+            font-size:54px;
+            font-weight:900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #6366f1,
+                    #06b6d4
+                );
+
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+
+            filter:
+                drop-shadow(
+                    0 0 18px rgba(99,102,241,0.4)
+                );
+        }
+
+        .footer-brand p{
+            margin-top:12px;
+
+            color:#94a3b8;
+
+            line-height:1.7;
+
+            max-width:520px;
+
+            font-size:15px;
+        }
+
+        .footer-divider{
+            width:1px;
+            height:90px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    transparent,
+                    rgba(255,255,255,0.14),
+                    transparent
+                );
+        }
+
+        .footer-meta{
+            display:flex;
+            flex-direction:column;
+            gap:14px;
+        }
+
+        .footer-chip{
+            padding:14px 18px;
+
+            border-radius:16px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            color:#cbd5e1;
+
+            font-size:14px;
+
+            backdrop-filter:blur(10px);
+
+            transition:0.25s ease;
+        }
+
+        .footer-chip:hover{
+            transform:translateY(-3px);
+
+            border:
+                1px solid rgba(99,102,241,0.35);
+
+            background:
+                rgba(99,102,241,0.08);
+        }
+
+        .footer-chip strong{
+            color:#ffffff;
+        }
+
+        @media screen and (max-width:768px){
+
+            .footer-content{
+                padding:32px 24px;
+
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .footer-divider{
+                width:100%;
+                height:1px;
+            }
+
+            .footer-brand h2{
+                font-size:30px;
+            }
+
+            .footer-brand h2 span{
+                font-size:44px;
+            }
+
+            .footer-brand p{
+                font-size:14px;
+            }
+
+            .footer-meta{
+                width:100%;
+            }
+
+            .footer-chip{
+                width:100%;
+            }
+        }
+
+
     </style>
 </head>
 
@@ -189,11 +387,11 @@
     <div class="container">
 
         <h1>
-            Event Management API Portal
+            Nexora API Portal
         </h1>
 
         <p class="subtitle">
-            Welcome to the Event Management Backend API.
+            Welcome to the Nexora Backend API.
             Use the following endpoints to interact
             with authentication, events, analytics,
             registrations, profiles, feedback systems,
@@ -489,8 +687,44 @@
             </code>
         </div>
 
-        <footer>
-            Developed by Vamsi Marripudi 🚀
+        <footer class="footer">
+
+            <div class="footer-top-line"></div>
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <h2>
+                        <span>N</span>exora
+                    </h2>
+
+                    <p>
+                        Realtime Event Infrastructure &
+                        Intelligent Platform Engineering
+                    </p>
+
+                </div>
+
+                <div class="footer-divider"></div>
+
+                <div class="footer-meta">
+
+                    <div class="footer-chip">
+                        🚀 Engineered by
+                        <strong>
+                            Vamsi Marripudi
+                        </strong>
+                    </div>
+
+                    <div class="footer-chip">
+                        🤖 AI-assisted design powered by OpenAI
+                    </div>
+
+                </div>
+
+            </div>
+
         </footer>
 
     </div>
