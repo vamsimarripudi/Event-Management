@@ -23,7 +23,8 @@ import {
     FocusTitle,
     StatusRow,
     StatusDot,
-    FooterText
+    FooterText,
+    SubTitle
 } from "./styledComponents";
 
 const launchDate = new Date("2026-05-20T06:00:00").getTime();
