@@ -4,13 +4,14 @@ import './index.css';
 //import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProviderWrapper } from './context/ThemeContext';
-import UnderConstruction from './UnderConstruction';
+
+import App from "../../client/src/App"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ThemeProviderWrapper>
-      <UnderConstruction/>
+      <App/>
     </ThemeProviderWrapper>
   </React.StrictMode>
 );
