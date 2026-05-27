@@ -38,7 +38,7 @@ import {
         <NavbarContainer>
             <LogoContainer>
                 <LogoText>
-                    <span>N</span>exora
+                    Event Manager
                 </LogoText>
             </LogoContainer>
             <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
